@@ -16,7 +16,9 @@ public class EcommerceDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {        
-        optionsBuilder.UseSqlServer("Server=MAHMOUD\\SQLEXPRESS; Database=E-CommerceDB; Trusted_Connection=true; Encrypt=false; MultipleActiveResultSets=True;"); 
+        //optionsBuilder.UseSqlServer("Server=MAHMOUD\\SQLEXPRESS; Database=E-CommerceDB; Trusted_Connection=true; Encrypt=false; MultipleActiveResultSets=True;"); 
+        //base.OnConfiguring(optionsBuilder);
+        optionsBuilder.UseSqlServer("Data Source=SQL8003.site4now.net;Initial Catalog=db_a9837b_ecommercedb;User Id=db_a9837b_ecommercedb_admin;Password=NGMM123456");
         base.OnConfiguring(optionsBuilder);
     }
 

@@ -13,9 +13,13 @@ namespace ECommerceMVC
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            // Db Connection
+            // Db Connection 1
+            //builder.Services.AddDbContext<EcommerceDbContext>(options =>
+            //    options.UseSqlServer(builder.Configuration.GetConnectionString("cs"))
+            //);
+            // Db Connection 2
             builder.Services.AddDbContext<EcommerceDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("cs"))
+                options.UseSqlServer(builder.Configuration.GetConnectionString("remote"))
             );
 
             builder.Services.AddSession(options =>

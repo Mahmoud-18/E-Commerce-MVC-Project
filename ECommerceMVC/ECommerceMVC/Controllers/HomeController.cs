@@ -8,7 +8,7 @@ namespace ECommerceMVC.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        //11111111111111111111111111111
+        
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
