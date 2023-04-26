@@ -26,16 +26,17 @@ public class Customer
     public int? ShippingAddressId { get; set; }
     public bool IsAdmin { get; set; } = false;
     public string? AdminComment { get; set; }
-    public bool HasShoppingBagItems { get; set; }
-    public bool RequireReLogin { get; set; }
-    public int FailedLoginAttempts { get; set; }
-    public DateTime CannotLoginUntilDateUtc { get; set; }
+    public bool HasShoppingBagItems { get; set; } = false;
+    public bool? RequireReLogin { get; set; }
+    public int? FailedLoginAttempts { get; set; }
+    public DateTime? CannotLoginUntilDateUtc { get; set; }
 
     //Navigation Properties
 
     public Country? Country { get; set; }
     public ICollection<Address>? Addresses { get; set; } = new List<Address>();
     public ICollection<OrderDetails>? Orders { get; set; } = new List<OrderDetails>();
+    public ICollection<Complaint>? Complaints { get; set; } = new List<Complaint>();
     public ShoppingBag? ShoppingBag { get; set; }
 
 }

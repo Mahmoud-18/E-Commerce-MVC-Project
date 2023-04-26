@@ -22,6 +22,8 @@ public class EcommerceDbContext : DbContext
         base.OnConfiguring(optionsBuilder);
     }
 
+
+    public DbSet<Complaint> Complaint { get; set; }
     public DbSet<Address> Address { get; set; }
     public DbSet<AttributeValues> AttributeValues { get; set; }
     public DbSet<Brand> Brand { get; set; }
