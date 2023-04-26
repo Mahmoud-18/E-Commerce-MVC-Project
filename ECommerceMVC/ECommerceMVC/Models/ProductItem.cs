@@ -26,9 +26,4 @@ public class ProductItem
     public ICollection<OrderItems>? OrderItems { get; set; } = new List<OrderItems>();
     public ICollection<ProductImages>? ProductImages { get; set; } = new List<ProductImages>();
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> abcd6f14a090c969f0e8f383e974c806c145dc90
 }
