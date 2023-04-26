@@ -1,4 +1,5 @@
 using ECommerceMVC.Context;
+using ECommerceMVC.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
 
@@ -27,6 +28,10 @@ namespace ECommerceMVC
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
 
             });
+
+
+            // Register
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
             var app = builder.Build();
 
