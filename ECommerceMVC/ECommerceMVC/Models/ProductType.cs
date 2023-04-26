@@ -7,6 +7,6 @@ public class ProductType
 
     //Navigation Properties
     public ICollection<ProductTypeAttribute>? ProductTypeAttributes { get; set; } = new List<ProductTypeAttribute>();
-    public ICollection<ProductItem>? ProductItem { get; set; } = new List<ProductItem>();
+    public ICollection<Product>? ProductItem { get; set; } = new List<Product>();
 
 }

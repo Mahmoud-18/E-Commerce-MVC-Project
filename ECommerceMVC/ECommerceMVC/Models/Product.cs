@@ -16,8 +16,16 @@ public class Product
     [ForeignKey("Discount")]
     public int? DiscountId { get; set; }
 
+    [ForeignKey("ProductType")]
+    public int? ProductTypeId { get; set; }
+
+    [ForeignKey("Brand")]
+    public int BrandId { get; set; }
+
     //Navigation Properties
     public Discount? Discount { get; set; }
+    public Brand? Brand { get; set; }
+    public ProductType? ProductType { get; set; }
     public ICollection<ProductItem>? Items { get; set; } = new List<ProductItem>();
     public ICollection<ProductCategory>? ProductCategories { get; set; } = new List<ProductCategory>();
 }
