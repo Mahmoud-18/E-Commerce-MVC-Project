@@ -1,0 +1,279 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Times New Roman', Times, sans-serif;
+}
+body{
+    width: 100%;
+}
+.logo{
+    width: 150px;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+   padding: 0 80px;
+   box-shadow: 0 5px 15px rgba(0,0,0,.06);
+   z-index: 999;
+   position: sticky;
+   left: 0;
+   top: 0;
+
+   
+   
+}
+ul{
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+.navbar li{
+   
+    padding: 0 15px;
+    position: relative;
+}
+.navbar a{
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    transition: .3s;
+}
+.navbar i{
+    font-size: 20px;
+
+}
+.navbar a:hover,.navbar a.active{
+    color: #088178;
+}
+.navbar li a.active::after,.navbar a:hover::after{
+     content: "";
+     width: 30%;
+     height: 2px;
+     position: absolute;
+     left: 15px;
+     bottom: -4px;
+     background-color: #088178;
+}
+.landing{
+    background-image: url("../images/360_F_484876187_u6HIlCgA2iZdfkoOamuQa43OJH2zaDVR.jpg");
+    width: 100%;
+    height: 94vh;
+    background-size: cover;
+    background-position: left 20%;
+    position: relative;
+   
+
+    
+}
+.txt{
+    position: absolute;
+    left: 60%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: larger;
+    color: #088178;
+}
+.txt h5{
+    color: rgb(175, 174, 174);
+}
+
+.txt button{
+    background-color: orange;
+    color:#088178;
+    font-size: 25px;
+    border-radius:30px;
+    padding: 15px;
+    border-color: orange;
+    margin-left: 50px;
+    cursor: pointer;
+    
+}
+.hd{
+    text-align: center;
+}
+
+.products1 h1{
+    color: #088178;
+    font-size: 40px;
+}
+.product1{
+    width: 23%;
+    min-width: 250px;
+    padding: 10px;
+    border: 1px solid rgb(226, 222, 222);
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 20px 20px 30px rgb(0, 0,0,.02);
+    transition: .2s ease;
+    margin: 15px 0;
+    position: relative;
+}
+.product1:hover{
+    box-shadow: 20px 20px 30px rgb(0, 0,0,.06);
+}
+.product1 img{
+    width: 100%;
+    border-radius: 20px;
+    height: 350px;
+
+}
+.product1 .des{
+    text-align: start;
+    padding: 10px 0;
+}
+.product1 span{
+    color: #606063;
+    font-size: 12px;
+}
+.product1 h5{
+   
+    color: #1a1a1a;
+    font-size: 15px;
+}
+.product1 .fas{
+    font-size: 12px;
+    color: rgb(243, 181, 25);
+}
+.product1 h4{
+    padding-top: 5px;
+    color: #088178;
+    font-size: 16px;
+    font-weight: bold;
+}
+.product1 a{
+  
+    font-size: 20px;
+    color: #088178;
+    border-radius: 40px;
+    border: 1px solid white;
+    position: absolute;
+    bottom: 18px;
+    right: 18px;
+
+}
+.product1-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.banner{
+    background-image: url(../images/b11.jpg);
+    height: 240px;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    
+}
+.banner {
+    font-size: 25px;
+    color: white;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.banner button{
+    width: 140px;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    background-color: white;
+    color: orange;
+    margin-top: 5px;
+    font-weight: bold;
+    
+}
+.banner button:hover{
+   scale: 1.1;
+}
+.sbanner,.tbanner,.fbanner{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.sbanner .d1{
+   background-image: url(../images/b17.jpg);
+   min-width:550px;
+   height: 350px;
+   color: white;
+   padding-top: 120px;
+   padding-left:25px;
+   line-height: 30px;
+
+}
+.sbanner .d2{
+    background-image: url(../images/u1.jfif);
+    min-width:550px;
+    height: 350px;
+    color: white;
+    padding-top: 120px;
+    padding-left:25px;
+    line-height: 30px;
+ 
+ }
+ .sbanner button{
+   font-size: 16px;
+   padding: 11px 18px;
+   color: white;
+   background-color: transparent;
+   cursor: pointer;
+   border: 1px solid white;
+   outline: none;
+   transition: .2s;
+   margin-top: 5px;
+    
+}
+.sbanner button:hover{
+    background-color: white;
+    color: orange;
+}
+
+.d3{
+    background-image:url("../images/b7.jpg") ;
+    background-size: cover;
+    min-width:30%;
+    height:35vh;
+    color: white;
+    padding-top: 100px;
+    padding-left:25px;
+    line-height: 30px;
+}
+.d4{
+    background-image:url("../images/b4.jpg") ;
+    background-size: cover;
+    min-width:30%;
+    height:35vh;
+    color: white;
+    padding-top: 100px;
+    padding-left:25px;
+    line-height: 30px;
+
+}
+.d5 {
+background-image:url("../images/b18.jpg") ;
+background-size: cover;
+min-width:30%;
+height:35vh;
+color: white;
+padding-top: 100px;
+padding-left:25px;
+line-height: 30px;
+}
+.tbanner h1{
+    font-weight: bold;
+    font-size: 22px;
+}
+.tbanner h2{
+    font-weight: bold;
+    font-size: 15px;
+    color: orange;
+}
