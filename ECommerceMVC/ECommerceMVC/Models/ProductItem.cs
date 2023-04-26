@@ -31,5 +31,7 @@ public class ProductItem
     public ICollection<ShoppingBagItem>? ShoppingBagItem { get; set; } = new List<ShoppingBagItem>();
     public ICollection<OrderItems>? OrderItems { get; set; } = new List<OrderItems>();
 
+    public ICollection<ProductImages>? ProductImages { get; set; } = new List<ProductImages>();
+
 
 }
