@@ -32,7 +32,6 @@ public class ProductItem
     public ICollection<OrderItems>? OrderItems { get; set; } = new List<OrderItems>();
     public ICollection<ProductImages>? ProductImages { get; set; } = new List<ProductImages>();
 
-    public ICollection<ProductImages>? ProductImages { get; set; } = new List<ProductImages>();
 
 
 }
