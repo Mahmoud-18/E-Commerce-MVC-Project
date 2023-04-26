@@ -5,14 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceMVC.Controllers
 {
-    public class Shop : Controller
+    public class ShopController : Controller
     {
         IProductRepository _productRepository;
-        public Shop (IProductRepository productRepository)
+        public ShopController (IProductRepository productRepository)
         {
             _productRepository= productRepository;
         }
-        public IActionResult Index()
+        public IActionResult ShowAllProducts()
         {
             var products = _productRepository.GetAllProducts();
             return View(products);

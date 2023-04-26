@@ -22,11 +22,12 @@ public class ProductRepository : IProductRepository
     public List<ShoppingProductsViewModel> GetAllProducts()
     {
         List<ShoppingProductsViewModel> products= new();
-        foreach(Product pro in context.Product)
+        var allProducts = context.Product.ToList();
+        foreach(Product pro in allProducts)
         {
             //var DiscId = context.Product.Where(d => d.Id == pro.Id).FirstOrDefault()!.DiscountId;
             //var DiscAmount = context.Discount.Where(d => d.Id == DiscId).FirstOrDefault()!.DiscountPercentage;
-            var price = context.ProductItem.Where(i => i.Id == pro.Id).FirstOrDefault()!.Price;
+            //var price = context.ProductItem.Where(i => i.Id == pro.Id).FirstOrDefault()!.Price;
 
             products.Add(new ShoppingProductsViewModel { Id = pro.Id, Name = pro.Name,Image = pro.Image});
         }

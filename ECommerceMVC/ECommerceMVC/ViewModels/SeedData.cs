@@ -5,9 +5,7 @@ namespace ECommerceMVC.ViewModels
 {
     public class SeedData
     {
-        EcommerceDbContext Context = new EcommerceDbContext();
-
-        
+        EcommerceDbContext Context = new EcommerceDbContext();      
         public void Seeding()
         {
             
