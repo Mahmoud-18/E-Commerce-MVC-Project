@@ -11,8 +11,6 @@ namespace ECommerceMVC.Controllers
         EcommerceDbContext Context = new EcommerceDbContext();
         public IActionResult Index()
         {
-            SeedData seed = new SeedData();
-            seed.Seeding();
             ShoppingBagViewModel bagViewModel = new ShoppingBagViewModel();
             bagViewModel.Items = Context.ShoppingBagItem.Include("ProductItem").ToList();
             decimal sum = 0;
