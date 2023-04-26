@@ -4,6 +4,7 @@ using ECommerceMVC.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerceMVC.Migrations
 {
     [DbContext(typeof(EcommerceDbContext))]
-    partial class EcommerceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230426195333_changeproducttypelogic")]
+    partial class changeproducttypelogic
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -420,9 +423,6 @@ namespace ECommerceMVC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BrandId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
 
@@ -453,8 +453,6 @@ namespace ECommerceMVC.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BrandId");
 
                     b.HasIndex("DiscountId");
 
@@ -559,6 +557,9 @@ namespace ECommerceMVC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
 
@@ -588,6 +589,8 @@ namespace ECommerceMVC.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
 
                     b.HasIndex("ProductId");
 
@@ -796,10 +799,6 @@ namespace ECommerceMVC.Migrations
 
             modelBuilder.Entity("ECommerceMVC.Models.Product", b =>
                 {
-                    b.HasOne("ECommerceMVC.Models.Brand", "Brand")
-                        .WithMany("ProductItems")
-                        .HasForeignKey("BrandId");
-
                     b.HasOne("ECommerceMVC.Models.Discount", "Discount")
                         .WithMany("Products")
                         .HasForeignKey("DiscountId");
@@ -807,8 +806,6 @@ namespace ECommerceMVC.Migrations
                     b.HasOne("ECommerceMVC.Models.ProductType", "ProductType")
                         .WithMany("ProductItem")
                         .HasForeignKey("ProductTypeId");
-
-                    b.Navigation("Brand");
 
                     b.Navigation("Discount");
 
@@ -866,11 +863,19 @@ namespace ECommerceMVC.Migrations
 
             modelBuilder.Entity("ECommerceMVC.Models.ProductItem", b =>
                 {
+                    b.HasOne("ECommerceMVC.Models.Brand", "Brand")
+                        .WithMany("ProductItems")
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ECommerceMVC.Models.Product", "Product")
                         .WithMany("Items")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Brand");
 
                     b.Navigation("Product");
                 });
