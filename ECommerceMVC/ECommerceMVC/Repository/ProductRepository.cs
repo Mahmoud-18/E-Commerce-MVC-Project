@@ -42,10 +42,15 @@ public class ProductRepository : IProductRepository
     }
     public ProductItem GetProductItemById(int id)
     {
-        return context.ProductItem.FirstOrDefault(i => i.ProductId == id)!; ;
+        return context.ProductItem.FirstOrDefault(i => i.ProductId == id)!;
     }
     public Brand GetBrandById(int id)
     {
         return context.Brand.FirstOrDefault(b => b.Id == GetProductById(id).BrandId)!;
+    }
+    public List<string> GetImageById(int id)
+    {
+        ProductItem productItem = GetProductItemById(id);
+        return context.ProductImages.Where(i => i.ProductItemId == productItem.Id).Select(i => i.ImageURL).ToList();
     }
 }

@@ -10,18 +10,21 @@ namespace ECommerceMVC.Controllers
     {
         private readonly UserManager<Customer> userManager;
         private readonly SignInManager<Customer> signInManager;
-        private readonly EcommerceDbContext context;
+        EcommerceDbContext context;
         public AccountController
             (UserManager<Customer> _userManager,
-            SignInManager<Customer> _signInManager)
+            SignInManager<Customer> _signInManager, EcommerceDbContext context)
         {
             userManager = _userManager;
             signInManager = _signInManager;
+            this.context = context;
         }
 
         public IActionResult Register()
         {
-            return View();
+            RegisterViewModel register = new RegisterViewModel();
+            register.Countries = context.Country.ToList();
+            return View(register);
         }
 
         [HttpPost]
@@ -62,14 +65,15 @@ namespace ECommerceMVC.Controllers
                     await signInManager.SignInAsync(userModel, false);//create cookie //create cookie client
                     return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    foreach (var item in result.Errors)
-                    {
-                        ModelState.AddModelError("", item.Description);//Div
-                    }
-                }
+                //else
+                //{
+                //    foreach (var item in result.Errors)
+                //    {
+                //        ModelState.AddModelError("", item.Description);//Div
+                //    }
+                //}
             }
+            newUser.Countries = context.Country.ToList();
             return View(newUser);
         }
         public IActionResult Login()
@@ -93,14 +97,15 @@ namespace ECommerceMVC.Controllers
                     {
                         //cookie
                         await signInManager.SignInAsync(userModel, userVM.RememberMe);
-                        return RedirectToAction("Home", "Index");
+                        return RedirectToAction("Index", "Home");
                     }
                 }
-                ModelState.AddModelError("", "Login Fail Data wrong");
+                ModelState.AddModelError("", "incorrect username or password");
 
             }
             return View(userVM);
         }
+
 
 
 
@@ -124,6 +129,13 @@ namespace ECommerceMVC.Controllers
 
 
 
+
+
+        public async Task<IActionResult> SignOut()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Login");
+        }
 
     }
 }
