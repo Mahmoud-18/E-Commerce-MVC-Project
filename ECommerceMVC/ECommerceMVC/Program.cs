@@ -23,6 +23,7 @@ namespace ECommerceMVC
                 options.UseSqlServer(builder.Configuration.GetConnectionString("remote"))
             );
 
+
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
