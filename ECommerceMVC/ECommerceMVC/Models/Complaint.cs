@@ -14,7 +14,7 @@ namespace ECommerceMVC.Models
 
 
         [ForeignKey("Customer")]
-        public int Coustmer_ID { get; set; }
+        public int CustomerId { get; set; }
         public Customer? Customer { get; set; }
     }
 }
