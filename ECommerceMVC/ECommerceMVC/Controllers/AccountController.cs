@@ -60,7 +60,7 @@ namespace ECommerceMVC.Controllers
                     //await userManager.AddToRoleAsync(userModel, "Admin");
                     //------------------Create Cookie Authora
                     await signInManager.SignInAsync(userModel, false);//create cookie //create cookie client
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Home", "Index");
                 }
                 else
                 {
@@ -93,13 +93,19 @@ namespace ECommerceMVC.Controllers
                     {
                         //cookie
                         await signInManager.SignInAsync(userModel, userVM.RememberMe);
-                        return RedirectToAction("Home", "Index");
+                        return RedirectToAction("Index", "Home");
                     }
                 }
-                ModelState.AddModelError("", "Login Fail Data wrong");
+                ModelState.AddModelError("", "incorrect username or password");
 
             }
             return View(userVM);
+        }
+
+        public async Task<IActionResult> SignOut()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Login");
         }
     }
 }
