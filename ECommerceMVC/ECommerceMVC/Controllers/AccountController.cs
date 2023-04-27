@@ -3,6 +3,7 @@ using ECommerceMVC.Models;
 using ECommerceMVC.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ECommerceMVC.Controllers
 {
@@ -31,6 +32,7 @@ namespace ECommerceMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel newUser)
         {
+            List<Claim> claims = new List<Claim>();
             if (ModelState.IsValid)
             {
                 Customer userModel = new Customer();
@@ -59,9 +61,22 @@ namespace ECommerceMVC.Controllers
                     address.CustomerId = userModel.Id;
                     context.Address.Add(address);
                     await context.SaveChangesAsync();
-                    //await userManager.AddClaimAsync(userModel, new Claim("xyz","23"));
+
+                    // add Claims
+                    Claim fullnameClaim = new Claim("FullName", $"{userModel.FirstName} {userModel.LastName}");
+                    Claim firstNameClaim = new Claim("FirstName", $"{userModel.FirstName}");
+                    Claim emailClaim = new Claim(ClaimTypes.Email, userModel.Email, ClaimValueTypes.Email);
+                    Claim idClaim = new Claim("UserId", $"{userModel.Id}");
+                    claims.Add(fullnameClaim);
+                    claims.Add(firstNameClaim);
+                    claims.Add(emailClaim);
+                    claims.Add(idClaim);
+
+                    await userManager.AddClaimsAsync(userModel, claims);
+
                     //await userManager.AddToRoleAsync(userModel, "Admin");
-                    //------------------Create Cookie Authora
+
+                    //------------------Create Cookie Authorization
                     await signInManager.SignInAsync(userModel, false);//create cookie //create cookie client
                     return RedirectToAction("Index", "Home");
                 }
@@ -86,7 +101,7 @@ namespace ECommerceMVC.Controllers
         public async Task<IActionResult> Login(LoginViewModel userVM)
         {
             if (ModelState.IsValid)
-            {
+            {               
                 //Check Valid User ==>db
                 Customer userModel =
                     await userManager.FindByNameAsync(userVM.UserName);
