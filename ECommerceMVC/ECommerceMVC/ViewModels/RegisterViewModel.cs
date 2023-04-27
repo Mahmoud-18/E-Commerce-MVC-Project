@@ -1,12 +1,12 @@
 ﻿using ECommerceMVC.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace ECommerceMVC.ViewModels;
 
 public class RegisterViewModel
 {
-    public class SignUpViewModel
-    {
+   
         [Required(ErrorMessage = "First name is required")]
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "First name can only contain letters")]
         public string FirstName { get; set; }
@@ -15,9 +15,17 @@ public class RegisterViewModel
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Last name can only contain letters")]
         public string LastName { get; set; }
 
+
+
+
         [Required(ErrorMessage = "Username is required")]
         [StringLength(50, MinimumLength = 4, ErrorMessage = "Username must be between 4 and 50 characters")]
+        [Remote(action: "VerifyUsername", controller: "Account", HttpMethod = "POST", ErrorMessage = "Username already exists")]
         public string UserName { get; set; }
+   
+    
+
+
 
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email address")]
@@ -66,5 +74,5 @@ public class RegisterViewModel
 
         [Required(ErrorMessage = "Gender is required")]
         public Gender Gender { get; set; }
-    }
+    
 }

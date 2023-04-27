@@ -101,5 +101,29 @@ namespace ECommerceMVC.Controllers
             }
             return View(userVM);
         }
+
+
+
+
+
+
+        //[HttpPost]
+        //public JsonResult VerifyUsername(string username)
+        //{
+        //    bool isUsernameExists = _userService.IsUsernameExists(username);
+        //    return Json(!isUsernameExists);
+        //}
+
+        //public JsonResult IsUserNameAvailable(string userName)
+        //{
+        //    var isAvailable = !context.Users.Any(u => u.UserName == userName);
+        //    return Json(isAvailable, JsonRequestBehavior.AllowGet);
+        //}
+
+
+
+
+
+
     }
 }
