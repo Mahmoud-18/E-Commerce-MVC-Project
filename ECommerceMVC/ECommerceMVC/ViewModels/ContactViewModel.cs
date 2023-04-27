@@ -20,5 +20,7 @@ namespace ECommerceMVC.ViewModels
         [Required(ErrorMessage = "Please enter your message.")]
         [StringLength(5000, ErrorMessage = "Message must be between 10 and 5000 characters.", MinimumLength = 10)]
         public string Message { get; set; }
+
+        public int UserId { get; set; }
     }
 }

@@ -14,7 +14,8 @@ public class ProductController : Controller
         productRepository = _productRepository;
     }
 
-    public IActionResult ProductDetails(int id)
+    [HttpGet]
+    public async Task<IActionResult> ProductDetails(int id)
     {
         if (Id != 0)
         {
