@@ -4,7 +4,7 @@
     {
         public string? Name { get; set; }
         public float price { get; set; }
-        public string? Image { get; set; }
+        public List<string>? Image { get; set; }
         public string? Description { get; set; }
         public DateTime CreatetAtUtc { get; set; }
         public int SUK { get; set; }
