@@ -2,6 +2,8 @@
 using ECommerceMVC.Models;
 using ECommerceMVC.ViewModels;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace ECommerceMVC.Repository;
 
 public class ProductRepository : IProductRepository
@@ -18,22 +20,32 @@ public class ProductRepository : IProductRepository
         return context.Product.ToList();
     }
 
-    public ProductDetailsViewModel GetById(int id) // the id shuld be the product
+
+    public List<ShoppingProductsViewModel> GetAllProducts()
     {
-        ProductDetailsViewModel productDetailsViewModel = new ProductDetailsViewModel();
-        Product product = context.Product.FirstOrDefault(p => p.Id == id)!;
-        ProductItem productItem = context.Product.FirstOrDefault(i => i.ProductId == id)!;
-        List<ProductImages> productImages = context.ProductImages.Where(im => im.ProductItemId == productItem.Id).ToList();
-        Brand brand = context.Brand.FirstOrDefault(b => b.Id == productItem.BrandId)!;
-        productDetailsViewModel.Name = product.Name;
-        productDetailsViewModel.price = (float)productItem.Price;
-        productDetailsViewModel.Image = productImages.Select(img => img.ImageURL).ToList();
-        productDetailsViewModel.Description = product.Description;
-        productDetailsViewModel.CreatetAtUtc = productItem.CreatedAtUtc;
-        productDetailsViewModel.SUK = productItem.SKU;
-        productDetailsViewModel.StockUnits = productItem.StockQuantity;
-        productDetailsViewModel.BrandName = brand.Name;
-        productDetailsViewModel.BrandImage = brand.Image;
-        return productDetailsViewModel;
+        List<ShoppingProductsViewModel> products = new();
+        var allProducts = context.Product.ToList();
+        foreach (Product pro in allProducts)
+        {
+            //var DiscId = context.Product.Where(d => d.Id == pro.Id).FirstOrDefault()!.DiscountId;
+            //var DiscAmount = context.Discount.Where(d => d.Id == DiscId).FirstOrDefault()!.DiscountPercentage;
+            //var price = context.ProductItem.Where(i => i.Id == pro.Id).FirstOrDefault()!.Price;
+
+            products.Add(new ShoppingProductsViewModel { Id = pro.Id, Name = pro.Name, Image = pro.Image });
+        }
+        return (products);
+    }
+    // Repo
+    public Product GetProductById(int id)
+    {
+        return context.Product.FirstOrDefault(p => p.Id == id)!;
+    }
+    public ProductItem GetProductItemById(int id)
+    {
+        return context.ProductItem.FirstOrDefault(i => i.ProductId == id)!; ;
+    }
+    public Brand GetBrandById(int id)
+    {
+        return context.Brand.FirstOrDefault(b => b.Id == GetProductById(id).BrandId)!;
     }
 }

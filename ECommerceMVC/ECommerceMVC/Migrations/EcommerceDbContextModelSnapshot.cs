@@ -139,6 +139,40 @@ namespace ECommerceMVC.Migrations
                     b.ToTable("Category");
                 });
 
+            modelBuilder.Entity("ECommerceMVC.Models.Complaint", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Coustmer_ID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Coustmer_ID");
+
+                    b.ToTable("Complaint");
+                });
+
             modelBuilder.Entity("ECommerceMVC.Models.Country", b =>
                 {
                     b.Property<int>("Id")
@@ -175,7 +209,7 @@ namespace ECommerceMVC.Migrations
                     b.Property<string>("AdminComment")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CannotLoginUntilDateUtc")
+                    b.Property<DateTime?>("CannotLoginUntilDateUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("CountryId")
@@ -194,7 +228,7 @@ namespace ECommerceMVC.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FailedLoginAttempts")
+                    b.Property<int?>("FailedLoginAttempts")
                         .HasColumnType("int");
 
                     b.Property<string>("FirstName")
@@ -227,7 +261,7 @@ namespace ECommerceMVC.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("RequireReLogin")
+                    b.Property<bool?>("RequireReLogin")
                         .HasColumnType("bit");
 
                     b.Property<int?>("ShippingAddressId")
@@ -386,6 +420,9 @@ namespace ECommerceMVC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("BrandId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
 
@@ -409,12 +446,19 @@ namespace ECommerceMVC.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ProductTypeId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedAtUtc")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BrandId");
+
                     b.HasIndex("DiscountId");
+
+                    b.HasIndex("ProductTypeId");
 
                     b.ToTable("Product");
                 });
@@ -515,9 +559,6 @@ namespace ECommerceMVC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
 
@@ -537,9 +578,6 @@ namespace ECommerceMVC.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductTypeId")
-                        .HasColumnType("int");
-
                     b.Property<int>("SKU")
                         .HasColumnType("int");
 
@@ -551,11 +589,7 @@ namespace ECommerceMVC.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandId");
-
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("ProductTypeId");
 
                     b.ToTable("ProductItem");
                 });
@@ -684,6 +718,17 @@ namespace ECommerceMVC.Migrations
                     b.Navigation("ParentCategory");
                 });
 
+            modelBuilder.Entity("ECommerceMVC.Models.Complaint", b =>
+                {
+                    b.HasOne("ECommerceMVC.Models.Customer", "Customer")
+                        .WithMany("Complaints")
+                        .HasForeignKey("Coustmer_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
             modelBuilder.Entity("ECommerceMVC.Models.Customer", b =>
                 {
                     b.HasOne("ECommerceMVC.Models.Country", "Country")
@@ -751,11 +796,23 @@ namespace ECommerceMVC.Migrations
 
             modelBuilder.Entity("ECommerceMVC.Models.Product", b =>
                 {
+                    b.HasOne("ECommerceMVC.Models.Brand", "Brand")
+                        .WithMany("ProductItems")
+                        .HasForeignKey("BrandId");
+
                     b.HasOne("ECommerceMVC.Models.Discount", "Discount")
                         .WithMany("Products")
                         .HasForeignKey("DiscountId");
 
+                    b.HasOne("ECommerceMVC.Models.ProductType", "ProductType")
+                        .WithMany("ProductItem")
+                        .HasForeignKey("ProductTypeId");
+
+                    b.Navigation("Brand");
+
                     b.Navigation("Discount");
+
+                    b.Navigation("ProductType");
                 });
 
             modelBuilder.Entity("ECommerceMVC.Models.ProductAttributeValues", b =>
@@ -799,7 +856,7 @@ namespace ECommerceMVC.Migrations
             modelBuilder.Entity("ECommerceMVC.Models.ProductImages", b =>
                 {
                     b.HasOne("ECommerceMVC.Models.ProductItem", "ProductItem")
-                        .WithMany()
+                        .WithMany("ProductImages")
                         .HasForeignKey("ProductItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -809,29 +866,13 @@ namespace ECommerceMVC.Migrations
 
             modelBuilder.Entity("ECommerceMVC.Models.ProductItem", b =>
                 {
-                    b.HasOne("ECommerceMVC.Models.Brand", "Brand")
-                        .WithMany("ProductItems")
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ECommerceMVC.Models.Product", "Product")
                         .WithMany("Items")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECommerceMVC.Models.ProductType", "ProductType")
-                        .WithMany("ProductItem")
-                        .HasForeignKey("ProductTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Brand");
-
                     b.Navigation("Product");
-
-                    b.Navigation("ProductType");
                 });
 
             modelBuilder.Entity("ECommerceMVC.Models.ProductTypeAttribute", b =>
@@ -916,6 +957,8 @@ namespace ECommerceMVC.Migrations
                 {
                     b.Navigation("Addresses");
 
+                    b.Navigation("Complaints");
+
                     b.Navigation("Orders");
 
                     b.Navigation("ShoppingBag");
@@ -960,6 +1003,8 @@ namespace ECommerceMVC.Migrations
                     b.Navigation("OrderItems");
 
                     b.Navigation("ProductAttributeValues");
+
+                    b.Navigation("ProductImages");
 
                     b.Navigation("ShoppingBagItem");
                 });
