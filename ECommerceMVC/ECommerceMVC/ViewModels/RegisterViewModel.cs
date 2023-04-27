@@ -5,8 +5,7 @@ namespace ECommerceMVC.ViewModels;
 
 public class RegisterViewModel
 {
-    public class SignUpViewModel
-    {
+   
         [Required(ErrorMessage = "First name is required")]
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "First name can only contain letters")]
         public string FirstName { get; set; }
@@ -66,5 +65,4 @@ public class RegisterViewModel
 
         [Required(ErrorMessage = "Gender is required")]
         public Gender Gender { get; set; }
-    }
 }
