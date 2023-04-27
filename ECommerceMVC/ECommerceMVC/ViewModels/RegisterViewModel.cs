@@ -1,11 +1,16 @@
 ﻿using ECommerceMVC.Models;
+
+using Microsoft.AspNetCore.Mvc;
+
 using System.ComponentModel;
+
 using System.ComponentModel.DataAnnotations;
 
 namespace ECommerceMVC.ViewModels;
 
 public class RegisterViewModel
 {
+
 
     [DisplayName("First Name")]
     [Required(ErrorMessage = "First name is required")]
@@ -78,5 +83,6 @@ public class RegisterViewModel
     public Gender Gender { get; set; }
 
     public IList<Country>? Countries { get; set; }
+
 
 }
