@@ -32,9 +32,9 @@ namespace ECommerceMVC
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 8;
 
-
             })
                 .AddEntityFrameworkStores<EcommerceDbContext>().AddDefaultTokenProviders();
+
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
