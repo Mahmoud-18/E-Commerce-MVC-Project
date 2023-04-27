@@ -8,6 +8,17 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ECommerceMVC.styles.css" asp-append-version="true" />
 
+
+
+
+
+    <!-- International phone Number -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
+    />
+
+
     <!-- Favicon -->
     <link href="/img/favicon.ico" rel="icon">
     <!-- Google Web Fonts -->
@@ -23,7 +34,7 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
-    <link href="/css2/stylesheet.css" rel="stylesheet" >
+   
 
 </head>
 <body>
@@ -55,8 +66,8 @@
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button">Sign in</button>
-                            <button class="dropdown-item" type="button">Sign up</button>
+                            <a href="@Url.Action("Login", "Account")" class="dropdown-item" type="button">Sign in</a>
+                            <a href="@Url.Action("Register", "Account")" class="dropdown-item" type="button">Sign up</a>
                         </div>
                     </div>
                 </div>
@@ -217,6 +228,9 @@
         <!-- Footer End -->
         
     </footer>
+    <!-- JavaScript Libraries -->
+    
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -225,13 +239,21 @@
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
     <!-- Contact Javascript File -->
     <script src="/mail/jqBootstrapValidation.min.js"></script>
     <script src="/mail/contact.js"></script>
 
     <!-- Template Javascript -->
     <script src="/js/main.js"></script>
+   
+     <!-- Register Javascript -->
+    <script src="/js/SignUp.js"></script>
     
+    <!-- International phone Javascript -->
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
