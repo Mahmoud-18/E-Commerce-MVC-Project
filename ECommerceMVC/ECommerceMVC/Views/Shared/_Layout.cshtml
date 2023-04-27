@@ -66,8 +66,8 @@
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="@Url.Action("Login", "Account")" class="dropdown-item" type="button">Sign in</a>
-                            <a href="@Url.Action("Register", "Account")" class="dropdown-item" type="button">Sign up</a>
+                            <a asp-action="Login" asp-controller="Account" class="dropdown-item" type="button">Sign in</a>
+                            <a asp-action="Register" asp-controller="Account" class="dropdown-item" type="button">Sign up</a>
                         </div>
                     </div>
                 </div>

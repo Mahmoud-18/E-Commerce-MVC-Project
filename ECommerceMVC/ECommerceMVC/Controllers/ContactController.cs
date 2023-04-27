@@ -1,14 +1,26 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
 using ECommerceMVC.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ECommerceMVC.Controllers
 {
     public class ContactController : Controller
     {
-
-        EcommerceDbContext context = new EcommerceDbContext();
+        private readonly UserManager<Customer> userManager;
+        private readonly SignInManager<Customer> signInManager;
+        EcommerceDbContext context;
+        public ContactController
+            (UserManager<Customer> _userManager,
+            SignInManager<Customer> _signInManager, EcommerceDbContext context)
+        {
+            userManager = _userManager;
+            signInManager = _signInManager;
+            this.context = context;
+        }      
         public IActionResult Index()
         {
 
@@ -18,7 +30,7 @@ namespace ECommerceMVC.Controllers
         }
 
 
-
+        [Authorize]
         [HttpPost]
         public IActionResult Submit(ContactViewModel model)
         {
@@ -32,7 +44,8 @@ namespace ECommerceMVC.Controllers
             CustomerComplaint.Email = model.Email;
             CustomerComplaint.Subject = model.Subject;
             CustomerComplaint.Message = model.Message;
-
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);  
+            CustomerComplaint.CustomerId = Convert.ToInt32(userId);
             context.Complaint.Add(CustomerComplaint);
             context.SaveChanges();
 

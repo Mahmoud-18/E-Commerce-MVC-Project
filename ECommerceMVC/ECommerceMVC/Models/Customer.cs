@@ -38,5 +38,7 @@ public class Customer : IdentityUser<int>
 
 public enum Gender
 {
-    Male,Female
+    Male,
+    Female,
+    PreferNottoSpecify
 }
