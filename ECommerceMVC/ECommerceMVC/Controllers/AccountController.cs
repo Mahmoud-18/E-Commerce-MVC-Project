@@ -69,7 +69,7 @@ namespace ECommerceMVC.Controllers
                 //{
                 //    foreach (var item in result.Errors)
                 //    {
-                //        ModelState.AddModelError("", item.Description);//Div
+                //        ModelState.AddModelError("", item.Description);
                 //    }
                 //}
             }
