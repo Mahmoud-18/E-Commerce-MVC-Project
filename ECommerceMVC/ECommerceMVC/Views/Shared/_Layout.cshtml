@@ -19,10 +19,6 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ECommerceMVC.styles.css" asp-append-version="true" />
 
-
-
-
-
     <!-- International phone Number -->
     <link
       rel="stylesheet"
@@ -51,11 +47,11 @@
 </head>
 <body>
     <header>
-<<<<<<< HEAD
+
         @if (User.IsInRole("Admin") == true)
         {
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a asp class="navbar-brand d-flex justify-content-center align-items-center"  style="height: 30px; line-height: 30px; width: 100%; font-size: 18px; transition: all 0.3s;">Administration Area</a>
+                <a asp-action="Index" asp-controller="Admin" class="navbar-brand d-flex justify-content-center align-items-center"  style="height: 30px; line-height: 30px; width: 100%; font-size: 18px; transition: all 0.3s;">Administration Area</a>
             </nav>
             <style>
                 .navbar-brand:hover {
@@ -65,10 +61,7 @@
         }
         <div class="container-fluid">
             <div class="row align-items-center bg-light py-3 px-xl-3 d-none d-lg-flex">
-=======
-   <div class="container-fluid">
-      <div class="row align-items-center bg-light py-3 px-xl-3 d-none d-lg-flex">
->>>>>>> 32abde00b8d5b6fda5f40cd891fc8c55a2056856
+
 
         <div class="col-lg-4">
             <a href="" class="text-decoration-none">
