@@ -27,7 +27,8 @@ namespace ECommerceMVC
             );
             builder.Services.AddIdentity<Customer, IdentityRole<int>>(options =>
             {
-               
+             
+                
             })
                 .AddEntityFrameworkStores<EcommerceDbContext>().AddDefaultTokenProviders();
 
@@ -57,7 +58,7 @@ namespace ECommerceMVC
             builder.Services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
             builder.Services.AddScoped<IShoppingBagRepository, ShoppingBagRepository>();
 
-
+   
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

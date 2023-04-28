@@ -1,5 +1,5 @@
 ﻿using ECommerceMVC.Models;
-
+using ECommerceMVC.Validations;
 using Microsoft.AspNetCore.Mvc;
 
 using System.ComponentModel;
@@ -31,9 +31,11 @@ public class RegisterViewModel
     [EmailAddress(ErrorMessage = "Invalid email address")]
     public string Email { get; set; }
 
-    [Required(ErrorMessage = "Password is required")]
+    
+    [Required(ErrorMessage = "Password is required")]    
     [StringLength(50, MinimumLength = 8, ErrorMessage = "Password must be at least 8 characters")]
     [DataType(DataType.Password)]
+    [PasswordValidation(ErrorMessage = "Password must contain at least one lowercase letter, one uppercase letter, one number, and no special characters.")]
     public string Password { get; set; }
 
     [DisplayName("Confirm Password")]

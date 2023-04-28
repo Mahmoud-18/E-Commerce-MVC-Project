@@ -59,6 +59,7 @@ namespace ECommerceMVC.Controllers
                 address.City = newUser.City;
                 address.State = newUser.State;
                 address.CountryId = newUser.CountryId;
+                
                 //save db
                 IdentityResult result =
                     await userManager.CreateAsync(userModel, newUser.Password);   //Block create user in db

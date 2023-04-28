@@ -47,6 +47,17 @@
 </head>
 <body>
     <header>
+        @if (User.IsInRole("Admin") == true)
+        {
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a asp class="navbar-brand d-flex justify-content-center align-items-center"  style="height: 30px; line-height: 30px; width: 100%; font-size: 18px; transition: all 0.3s;">Administration Area</a>
+            </nav>
+            <style>
+                .navbar-brand:hover {
+                      transform: scale(1.1);
+                }
+            </style>
+        }
         <div class="container-fluid">
             <div class="row align-items-center bg-light py-3 px-xl-3 d-none d-lg-flex">
 
