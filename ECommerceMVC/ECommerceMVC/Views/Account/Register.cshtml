@@ -22,10 +22,14 @@
     <div class="container-fluid">
         <div class="row px-xl-5"></div>
         <div class="col-lg-10 mx-auto">
+
+
           <h5 class="section-title position-relative text-uppercase mb-3 text-center">
             <span class="bg-secondary pr-3">Account Information</span>
           </h5>
           <div class="bg-light p-30 mb-8">
+
+
             <form asp-action="Register" asp-controller="Account">
                 <div asp-validation-summary="All" class="text-danger"></div>
                <div class="row">                                 
@@ -55,10 +59,11 @@
                         <span asp-validation-for="Email" class="text-danger"></span>                   
                   </div>
 
+
                   <div class="col-md-6 form-group">                   
                         <label asp-for="Password" class="control-label"></label>
                         <div class="input-group">
-                            <input asp-for="Password" class="form-control" placeholder="Enter Password" />
+                            <input asp-for="Password" id="password" class="form-control" placeholder="Enter Password" />
                             
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary password-toggle-btn"
@@ -70,16 +75,15 @@
                         <span asp-validation-for="Password" class="text-danger"></span>
                   </div>
 
-                  <div class="col-md-6 form-group">
-                        
+                                  <div class="col-md-6 form-group">
+
                       <label asp-for="ConfirmPassword" class="control-label"></label>
                       <div class="input-group">
-                          <input asp-for="ConfirmPassword" class="form-control" placeholder="Re-Enter Password" />                         
+                          <input asp-for="ConfirmPassword"  id="repassword" class="form-control" placeholder="Re-Enter Password" />                         
                           <div class="input-group-append">
-                              <button class="btn btn-outline-secondary password-toggle-btn"
-                                      type="button">
-                                  <i class="fa fa-eye"></i>
-                              </button>
+                              <button class="btn btn-outline-secondary password-toggle-btn" type="button" onclick="togglePasswordVisibility()">
+                     <i class="fa fa-eye"></i>
+                         </button>
                           </div>                         
                       </div>
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
@@ -168,4 +172,4 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.js"></script>
 
              
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+               <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>

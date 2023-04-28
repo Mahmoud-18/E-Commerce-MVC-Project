@@ -23,6 +23,7 @@ namespace ECommerceMVC.Controllers
         public IActionResult Register()
         {
             RegisterViewModel register = new RegisterViewModel();
+
             register.Countries = context.Country.ToList();
             return View(register);
         }
