@@ -23,13 +23,18 @@ public class ProductRepository : IProductRepository
     {
         List<ShoppingProductsViewModel> products = new();
         var allProducts = context.Product.ToList();
+
         foreach (Product pro in allProducts)
+ 
         {
+
             //var DiscId = context.Product.Where(d => d.Id == pro.Id).FirstOrDefault()!.DiscountId;
             //var DiscAmount = context.Discount.Where(d => d.Id == DiscId).FirstOrDefault()!.DiscountPercentage;
             //var price = context.ProductItem.Where(i => i.Id == pro.Id).FirstOrDefault()!.Price;
 
-            products.Add(new ShoppingProductsViewModel { Id = pro.Id, Name = pro.Name, Image = pro.Image });
+            products.Add(new ShoppingProductsViewModel { Id = pro.Id, Name = pro.Name,Image = pro.Image });
+
+            
         }
         return (products);
     }
@@ -38,6 +43,37 @@ public class ProductRepository : IProductRepository
     {
         return context.Product.FirstOrDefault(p => p.Id == id)!;
     }
+
+    //public List<ShoppingProductsViewModel> GetAllProductsWithPriceBeforeDiscount()
+    //{
+    //    var products = new List<ShoppingProductsViewModel>();
+    //    var allProducts = context.Product.ToList();
+
+    //    for (int i = 0; i < allProducts.Count; i++)
+    //    {
+    //        var product = allProducts[i];
+    //        var productid=product.Id;
+    //        ProductItem productitembyid = getId(productid);
+    //        var priceBeforeDisc = productitembyid.Price;
+
+
+    //        products.Add(new ShoppingProductsViewModel
+    //        {
+    //            Id = product.Id,
+    //            Name = product.Name,
+    //            Image = product.Image,
+    //            PriceBeforeDisc = priceBeforeDisc
+    //        });
+    //    }
+
+    //    return products;
+
+    //}
+    //public ProductItem getId(int id)
+    //{
+    //    return context.ProductItem.FirstOrDefault(p => p.ProductId == id)!;
+
+    //}
     public ProductItem GetProductItemById(int id)
     {
         return context.ProductItem.FirstOrDefault(i => i.ProductId == id)!;
