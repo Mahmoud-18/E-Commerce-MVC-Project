@@ -51,4 +51,8 @@ public class ProductRepository : IProductRepository
         ProductItem productItem = GetProductItemById(id);
         return context.ProductImages.Where(i => i.ProductItemId == productItem.Id).Select(i => i.ImageURL).ToList();
     }
+    public Discount GetDiscountById(int id)
+    {
+        return context.Discount.FirstOrDefault(d => d.Id == GetProductById(id).DiscountId)!;
+    }
 }

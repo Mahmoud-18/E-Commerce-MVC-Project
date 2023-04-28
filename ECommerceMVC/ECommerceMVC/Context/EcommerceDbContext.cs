@@ -49,7 +49,7 @@ public class EcommerceDbContext : IdentityDbContext<Customer, IdentityRole<int>,
     public DbSet<ProductItem> ProductItem { get; set; }
     public DbSet<ProductType> ProductType { get; set; }
     public DbSet<ProductTypeAttribute> ProductTypeAttribute { get; set; }
-    public DbSet<ShoppingBag> ShoppingBag { get; set; }
+    public DbSet<ShoppingBagItem> ShoppingBag { get; set; }
     public DbSet<ShoppingBagItem> ShoppingBagItem { get; set; }
 
 }
