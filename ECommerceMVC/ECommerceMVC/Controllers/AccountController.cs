@@ -23,6 +23,8 @@ namespace ECommerceMVC.Controllers
 
         public IActionResult Register()
         {
+            StartupDBInitializer startup = new StartupDBInitializer(context);
+            startup.AddRoles();
             RegisterViewModel register = new RegisterViewModel();
             register.Countries = context.Country.ToList();
             return View(register);
