@@ -1,5 +1,6 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
+using ECommerceMVC.Repository;
 using ECommerceMVC.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,23 +12,25 @@ namespace ECommerceMVC.Controllers
     {
         private readonly UserManager<Customer> userManager;
         private readonly SignInManager<Customer> signInManager;
-        EcommerceDbContext context;
+        IAddressRepository addressRepo;
+        IShoppingBagRepository shopBagRepository;
+        ICountryRepository country;
         public AccountController
             (UserManager<Customer> _userManager,
-            SignInManager<Customer> _signInManager, EcommerceDbContext context)
+            SignInManager<Customer> _signInManager, IAddressRepository _addressRepository, IShoppingBagRepository shopBagRepository, ICountryRepository countryRepository)
         {
             userManager = _userManager;
             signInManager = _signInManager;
-            this.context = context;
+            addressRepo = _addressRepository;
+            this.shopBagRepository = shopBagRepository;
+            country = countryRepository;
         }
 
         public IActionResult Register()
         {
-            StartupDBInitializer startup = new StartupDBInitializer(context);
-            startup.AddRoles();
             RegisterViewModel register = new RegisterViewModel();
 
-            register.Countries = context.Country.ToList();
+            register.Countries =country.GetAll();
             return View(register);
         }
 
@@ -40,6 +43,7 @@ namespace ECommerceMVC.Controllers
             {
                 Customer userModel = new Customer();
                 Address address = new Address();
+                ShoppingBag shoppingBag = new ShoppingBag();
                 userModel.UserName = newUser.UserName;                
                 userModel.PasswordHash = newUser.Password;
                 userModel.Email = newUser.Email;
@@ -61,9 +65,10 @@ namespace ECommerceMVC.Controllers
 
                 if (result.Succeeded)
                 {
+                    shoppingBag.CustomerId = userModel.Id;
                     address.CustomerId = userModel.Id;
-                    context.Address.Add(address);
-                    await context.SaveChangesAsync();
+                    addressRepo.Insert(address);
+                    shopBagRepository.Insert(shoppingBag);
 
                     // add Claims
                     Claim fullnameClaim = new Claim("FullName", $"{userModel.FirstName} {userModel.LastName}");
@@ -91,7 +96,7 @@ namespace ECommerceMVC.Controllers
                 //    }
                 //}
             }
-            newUser.Countries = context.Country.ToList();
+            newUser.Countries = country.GetAll();
             return View(newUser);
         }
         public IActionResult Login()

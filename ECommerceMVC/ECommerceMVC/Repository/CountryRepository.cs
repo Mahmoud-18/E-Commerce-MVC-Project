@@ -1,4 +1,5 @@
 ﻿using ECommerceMVC.Context;
+using ECommerceMVC.Migrations;
 using ECommerceMVC.Models;
 
 namespace ECommerceMVC.Repository
@@ -14,27 +15,30 @@ namespace ECommerceMVC.Repository
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            context.Country.Remove(GetById(id));
+            context.SaveChanges();
         }
 
         public List<Country> GetAll()
         {
-            throw new NotImplementedException();
+            return context.Country.ToList();
         }
 
         public Country GetById(int id)
         {
-            throw new NotImplementedException();
+            return context.Country.FirstOrDefault(i => i.Id == id);
         }
 
         public void Insert(Country newcountry)
         {
-            throw new NotImplementedException();
+            context.Country.Add(newcountry);
+            context.SaveChanges();
         }
 
         public void Update(int id, Country country)
         {
-            throw new NotImplementedException();
+            context.Update(country);
+            context.SaveChanges();
         }
     }
 }

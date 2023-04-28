@@ -14,28 +14,28 @@ public class ShoppingBagRepository : IShoppingBagRepository
 
     public void Delete(int id)
     {
-        ShoppingBagItem shoppingBag = GetById(id);
+        ShoppingBag shoppingBag = GetById(id);
         context.ShoppingBag.Remove(shoppingBag);
         context.SaveChanges();
     }
 
-    public List<ShoppingBagItem> GetAll()
+    public List<ShoppingBag> GetAll()
     {
         return context.ShoppingBag.ToList();
     }
 
-    public ShoppingBagItem GetById(int id)
+    public ShoppingBag GetById(int id)
     {
         return context.ShoppingBag.FirstOrDefault(sh => sh.Id == id)!;
     }
 
-    public void Insert(ShoppingBagItem shoppingBag)
+    public void Insert(ShoppingBag shoppingBag)
     {
-        context.ShoppingBag.Add(shoppingBag);
+        context.Add(shoppingBag);
         context.SaveChanges();
     }
 
-    public void Update(int id, ShoppingBagItem shoppingBag)
+    public void Update(int id, ShoppingBag shoppingBag)
     {
         context.Update(shoppingBag);
         context.SaveChanges();

@@ -7,8 +7,8 @@ namespace ECommerceMVC.Repository
         List<Discount> GetAll();
         List<Discount> GetActiveDiscounts();
         Discount GetById(int id);
-        void Insert(Country newDiscount);
-        void Update(int id, Country discount);
+        void Insert(Discount newDiscount);
+        void Update(int id, Discount discount);
         void Delete(int id);
     }
 }

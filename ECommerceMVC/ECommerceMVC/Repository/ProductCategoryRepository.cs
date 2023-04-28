@@ -1,5 +1,6 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceMVC.Repository
 {
@@ -21,6 +22,10 @@ namespace ECommerceMVC.Repository
         public List<ProductCategory> GetAll()
         {
             return context.ProductCategory.ToList();
+        }
+        public List<ProductCategory> GetByCategoryId(int catid)
+        {
+            return context.ProductCategory.Include("Product").Where(i => i.CategoryId == catid).ToList();
         }
 
         public ProductCategory GetById(int id)

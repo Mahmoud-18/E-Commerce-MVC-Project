@@ -1,5 +1,6 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
+using System.Net;
 
 namespace ECommerceMVC.Repository
 {
@@ -14,32 +15,34 @@ namespace ECommerceMVC.Repository
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            context.Category.Remove(GetById(id));
+            context.SaveChanges();
         }
 
         public List<Category> GetAll()
         {
-            throw new NotImplementedException();
-        }
-
+            return context.Category.ToList();
+        }       
         public Category GetById(int id)
         {
-            throw new NotImplementedException();
+            return context.Category.FirstOrDefault(i => i.Id == id);
+            
         }
-
         public List<Category> GetByParentCategoryId(int id)
         {
-            throw new NotImplementedException();
+            return context.Category.Where(i => i.ParentCategoryId == id).ToList();
         }
 
         public void Insert(Category newCategory)
         {
-            throw new NotImplementedException();
+            context.Category.Add(newCategory);
+            context.SaveChanges();
         }
 
         public void Update(int id, Category category)
         {
-            throw new NotImplementedException();
+            context.Update(category);
+            context.SaveChanges();
         }
     }
 }
