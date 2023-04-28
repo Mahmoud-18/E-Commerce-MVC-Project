@@ -1,5 +1,6 @@
 using ECommerceMVC.Context;
 using ECommerceMVC.Repository;
+using ECommerceMVC.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
 
@@ -32,6 +33,11 @@ namespace ECommerceMVC
 
             // Register
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+            builder.Services.AddScoped<ProductsServices>();
+
+            builder.Services.AddScoped<ProductRepository>();
+
 
             var app = builder.Build();
 
