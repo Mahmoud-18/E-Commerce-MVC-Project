@@ -27,12 +27,7 @@ namespace ECommerceMVC
             );
             builder.Services.AddIdentity<Customer, IdentityRole<int>>(options =>
             {
-                options.Password.RequireLowercase = true;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 8;
-
+               
             })
                 .AddEntityFrameworkStores<EcommerceDbContext>().AddDefaultTokenProviders();
 
@@ -49,6 +44,17 @@ namespace ECommerceMVC
             builder.Services.AddScoped<ProductsServices>();
 
             builder.Services.AddScoped<ProductRepository>();
+
+            builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+            builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<ICountryRepository, CountryRepository>();
+            builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+            builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+            builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+            builder.Services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
+            builder.Services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
 
 
             var app = builder.Build();
