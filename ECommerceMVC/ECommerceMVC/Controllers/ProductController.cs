@@ -23,7 +23,7 @@ public class ProductController : Controller
         }
         if (id == 0)
         {
-            return Redirect("/product/productdetails" + Id);
+            return Redirect("/Product/ProductDetails" + Id);
         }
         else
         {
