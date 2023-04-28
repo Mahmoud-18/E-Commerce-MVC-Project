@@ -62,15 +62,30 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-lg-4 col-6 text-right">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a asp-action="Login" asp-controller="Account" class="dropdown-item" type="button">Sign in</a>
-                            <a asp-action="Register" asp-controller="Account" class="dropdown-item" type="button">Sign up</a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="col-lg-4 col-6 text-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">@User.Identity.Name</button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a asp-action="Index" asp-controller="Account" class="dropdown-item" type="button">Profile</a>
+                                <a asp-action="SignOut" asp-controller="Account" class="dropdown-item" type="button">Sign out</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div class="col-lg-4 col-6 text-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a asp-action="Login" asp-controller="Account" class="dropdown-item" type="button">Sign in</a>
+                                <a asp-action="Register" asp-controller="Account" class="dropdown-item" type="button">Sign up</a>
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
             <div class="container-fluid bg-dark mb-30">
                 <div class="row px-xl-5">
