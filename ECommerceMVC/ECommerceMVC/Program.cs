@@ -1,6 +1,8 @@
 using ECommerceMVC.Context;
+using ECommerceMVC.Models;
 using ECommerceMVC.Repository;
 using ECommerceMVC.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
 
@@ -23,6 +25,16 @@ namespace ECommerceMVC
             builder.Services.AddDbContext<EcommerceDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("remote"))
             );
+            builder.Services.AddIdentity<Customer, IdentityRole<int>>(options =>
+            {
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+
+            })
+                .AddEntityFrameworkStores<EcommerceDbContext>().AddDefaultTokenProviders();
 
             builder.Services.AddSession(options =>
             {
@@ -49,6 +61,10 @@ namespace ECommerceMVC
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

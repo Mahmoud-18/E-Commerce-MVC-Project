@@ -1,9 +1,11 @@
 ﻿using ECommerceMVC.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceMVC.Context;
 
-public class EcommerceDbContext : DbContext
+public class EcommerceDbContext : IdentityDbContext<Customer, IdentityRole<int>,int>
 {
     public EcommerceDbContext() : base()
     {
@@ -22,6 +24,10 @@ public class EcommerceDbContext : DbContext
         base.OnConfiguring(optionsBuilder);
         optionsBuilder.EnableSensitiveDataLogging();
     }
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+    }
 
 
     public DbSet<Complaint> Complaint { get; set; }
@@ -29,8 +35,7 @@ public class EcommerceDbContext : DbContext
     public DbSet<AttributeValues> AttributeValues { get; set; }
     public DbSet<Brand> Brand { get; set; }
     public DbSet<Category> Category { get; set; }
-    public DbSet<Country> Country { get; set; }
-    public DbSet<Customer> Customer { get; set; }
+    public DbSet<Country> Country { get; set; }   
     public DbSet<Discount> Discount { get; set; }
     public DbSet<OrderDetails> OrderDetails { get; set; }
     public DbSet<OrderItems> OrderItems { get; set; }

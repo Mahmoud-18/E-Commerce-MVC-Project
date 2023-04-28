@@ -1,0 +1,174 @@
+﻿    @model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+    SelectList CountriesOptions = new SelectList(Model.Countries, "Id", "Name"); 
+    ViewBag.Genders = new SelectList(Enum.GetValues(typeof(Gender)));
+}
+
+<!-- Breadcrumb Start -->
+    <div class="container-fluid">
+      <div class="row px-xl-5">
+        <div class="col-12">
+          <nav class="breadcrumb bg-light mb-30">
+            <a class="breadcrumb-item text-dark" href="#">My Account</a>
+            <span class="breadcrumb-item active">Sign Up</span>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Customer SignUp Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5"></div>
+        <div class="col-lg-10 mx-auto">
+          <h5 class="section-title position-relative text-uppercase mb-3 text-center">
+            <span class="bg-secondary pr-3">Account Information</span>
+          </h5>
+          <div class="bg-light p-30 mb-8">
+            <form asp-action="Register" asp-controller="Account">
+                <div asp-validation-summary="All" class="text-danger"></div>
+               <div class="row">                                 
+                   <div class="col-md-6 form-group">
+                     <label asp-for="FirstName" class="control-label"></label>                    
+                     <input asp-for="FirstName" class="form-control" placeholder="Your First Name" />
+                     <span asp-validation-for="FirstName" class="text-danger"></span>                     
+                   </div>
+
+                   <div class="col-md-6 form-group">
+                        <label asp-for="LastName" class="control-label"></label>
+                        <input asp-for="LastName" class="form-control" placeholder="Your Last Name" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+
+                  <div class="col-md-6 form-group">
+                        <label asp-for="UserName" class="control-label"></label>
+                        <input asp-for="UserName" class="form-control" placeholder="username" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                  </div>
+
+
+
+                  <div class="col-md-6 form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" placeholder="example@email.com" />
+                        <span asp-validation-for="Email" class="text-danger"></span>                   
+                  </div>
+
+                  <div class="col-md-6 form-group">                   
+                        <label asp-for="Password" class="control-label"></label>
+                        <div class="input-group">
+                            <input asp-for="Password" class="form-control" placeholder="Enter Password" />
+                            
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary password-toggle-btn"
+                                        type="button">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </div>                          
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                  </div>
+
+                  <div class="col-md-6 form-group">
+                        
+                      <label asp-for="ConfirmPassword" class="control-label"></label>
+                      <div class="input-group">
+                          <input asp-for="ConfirmPassword" class="form-control" placeholder="Re-Enter Password" />                         
+                          <div class="input-group-append">
+                              <button class="btn btn-outline-secondary password-toggle-btn"
+                                      type="button">
+                                  <i class="fa fa-eye"></i>
+                              </button>
+                          </div>                         
+                      </div>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                  </div>
+
+                  <div class="col-md-6 form-group">
+                        
+                        <label asp-for="CountryId" class="control-label"></label>                       
+                        <select class="form-control custom-select" asp-for="CountryId" asp-items="CountriesOptions">                            
+                            <!--List<Country>-->
+                        </select>
+                        <span asp-validation-for="CountryId" class="text-danger"></span>
+                  </div>
+
+                  <div class="col-md-6 form-group">
+                        <label asp-for="City" class="control-label"></label>
+                        <input asp-for="City" class="form-control" placeholder="Mansoura" />
+                        <span asp-validation-for="City" class="text-danger"></span>               
+                  </div>
+
+                 <div class="col-md-6 form-group">
+                        <label asp-for="State" class="control-label"></label>
+                        <input asp-for="State" class="form-control" placeholder="Dakahlia" />
+                        <span asp-validation-for="State" class="text-danger"></span>
+                 </div>
+
+                 <div class="col-md-6 form-group">
+                     <div>
+                        <label asp-for="PhoneNumber" class="control-label"></label>
+                     </div>
+                        <input asp-for="PhoneNumber" id="phone" class="form-control" placeholder="Enter your Phone Number" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>                         
+                 </div>
+
+                  <input type="hidden" name="country_code" id="country_code" />
+
+                 <div class="col-md-6 form-group">                        
+                     <label asp-for="Address" class="control-label"></label>
+                     <input asp-for="Address" class="form-control" placeholder="9-Street block Ab floor no. 5 apartment 56" />
+                     <span asp-validation-for="Address" class="text-danger"></span>                      
+                 </div>
+
+                 <div class="col-md-6 form-group">
+                        <label asp-for="ZipCode" class="control-label"></label>
+                        <input asp-for="ZipCode" class="form-control" placeholder="123" />
+                        <span asp-validation-for="ZipCode" class="text-danger"></span>                 
+                 </div>
+
+                 <div class="col-md-6 form-group">
+                      <label asp-for="DataOfBirth" class="control-label"></label>
+                      <input asp-for="DataOfBirth" class="form-control"/>
+                      <span asp-validation-for="DataOfBirth" class="text-danger"></span>                       
+                 </div>
+
+                 <div class="col-md-6 form-group">
+                        <label asp-for="Gender" class="control-label"></label>
+                        <select class="form-control" asp-for="Gender" asp-items="ViewBag.Genders">                                                     
+                            <!--List<Gender>-->
+                        </select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>                  
+                 </div>
+
+                 <div class="form-group">
+                        <input type="submit" value="Sign Up" class="btn btn-block btn-primary font-weight-bold py-3" />
+                 </div>
+               </div>
+            </form>
+
+           
+
+          </div>
+             
+        </div>
+    </div>      
+    <!-- Customer Sign Up End -->
+
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"
+      ><i class="fa fa-angle-double-up"></i
+    ></a>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.js"></script>            
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
