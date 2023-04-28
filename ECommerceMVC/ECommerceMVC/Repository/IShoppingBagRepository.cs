@@ -4,10 +4,10 @@ namespace ECommerceMVC.Repository
 {
     public interface IShoppingBagRepository
     {
-        List<ShoppingBagItem> GetAll();
-        ShoppingBagItem GetById(int id);
-        void Insert(ShoppingBagItem shoppingBag);
-        void Update(int id, ShoppingBagItem shoppingBag);
+        List<ShoppingBag> GetAll();
+        ShoppingBag GetById(int id);
+        void Insert(ShoppingBag shoppingBag);
+        void Update(int id, ShoppingBag shoppingBag);
         void Delete(int id);
     }
 }

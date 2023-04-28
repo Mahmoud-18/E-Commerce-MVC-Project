@@ -55,6 +55,7 @@ namespace ECommerceMVC
             builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
             builder.Services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
             builder.Services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
+            builder.Services.AddScoped<IShoppingBagRepository, ShoppingBagRepository>();
 
 
             var app = builder.Build();

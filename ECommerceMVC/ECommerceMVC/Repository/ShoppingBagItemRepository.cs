@@ -15,7 +15,7 @@ namespace ECommerceMVC.Repository
         public void Delete(int id)
         {
             ShoppingBagItem shoppingBagItem = GetById(id);
-            context.ShoppingBag.Remove(shoppingBagItem);
+            context.ShoppingBagItem.Remove(shoppingBagItem);
             context.SaveChanges();
         }
 

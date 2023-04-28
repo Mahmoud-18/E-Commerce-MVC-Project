@@ -1,0 +1,26 @@
+﻿@model List<Category>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+ @foreach (Category category in Model)
+ {
+    if (category.ParentCategoryId == null)
+    {
+        <div class="nav-item dropdown dropright">
+
+            <a asp-action="ProductsByCategory" asp-controller="Shop" asp-route-id="@category.Id" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                @category.Name<i class=" fa fa-angle-right float-right mt-1"></i>
+            </a>                
+      
+            <div class="dropdown-menu position-absolute rounded-0 border-0 m-0" id="category-dropdown-menu">
+                 @foreach(Category cat in Model)
+                 {
+                     if (cat.ParentCategoryId == category.Id)
+                     {
+                        <a asp-action="ProductsByCategory" asp-controller="Shop" asp-route-id="@cat.Id"  class="dropdown-item">@cat.Name</a>  
+                     }
+                 }
+            </div>
+        </div>
+    }
+ }
