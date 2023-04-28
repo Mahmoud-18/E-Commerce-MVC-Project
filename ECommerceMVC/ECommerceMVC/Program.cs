@@ -40,6 +40,15 @@ namespace ECommerceMVC
 
             // Register
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<IShoppingBagItemRepository, ShoppingBagItemRepository>();
+            builder.Services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
+            builder.Services.AddScoped<IProductTypeAttributeRepository, ProductTypeAttributeRepository>();
+            builder.Services.AddScoped<IProductItemRepository, ProductItemRepository>();
+            builder.Services.AddScoped<IProductImagesRepository, ProductImagesRepository>();
+            builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+            builder.Services.AddScoped<IProductAttributeValuesRepository, ProductAttributeValuesRepository>();
+            builder.Services.AddScoped<IProductAttributeRepository, ProductAttributeRepository>();
+
 
             builder.Services.AddScoped<ProductsServices>();
 
