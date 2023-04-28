@@ -16,6 +16,7 @@ namespace ECommerceMVC.Repository
         public void Delete(int id)
         {
             context.Brand.Remove(GetById(id));
+            context.SaveChanges();
         }
 
         public List<Brand> GetAll()
@@ -30,7 +31,7 @@ namespace ECommerceMVC.Repository
 
         public void Insert(Brand newBrand)
         {
-            context.Add(newBrand);
+            context.Brand.Add(newBrand);
             context.SaveChanges();
         }
 
