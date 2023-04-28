@@ -15,5 +15,5 @@ public class ShoppingBagItem
 
     //Navigation Properties
     public ProductItem? ProductItem { get; set; }
-    public ShoppingBag? ShoppingBag { get; set; }
+    public ShoppingBagItem? ShoppingBag { get; set; }
 }
