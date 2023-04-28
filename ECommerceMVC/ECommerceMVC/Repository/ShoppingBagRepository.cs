@@ -31,7 +31,7 @@ public class ShoppingBagRepository : IShoppingBagRepository
 
     public void Insert(ShoppingBag shoppingBag)
     {
-        context.Add(shoppingBag);
+        context.ShoppingBag.Add(shoppingBag);
         context.SaveChanges();
     }
 

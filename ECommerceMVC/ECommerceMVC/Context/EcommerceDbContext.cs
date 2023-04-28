@@ -55,7 +55,7 @@ public class EcommerceDbContext : IdentityDbContext<Customer, IdentityRole<int>,
             }
         };
 
-        builder.Entity<IdentityRole<int>>().HasData(Roles);        
+       //builder.Entity<IdentityRole<int>>().HasData(Roles);        
     }
 
     #region Tables
