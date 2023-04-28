@@ -1,10 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using ECommerceMVC.Repository;
 @using System.Security.Claims;
+@using ECommerceMVC.Services;
 @{
     ViewData["Title"] = "_Layout";
+
 }
 @inject ICategoryRepository Category;
+@inject ProductsServices products;
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,58 +51,45 @@
 </head>
 <body>
     <header>
-        <div class="container-fluid">
+   <div class="container-fluid">
+      <div class="row align-items-center bg-light py-3 px-xl-3 d-none d-lg-flex">
 
-                        <div class="d-inline-flex align-items-center d-block d-lg-none">
-                            <a href="" class="btn px-0 ml-2">
-                                <i class="fas fa-heart text-dark"></i>
-                                <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
-                            </a>
-                            <a href="" class="btn px-0 ml-2">
-                                <i class="fas fa-shopping-cart text-dark"></i>
-                                <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
-                            </a>
-
-            <div class="row align-items-center bg-light py-3 px-xl-3 d-none d-lg-flex">
-
-                <div class="col-lg-4">
-                    <a href="" class="text-decoration-none">
-                        <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
-                        <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
-                    </a>
-                </div>
-
-                        </div>
+        <div class="col-lg-4">
+            <a href="" class="text-decoration-none">
+                <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
+                <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
+            </a>
+        </div>
+        <div class="col-lg-4 col-6 text-left">
+            <partial model="@products.GetAllProducts()" name="_Searchpartialview"></partial>
+        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="col-lg-4 col-6 text-right">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">@User.Identity.Name</button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a asp-action="Index" asp-controller="Account" class="dropdown-item" type="button">Profile</a>
+                        <a asp-action="SignOut" asp-controller="Account" class="dropdown-item" type="button">Sign out</a>
                     </div>
                 </div>
-
-
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <div class="col-lg-4 col-6 text-right">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">@User.Identity.Name</button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a asp-action="Index" asp-controller="Account" class="dropdown-item" type="button">Profile</a>
-                                <a asp-action="SignOut" asp-controller="Account" class="dropdown-item" type="button">Sign out</a>
-                            </div>
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <div class="col-lg-4 col-6 text-right">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a asp-action="Login" asp-controller="Account" class="dropdown-item" type="button">Sign in</a>
-                                <a asp-action="Register" asp-controller="Account" class="dropdown-item" type="button">Sign up</a>
-                            </div>
-                        </div>
-                    </div>
-                }
             </div>
+        }
+        else
+        {
+            <div class="col-lg-4 col-6 text-right">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a asp-action="Login" asp-controller="Account" class="dropdown-item" type="button">Sign in</a>
+                        <a asp-action="Register" asp-controller="Account" class="dropdown-item" type="button">Sign up</a>
+                    </div>
+                </div>
+            </div>
+        }
 
+        
+        </div>
             <!--HERE ARE MY DROPDOWN CATEGORIES-->
             <div class="container-fluid bg-dark mb-30">
                 <div class="row px-xl-5">
@@ -175,7 +165,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
     </header>
     <div class="container-fluid pb-10">
         <main role="main" >

@@ -8,17 +8,7 @@
 <div class=" row justify-content-md-center">
     
     <div class="col-md-6"  text-center">
-<form>
-            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for products..">
 
-            <ul id="myUL">
-                @foreach (ShoppingProductsViewModel product in Model)
-                {
-                    <li id="lid"><a href="/product/ProductDetails/@product.Id"><img src="@product.Image" width="50" height="50" />  @product.Name</a></li>
-                }
-            </ul>
-         
-</form>
 
 
 </div>
@@ -192,33 +182,3 @@
 
         </div>
     </div>
-
-@section Scripts{
-    <script>
-        function myFunction() {
-            var input, filter, ul, li, a, i, txtValue;
-            input = document.getElementById('myInput');
-            filter = input.value.toUpperCase();
-            ul = document.getElementById("myUL");
-            li = ul.getElementsByTagName('li');
-         
-           
-            if (filter.length >= 1) {
-                ul.style.display = "block";
-            
-            for (i = 0; i < li.length; i++) {
-                a = li[i].getElementsByTagName("a")[0];
-                txtValue = a.textContent || a.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    li[i].style.display = "";
-                } else {
-                    li[i].style.display = "none";
-                }
-            }}else{
-                ul.style.display = "none";
-
-            }
-          
-        }
-    </script>
-}
