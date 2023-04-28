@@ -19,8 +19,6 @@ public class ProductRepository : IProductRepository
     {
         return context.Product.ToList();
     }
-
-
     public List<ShoppingProductsViewModel> GetAllProducts()
     {
         List<ShoppingProductsViewModel> products = new();

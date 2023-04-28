@@ -23,6 +23,7 @@ public class EcommerceDbContext : IdentityDbContext<Customer, IdentityRole<int>,
         //base.OnConfiguring(optionsBuilder);
         optionsBuilder.UseSqlServer("Data Source=SQL8003.site4now.net;Initial Catalog=db_a9837b_ecommercedb;User Id=db_a9837b_ecommercedb_admin;Password=NGMM123456");
         base.OnConfiguring(optionsBuilder);
+        optionsBuilder.EnableSensitiveDataLogging();
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
