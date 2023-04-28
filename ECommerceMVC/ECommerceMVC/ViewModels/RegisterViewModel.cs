@@ -71,7 +71,7 @@ public class RegisterViewModel
     //[DisplayName("Country Dial Code")]
     //[Required(ErrorMessage = "Country dial code is required")]
     //[RegularExpression(@"^[0-9]+$", ErrorMessage = "Country dial code can only contain numbers")]
-    //public string CountryDialCode { get; set; }
+    //public string country_code { get; set; }
 
     [DisplayName("Data of Birth")]
     [Required(ErrorMessage = "Date of birth is required")]

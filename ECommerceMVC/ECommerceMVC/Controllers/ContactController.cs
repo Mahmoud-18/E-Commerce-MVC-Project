@@ -24,8 +24,7 @@ namespace ECommerceMVC.Controllers
         public IActionResult Index()
         {
 
-            //Testtobedeleted testtobedeleted = new Testtobedeleted();
-            //testtobedeleted.Seeding();
+            
             return View();
         }
 
