@@ -32,11 +32,13 @@ public class Customer : IdentityUser<int>
     public ICollection<Address>? Addresses { get; set; } = new List<Address>();
     public ICollection<OrderDetails>? Orders { get; set; } = new List<OrderDetails>();
     public ICollection<Complaint>? Complaints { get; set; } = new List<Complaint>();
-    public ShoppingBag? ShoppingBag { get; set; }
+    public ShoppingBagItem? ShoppingBag { get; set; }
 
 }
 
 public enum Gender
 {
-    Male,Female
+    Male,
+    Female,
+    PreferNottoSpecify
 }

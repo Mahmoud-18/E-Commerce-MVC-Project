@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity;
+@using ECommerceMVC.Repository;
+@using System.Security.Claims;
+@{
+    ViewData["Title"] = "_Layout";
+}
+@inject ICategoryRepository Category;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -7,6 +15,17 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ECommerceMVC.styles.css" asp-append-version="true" />
+
+
+
+
+
+    <!-- International phone Number -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
+    />
+
 
     <!-- Favicon -->
     <link href="/img/favicon.ico" rel="icon">
@@ -24,7 +43,7 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
     <link href="/css2/stylesheet.css" rel="stylesheet" >
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
 
 </head>
 <body>
@@ -40,29 +59,48 @@
                                 <i class="fas fa-shopping-cart text-dark"></i>
                                 <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
                             </a>
+
+            <div class="row align-items-center bg-light py-3 px-xl-3 d-none d-lg-flex">
+
+                <div class="col-lg-4">
+                    <a href="" class="text-decoration-none">
+                        <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
+                        <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
+                    </a>
+                </div>
+
                         </div>
                     </div>
                 </div>
-                <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
-                    <div class="col-lg-11">
-                        <a href="" class="text-decoration-none">
-                            <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
-                            <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
-                        </a>
+
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="col-lg-4 col-6 text-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">@User.Identity.Name</button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a asp-action="Index" asp-controller="Account" class="dropdown-item" type="button">Profile</a>
+                                <a asp-action="SignOut" asp-controller="Account" class="dropdown-item" type="button">Sign out</a>
+                            </div>
+                        </div>
                     </div>
-   
-            <div class="col-lg-1 col-4 text-left">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <button class="dropdown-item" type="button">Sign in</button>
-                        <button class="dropdown-item" type="button">Sign up</button>
+                }
+                else
+                {
+                    <div class="col-lg-4 col-6 text-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a asp-action="Login" asp-controller="Account" class="dropdown-item" type="button">Sign in</a>
+                                <a asp-action="Register" asp-controller="Account" class="dropdown-item" type="button">Sign up</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
 
-                </div>
-
+            <!--HERE ARE MY DROPDOWN CATEGORIES-->
             <div class="container-fluid bg-dark mb-30">
                 <div class="row px-xl-5">
                     <div class="col-lg-3 d-none d-lg-block">
@@ -72,25 +110,25 @@
                         </a>
                         <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
                             <div class="navbar-nav w-100">
-                                <div class="nav-item dropdown dropright">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Women <i class="fa fa-angle-right float-right mt-1"></i></a>
-                                    <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
-                                        <a href="" class="dropdown-item">Dresses</a>
-                                        <a href="" class="dropdown-item">Shirts</a>
-                                        <a href="" class="dropdown-item">T-shirts</a>
-                                        <a href="" class="dropdown-item">Jeans</a>
+                                @*<div class="nav-item dropdown dropright">
+                                    <a href="#" onclick="GetFemaleProducts(event)" class="nav-link dropdown-toggle" data-toggle="dropdown" data-category="Women">Women <i class="fa fa-angle-right float-right mt-1"></i></a>
+                                    <div class="dropdown-menu position-absolute rounded-0 border-0 m-0" id="category-dropdown-menu">
+                                        <a href="" onclick="GetFemaleDress(event)" class="dropdown-item">Dresses</a>
+                                        <a href="" onclick="GetFemaleShirts(event)" class="dropdown-item">Shirts</a>
+                                        <a href="" onclick="GetFemaleTshirts(event)" class="dropdown-item">T-shirts</a>
+                                        <a href="" onclick="GetFemaleJeans(event)" class="dropdown-item">Jeans</a>
                                         <a href="" class="dropdown-item">SweatShirts</a>
                                         <a href="" class="dropdown-item">Bags</a>
                                     </div>
                                 </div>
                                 <div class="nav-item dropdown dropright">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Men <i class="fa fa-angle-right float-right mt-1"></i></a>
-                                    <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
+                                    <a href="#" onclick="GetMaleProducts(event)" class="nav-link dropdown-toggle" data-toggle="dropdown" data-category="Men">Men <i class="fa fa-angle-right float-right mt-1"></i></a>
+                                    <div class="dropdown-menu position-absolute rounded-0 border-0 m-0" id="category-dropdown-menu">
 
-                                        <a href="" class="dropdown-item">Shirts</a>
-                                        <a href="" class="dropdown-item">T-shirts</a>
-                                        <a href="" class="dropdown-item">Jeans</a>
-                                        <a href="" class="dropdown-item">SweatShirts</a>
+                                        <a href="" onclick="GetMaleShirts(event)" class="dropdown-item">Shirts</a>
+                                        <a href="" onclick="GetMaleTshirts(event)" class="dropdown-item">T-shirts</a>
+                                        <a href="" onclick="GetMaleJeans(event)" class="dropdown-item">Jeans</a>
+                                        <a href="" onclick="GetMaleSweatshirt(event)" class="dropdown-item">SweatShirts</a>
                                         <a href="" class="dropdown-item">Bags</a>
                                     </div>
                                 </div>
@@ -104,7 +142,8 @@
                                         <a href="" class="dropdown-item">SweatShirts</a>
 
                                     </div>
-                                </div>
+                                </div>*@
+                                <partial name="_CategoryNavPartial" model="@Category.GetAll()"></partial>
                             </div>
                         </nav>
                     </div>
@@ -120,9 +159,9 @@
                             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                                 <div class="navbar-nav mr-auto py-0">
                                     <a href="index.html" class="nav-item nav-link active">Home</a>
-                                    <a href="/Shop/Index" class="nav-item nav-link">Shop</a>
+                                    <a asp-action="ShowAllProducts" asp-controller="Shop" class="nav-item nav-link">Shop</a>
 
-                                    <a href="contact.html" class="nav-item nav-link">Contact</a>
+                                    <a href="@Url.Action("Index", "Contact")" class="nav-item nav-link">ContactUs</a>
                                 </div>
                                 <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
 
@@ -219,6 +258,9 @@
         <!-- Footer End -->
         
     </footer>
+    <!-- JavaScript Libraries -->
+    
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -227,13 +269,21 @@
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
     <!-- Contact Javascript File -->
     <script src="/mail/jqBootstrapValidation.min.js"></script>
     <script src="/mail/contact.js"></script>
 
     <!-- Template Javascript -->
     <script src="/js/main.js"></script>
+   
+     <!-- Register Javascript -->
+    <script src="/js/SignUp.js"></script>
     
+    <!-- International phone Javascript -->
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

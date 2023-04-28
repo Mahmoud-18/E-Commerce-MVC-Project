@@ -99,6 +99,19 @@
         }
         button.parent().parent().find('input').val(newVal);
     });
+
+    $('#drs').on('click', function GetFemaleDress() {
+        
+        if (button.hasClass('btn-plus')) {
+            Console.log(Ok);
+            event.preventDefault();
+            $.ajax({
+                url: "/Shop/GetFemaleDress", success: function (result) {
+                    $("#div1").html(result);
+                }
+            });
+        }
+    });
     
 })(jQuery);
 

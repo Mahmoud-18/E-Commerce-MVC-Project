@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace ECommerceMVC.Context;
 
@@ -22,9 +23,42 @@ public class EcommerceDbContext : IdentityDbContext<Customer, IdentityRole<int>,
         //base.OnConfiguring(optionsBuilder);
         optionsBuilder.UseSqlServer("Data Source=SQL8003.site4now.net;Initial Catalog=db_a9837b_ecommercedb;User Id=db_a9837b_ecommercedb_admin;Password=NGMM123456");
         base.OnConfiguring(optionsBuilder);
+        optionsBuilder.EnableSensitiveDataLogging();
+    }
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        List<IdentityRole<int>> Roles = new List<IdentityRole<int>>()
+        {
+            new IdentityRole<int>
+            {
+                Id = 1,
+                Name = "Admin",
+                NormalizedName = "Admin".ToUpper(),
+                ConcurrencyStamp = Guid.NewGuid().ToString()
+            },
+
+            new IdentityRole<int>
+            {
+                Id = 2,
+                Name = "Member",
+                NormalizedName = "Member".ToUpper(),
+                ConcurrencyStamp = Guid.NewGuid().ToString()
+            },
+            new IdentityRole<int>
+            {
+                Id = 3,
+                Name = "Vendor",
+                NormalizedName = "Vendor".ToUpper(),
+                ConcurrencyStamp = Guid.NewGuid().ToString()
+            }
+        };
+
+        builder.Entity<IdentityRole<int>>().HasData(Roles);        
     }
 
-
+    #region Tables
     public DbSet<Complaint> Complaint { get; set; }
     public DbSet<Address> Address { get; set; }
     public DbSet<AttributeValues> AttributeValues { get; set; }
@@ -47,4 +81,5 @@ public class EcommerceDbContext : IdentityDbContext<Customer, IdentityRole<int>,
     public DbSet<ShoppingBag> ShoppingBag { get; set; }
     public DbSet<ShoppingBagItem> ShoppingBagItem { get; set; }
 
+    #endregion
 }
