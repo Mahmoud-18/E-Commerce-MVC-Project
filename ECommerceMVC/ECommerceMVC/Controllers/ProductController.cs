@@ -23,7 +23,7 @@ public class ProductController : Controller
         }
         if (id == 0)
         {
-            return Redirect("http://localhost:5136/product/productdetails" + Id);
+            return Redirect("/product/productdetails" + Id);
         }
         else
         {
