@@ -41,6 +41,7 @@ namespace ECommerceMVC.Controllers
         {
             return View();
         }
+
         #region Customer(Users) Controllers
         public IActionResult UsersIndex() 
         {
@@ -219,6 +220,18 @@ namespace ECommerceMVC.Controllers
         }
 
         #endregion
+
+        #region Roles Controllers
+
+        public IActionResult RolesIndex()
+        {
+            var Roles = roleManager.Roles.ToList();
+            return View(Roles);
+        }
+
+
+        #endregion
+
 
     }
 }

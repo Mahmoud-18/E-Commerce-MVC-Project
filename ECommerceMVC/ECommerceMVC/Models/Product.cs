@@ -8,6 +8,7 @@ public class Product
     public string Name { get; set; }
     public string? Description { get; set; }
     public string Image { get; set; }
+    public decimal Price { get; set; } = 0;
     public DateTime CreatedAtUtc { get; set;}
     public DateTime? UpdatedAtUtc { get;set;}
     public DateTime? DeletedAtUtc { get; set; }
