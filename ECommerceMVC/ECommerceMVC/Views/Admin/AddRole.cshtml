@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model IdentityRole<int>
+
+@{    
+    ViewData["Title"] = "AddRole";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";   
+}
+<!-- Breadcrumb Start -->
+<nav class="breadcrumb bg-light mb-30 p-3">
+    <a class="breadcrumb-item text-dark" asp-action="Index">Admin</a>
+    <span class="breadcrumb-item active">Roles/Add</span>
+</nav>
+<!-- Breadcrumb End -->
+<hr />
+<div class="container-fluid">
+    <a asp-action="RolesIndex" asp-controller="Admin" class="btn btn-danger btn-block text-center my-3" style="width:180px">Back</a>
+    <div class="col-lg-10 mx-auto border border-1 p-2 rounded-3 bg-gray-100">
+        <h5 class="section-title position-relative text-uppercase mt-2 my-4 text-center">
+            <span class="pr-3">New Role</span>
+        </h5>
+        <form asp-action="AddRole" asp-controller="Admin">
+            <div class="row">
+                <div class=" form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Role Name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div> 
+                <div class=" form-group mt-3 col-md-6 mx-auto text-center">
+                    <input type="submit" value="Add" class="btn btn-success py-3" style=" width:180px" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

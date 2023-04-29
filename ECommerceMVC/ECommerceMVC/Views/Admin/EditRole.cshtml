@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model IdentityRole<int>
+
+@{
+    ViewData["Title"] = "AddRole";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<!-- Breadcrumb Start -->
+<nav class="breadcrumb bg-light mb-30 p-3">
+    <a class="breadcrumb-item text-dark style="text-decoration:none" asp-action="Index">Admin</a>
+    <span class="breadcrumb-item active">Roles/Edit</span>
+</nav>
+<!-- Breadcrumb End -->
+
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditRole">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-danger" asp-action="RolesIndex">Back to List</a>
+</div>
