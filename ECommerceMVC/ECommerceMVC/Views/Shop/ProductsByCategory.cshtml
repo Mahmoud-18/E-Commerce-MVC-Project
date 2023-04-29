@@ -1,6 +1,6 @@
 ﻿@model List<ShoppingProductsViewModel>
 @{
-    ViewData["Title"] = "ShowAllProducts";
+    ViewData["Title"] = "PRoductsByCategory";
 }
 <!-- Breadcrumb Start -->
     <div class="container-fluid">
@@ -185,7 +185,15 @@
                                 
                                     <a class="h6 text-decoration-none text-truncate" href="">@product.Name</a>
                                     <div class="d-flex align-items-center justify-content-center mt-2">
-                                        <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                                        @{
+                                        if(product.PriceAfterDisc == 0)
+                                        {
+                                            <h5>@product.PriceBeforeDisc</h5><h6 class="text-muted ml-2"></h6>
+                                        }else
+                                        {
+                                            <h5>@product.PriceAfterDisc</h5><h6 class="text-muted ml-2"><del>@product.PriceBeforeDisc</del></h6>                        
+                                        }
+                                    }
                                     </div>
                                     <div class="d-flex align-items-center justify-content-center mb-1">
                                         <small class="fa fa-star text-primary mr-1"></small>

@@ -167,9 +167,10 @@
                             </div>
                         </div>
                     </div>
+              
                 @foreach(ShoppingProductsViewModel product in Model)
-                {     
-                    <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                {
+                    <div class="col-lg-4 col-md-6 col-sm-6 pb-1 paginated-list">
                             <div class="product-item bg-light mb-4">
                                 <div class="product-img position-relative overflow-hidden">                    
                                     <img class="img-fluid w-100" src="@product.Image" alt="">
@@ -184,7 +185,15 @@
                                 
                                     <a class="h6 text-decoration-none text-truncate" href="">@product.Name</a>
                                     <div class="d-flex align-items-center justify-content-center mt-2">
-                                        <h5>$123.00</h5><h6 class="text-muted ml-2"><del>$123.00</del></h6>
+                                    @{
+                                        if(product.PriceAfterDisc == 0)
+                                        {
+                                            <h5>@product.PriceBeforeDisc</h5><h6 class="text-muted ml-2"></h6>
+                                        }else
+                                        {
+                                            <h5>@product.PriceAfterDisc</h5><h6 class="text-muted ml-2"><del>@product.PriceBeforeDisc</del></h6>                        
+                                        }
+                                    }
                                     </div>
                                     <div class="d-flex align-items-center justify-content-center mb-1">
                                         <small class="fa fa-star text-primary mr-1"></small>
@@ -197,13 +206,14 @@
                                 </div>
                             </div>
                     </div>
+                  
                 }
+                <div class="col-12 justify-content-center">
 
-                    <div class="col-12">
-                        <nav>
-                          <ul class="pagination justify-content-center">
-                            <li class="page-item disabled"><a class="page-link" href="#">Previous</span></a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <nav class="pagination-container">                                     
+                         <ul class="pagination justify-content-center">
+                           <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item active" id="prev-button"><a class="page-link" href="#">1</a></li>
                             <li class="page-item"><a class="page-link" href="#">2</a></li>
                             <li class="page-item"><a class="page-link" href="#">3</a></li>
                             <li class="page-item"><a class="page-link" href="#">Next</a></li>
@@ -221,57 +231,33 @@
     <!-- Footer End -->
 <!-- Include jQuery from a CDN -->
 @*@section Scripts {
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script>
-        //AJAX Call for Female Stuff
-        function GetFemaleProducts() {
-            console.log("Ok");
-            event.preventDefault();
-            $.ajax({
-                url: "/Shop/GetFemaleProducts", success: function (result) {
-                    $("#container").empty();
-                    $("#container").html(result);
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        for (let checkbox of checkboxes) {
+            checkbox.addEventListener('change', function () {
+                if (this.checked) {
+                    const val = this.value;
+                    // Do something based on the selected color
+                    switch (val) {
+                        case 'black':
+                            // Do something for black
+                            break;
+                        case 'white':
+                            // Do something for white
+                            break;
+                        case 'red':
+                            // Do something for red
+                            break;
+                        case 'blue':
+                            // Do something for blue
+                            break;
+                        case 'green':
+                            // Do something for green
+                            break;
+                    }
                 }
             });
         }
-        function GetFemaleDress() {
-            console.log("Ok");
-            event.preventDefault();
-            $.ajax({
-                url: "/Shop/GetFemaleDress", success: function (result) {
-                $("#container").empty();
-                $("#container").html(result);
-                }
-            });
-        }
-        function GetFemaleShirts() {
-            console.log("Ok");
-            event.preventDefault();
-            $.ajax({
-                url: "/Shop/GetFemaleShirts", success: function (result) {
-                $("#container").empty();
-                $("#container").html(result);
-                }
-            });
-        }
-        function GetFemaleTshirts() {
-            console.log("Ok");
-            event.preventDefault();
-            $.ajax({
-                url: "/Shop/GetFemaleTshirts", success: function (result) {
-                $("#container").empty();
-                $("#container").html(result);
-                }
-            });
-        }
-        function GetFemaleJeans() {
-            console.log("Ok");
-            event.preventDefault();
-            $.ajax({
-                url: "/Shop/GetFemaleJeans", success: function (result) {
-                    $("#container").empty();
-                    $("#container").html(result);
-                }
-            });
-        }
-        *@
+
+    </script>
+}*@
