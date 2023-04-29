@@ -2,12 +2,14 @@
 using ECommerceMVC.Models;
 using ECommerceMVC.Repository;
 using ECommerceMVC.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.Metrics;
 
 namespace ECommerceMVC.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class BrandController : Controller
     {
         IBrandRepository _brands;
@@ -79,8 +81,6 @@ namespace ECommerceMVC.Controllers
                 return View("AddBrand",newwBrand);
             }
         }
-
-
         public IActionResult Delete(int id)
         {
            
