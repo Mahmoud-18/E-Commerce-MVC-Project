@@ -82,6 +82,7 @@ public class EcommerceDbContext : IdentityDbContext<Customer, IdentityRole<int>,
     public DbSet<ShoppingBag> ShoppingBag { get; set; }
     public DbSet<ShoppingBagItem> ShoppingBagItem { get; set; }
     public DbSet<ECommerceMVC.ViewModels.RegisterViewModel> RegisterViewModel { get; set; } = default!;
+    public DbSet<ECommerceMVC.ViewModels.EditUserViewModel> EditUserViewModel { get; set; } = default!;
 
     #endregion
 }

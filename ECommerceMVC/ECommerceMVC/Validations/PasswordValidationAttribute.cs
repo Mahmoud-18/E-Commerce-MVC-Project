@@ -18,11 +18,11 @@ namespace ECommerceMVC.Validations
             var hasUppercaseLetter = password.Any(char.IsUpper);
             var hasNumber = password.Any(char.IsDigit);
             var hasSpecialCharacter = Regex.IsMatch(password, "[^a-zA-Z0-9]");
-            if (hasLowercaseLetter && hasUppercaseLetter && hasNumber && hasSpecialCharacter)
+            if (hasLowercaseLetter && hasUppercaseLetter && hasNumber)
             {
                 return ValidationResult.Success;
             }
-            return new ValidationResult("Password must contain at least one lowercase letter, one uppercase letter, one number, and no special characters.");
+            return new ValidationResult("Password must contain at least one lowercase letter, one uppercase letter and one number.");
 
         }
     }

@@ -16,15 +16,17 @@ namespace ECommerceMVC.Controllers
     {
         private readonly UserManager<Customer> userManager;
         private readonly SignInManager<Customer> signInManager;
-        private readonly RoleManager<IdentityRole<int>> roleManager;        
+        private readonly RoleManager<IdentityRole<int>> roleManager;   
         IAddressRepository addressRepo;
         IShoppingBagRepository shopBagRepository;
         ICountryRepository country;
+        ICustomerRepository customer;
 
         public AdminController
             (UserManager<Customer> _userManager,SignInManager<Customer> _signInManager,
             IAddressRepository _addressRepository, IShoppingBagRepository shopBagRepository,
-            ICountryRepository countryRepository, RoleManager<IdentityRole<int>> _roleManager)
+            ICountryRepository countryRepository, RoleManager<IdentityRole<int>> _roleManager,
+            ICustomerRepository _customer)
         {
             userManager = _userManager;
             signInManager = _signInManager;
@@ -32,6 +34,7 @@ namespace ECommerceMVC.Controllers
             this.shopBagRepository = shopBagRepository;
             country = countryRepository;
             roleManager = _roleManager;
+            this.customer = _customer;
         }
 
         public IActionResult Index()
@@ -39,12 +42,12 @@ namespace ECommerceMVC.Controllers
             return View();
         }
         #region Customer(Users) Controllers
-        public IActionResult CustomerIndex() 
+        public IActionResult UsersIndex() 
         {
             var Users = userManager.Users.ToList();            
             return View("UsersPage", Users);
         }
-        public IActionResult AddCustomer()
+        public IActionResult AddUser()
         {
             RegisterViewModel register = new RegisterViewModel();           
             register.Countries = country.GetAll();
@@ -53,7 +56,7 @@ namespace ECommerceMVC.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddCustomer(RegisterViewModel newUser)
+        public async Task<IActionResult> AddUser(RegisterViewModel newUser)
         {
             List<Claim> claims = new List<Claim>();
             if (ModelState.IsValid)
@@ -104,10 +107,8 @@ namespace ECommerceMVC.Controllers
                     if (userModel.IsAdmin == true)
                     {
                        await userManager.AddToRoleAsync(userModel, "Admin");
-                    }
-                    //------------------Create Cookie Authorization
-                    await signInManager.SignInAsync(userModel, false);//create cookie //create cookie client
-                    return RedirectToAction("CustomerIndex", "Admin");
+                    }                                    
+                    return RedirectToAction("UsersIndex", "Admin");
                 }
                 //else
                 //{
@@ -121,6 +122,87 @@ namespace ECommerceMVC.Controllers
             newUser.Roles = roleManager.Roles.ToList();
             return View(newUser);
         }
+
+        public IActionResult UserDetails(int id)
+        {
+            var user = customer.GetById(id);
+            return View(user);
+        }
+        public IActionResult EditUser(int id)
+        {
+            var user = customer.GetById(id);
+            EditUserViewModel editUser = new EditUserViewModel();
+            editUser.UserId = id;
+            editUser.PhoneNumber = user.PhoneNumber;
+            editUser.UserName = user.UserName;
+            editUser.FirstName = user.FirstName;
+            editUser.LastName = user.LastName;
+            editUser.Gender = user.Gender;
+            editUser.CountryId= user.CountryId;
+            editUser.Countries= country.GetAll();
+            editUser.Email = user.Email;
+            editUser.IsActive = user.IsActive;
+            editUser.IsAdmin = user.IsAdmin;
+            editUser.IsDeleted = user.IsDeleted;
+            editUser.DataOfBirth = user.DataOfBirth;
+            editUser.Roles= roleManager.Roles.ToList();
+
+            return View(editUser);
+        }
+       
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditUser([FromRoute] int id ,Customer user)
+        {
+            if (ModelState.IsValid)
+            {
+                if (user.IsAdmin == true)
+                {
+                    if (await userManager.IsInRoleAsync(user, "Admin") == false)
+                    { 
+                        await userManager.AddToRoleAsync(user, "Admin");
+                    }
+                }
+                else
+                {
+                    if  (await userManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        await userManager.RemoveFromRoleAsync(user, "Admin");
+                    }
+                }
+                if (user.IsDeleted == true)
+                {
+                    user.DeleteDate = DateTime.UtcNow;
+                }
+                else 
+                {
+                    user.DeleteDate = null;
+                }
+                await userManager.UpdateAsync(user);
+                return RedirectToAction("UsersIndex");
+            }
+            else
+            {
+                EditUserViewModel editUser = new EditUserViewModel();
+                editUser.UserId = id;
+                editUser.PhoneNumber = user.PhoneNumber;
+                editUser.UserName = user.UserName;
+                editUser.FirstName = user.FirstName;
+                editUser.LastName = user.LastName;
+                editUser.Gender = user.Gender;
+                editUser.CountryId = user.CountryId;
+                editUser.Countries = country.GetAll();
+                editUser.Email = user.Email;
+                editUser.IsActive = user.IsActive;
+                editUser.IsAdmin = user.IsAdmin;
+                editUser.IsDeleted = user.IsDeleted;
+                editUser.DataOfBirth = user.DataOfBirth;
+                editUser.Roles = roleManager.Roles.ToList();
+                return View(editUser);
+            }
+        }
+
+        
         #endregion
 
     }

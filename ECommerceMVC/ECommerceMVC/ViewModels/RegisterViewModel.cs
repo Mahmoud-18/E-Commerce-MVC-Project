@@ -76,13 +76,15 @@ namespace ECommerceMVC.ViewModels
         [DisplayName("Data of Birth")]
         [Required(ErrorMessage = "Date of birth is required")]
         [DataType(DataType.Date)]
-        public DateTime DataOfBirth { get; set; }
+        public DateTime DataOfBirth { get; set; } = new DateTime(2000, 1, 1);
 
         [DisplayName("Gender")]
         [Required(ErrorMessage = "Gender is required")]
         public Gender Gender { get; set; }
 
+        [DisplayName("Admin User")]
         public bool IsAdmin { get; set; } = false;
+        public bool IsActive { get; set; } = true;
         public IList<Country>? Countries { get; set; }
 
         public IList<IdentityRole<int>>? Roles { get; set; }

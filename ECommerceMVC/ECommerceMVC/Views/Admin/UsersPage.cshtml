@@ -8,7 +8,7 @@
 <h1>Users</h1>
 
 <p>
-    <a class="btn btn-btn btn-primary my-3" asp-action="AddCustomer">Add New User</a>
+    <a class="btn btn-btn btn-primary my-3" asp-action="AddUser">Add New User</a>
 </p>
 <table id="table" class="table table-striped" style="width:100%">
     <thead>
@@ -62,8 +62,8 @@
                 @Html.DisplayFor(modelItem => item.IsAdmin)
             </td>                   
             <td>
-                   <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning mx-2">Edit</a> 
-                  <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info mx-2">Details</a> 
+                    <a asp-action="EditUser" asp-route-id="@item.Id" class="btn btn-warning mx-2">Edit</a>
+                    <a asp-action="UserDetails" asp-route-id="@item.Id" class="btn btn-info mx-2">Details</a> 
                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
             </td>
         </tr>

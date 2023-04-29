@@ -119,9 +119,16 @@ namespace ECommerceMVC.Controllers
                     bool found = await userManager.CheckPasswordAsync(userModel, userVM.Password);
                     if (found)
                     {
-                        //cookie
-                        await signInManager.SignInAsync(userModel, userVM.RememberMe);
-                        return RedirectToAction("Index", "Home");
+                        if (userModel.IsActive)
+                        {
+                            //cookie
+                            await signInManager.SignInAsync(userModel, userVM.RememberMe);
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("key", "Account is Deactivated");
+                        }
                     }
                 }
                 ModelState.AddModelError("", "incorrect username or password");
