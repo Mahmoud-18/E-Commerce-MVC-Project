@@ -68,22 +68,22 @@ namespace ECommerceMVC.Controllers
                 {
                     shoppingBag.CustomerId = userModel.Id;
                     address.CustomerId = userModel.Id;
+                    userModel.ShippingAddressId = address.Id;
                     addressRepo.Insert(address);
                     shopBagRepository.Insert(shoppingBag);
 
                     // add Claims
-                    Claim fullnameClaim = new Claim("FullName", $"{userModel.FirstName} {userModel.LastName}");
-                    Claim firstNameClaim = new Claim("FirstName", $"{userModel.FirstName}");
-                    Claim emailClaim = new Claim(ClaimTypes.Email, userModel.Email, ClaimValueTypes.Email);
-                    Claim idClaim = new Claim("UserId", $"{userModel.Id}");
-                    claims.Add(fullnameClaim);
-                    claims.Add(firstNameClaim);
-                    claims.Add(emailClaim);
-                    claims.Add(idClaim);
+                    //Claim fullnameClaim = new Claim("FullName", $"{userModel.FirstName} {userModel.LastName}");
+                    //Claim firstNameClaim = new Claim("FirstName", $"{userModel.FirstName}");
+                    //Claim emailClaim = new Claim(ClaimTypes.Email, userModel.Email, ClaimValueTypes.Email);
+                    //Claim idClaim = new Claim("UserId", $"{userModel.Id}");
+                    //claims.Add(fullnameClaim);
+                    //claims.Add(firstNameClaim);
+                    //claims.Add(emailClaim);
+                    //claims.Add(idClaim);
 
-                    await userManager.AddClaimsAsync(userModel, claims);
+                    //await userManager.AddClaimsAsync(userModel, claims);
 
-                    //await userManager.AddToRoleAsync(userModel, "Admin");
 
                     //------------------Create Cookie Authorization
                     await signInManager.SignInAsync(userModel, false);//create cookie //create cookie client
@@ -119,9 +119,16 @@ namespace ECommerceMVC.Controllers
                     bool found = await userManager.CheckPasswordAsync(userModel, userVM.Password);
                     if (found)
                     {
-                        //cookie
-                        await signInManager.SignInAsync(userModel, userVM.RememberMe);
-                        return RedirectToAction("Index", "Home");
+                        if (userModel.IsActive)
+                        {
+                            //cookie
+                            await signInManager.SignInAsync(userModel, userVM.RememberMe);
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("key", "Account is Deactivated");
+                        }
                     }
                 }
                 ModelState.AddModelError("", "incorrect username or password");
