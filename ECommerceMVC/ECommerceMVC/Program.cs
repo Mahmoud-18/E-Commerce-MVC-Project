@@ -40,7 +40,7 @@ namespace ECommerceMVC
 
             // Register
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
-            builder.Services.AddScoped<IShoppingBagItemRepository, ShoppingBagItemRepository>();
+            //builder.Services.AddScoped<IShoppingBagItemRepository, ShoppingBagItemRepository>();
             builder.Services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
             builder.Services.AddScoped<IProductTypeAttributeRepository, ProductTypeAttributeRepository>();
             builder.Services.AddScoped<IProductItemRepository, ProductItemRepository>();
@@ -52,7 +52,7 @@ namespace ECommerceMVC
             builder.Services.AddScoped<ProductsServices>();
 
             builder.Services.AddScoped<ProductRepository>();
-
+            builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
             builder.Services.AddScoped<IAddressRepository, AddressRepository>();
             builder.Services.AddScoped<IBrandRepository, BrandRepository>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -63,6 +63,7 @@ namespace ECommerceMVC
             builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
             builder.Services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
             builder.Services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
+            //builder.Services.AddScoped<IShoppingBagRepository, ShoppingBagRepository>();
 
 
             var app = builder.Build();

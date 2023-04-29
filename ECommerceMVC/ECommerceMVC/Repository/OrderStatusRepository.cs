@@ -14,27 +14,30 @@ namespace ECommerceMVC.Repository
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            context.OrderStatus.Remove(GetById(id));
+            context.SaveChanges();
         }
 
         public List<OrderStatus> GetAll()
         {
-            throw new NotImplementedException();
+            return context.OrderStatus.ToList();
         }
 
         public OrderStatus GetById(int id)
         {
-            throw new NotImplementedException();
+            return context.OrderStatus.FirstOrDefault(i => i.Id == id);
         }
 
         public void Insert(OrderStatus newOrderStatus)
         {
-            throw new NotImplementedException();
+            context.OrderStatus.Add(newOrderStatus);
+            context.SaveChanges();
         }
 
         public void Update(int id, OrderStatus orderStatus)
         {
-            throw new NotImplementedException();
+            context.Update(orderStatus);
+            context.SaveChanges();
         }
     }
 }

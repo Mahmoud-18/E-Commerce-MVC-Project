@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity;
+@using ECommerceMVC.Repository;
+@using System.Security.Claims;
+@{
+    ViewData["Title"] = "_Layout";
+}
+@inject ICategoryRepository Category;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -95,7 +103,7 @@
                         </a>
                         <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
                             <div class="navbar-nav w-100">
-                                <div class="nav-item dropdown dropright">
+                                @*<div class="nav-item dropdown dropright">
                                     <a href="#" onclick="GetFemaleProducts(event)" class="nav-link dropdown-toggle" data-toggle="dropdown" data-category="Women">Women <i class="fa fa-angle-right float-right mt-1"></i></a>
                                     <div class="dropdown-menu position-absolute rounded-0 border-0 m-0" id="category-dropdown-menu">
                                         <a href="" onclick="GetFemaleDress(event)" class="dropdown-item">Dresses</a>
@@ -127,7 +135,8 @@
                                         <a href="" class="dropdown-item">SweatShirts</a>
 
                                     </div>
-                                </div>
+                                </div>*@
+                                <partial name="_CategoryNavPartial" model="@Category.GetAll()"></partial>
                             </div>
                         </nav>
                     </div>

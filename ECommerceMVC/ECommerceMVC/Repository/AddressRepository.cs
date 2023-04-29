@@ -15,6 +15,7 @@ namespace ECommerceMVC.Repository
         public void Delete(int id)
         {
             context.Address.Remove(GetById(id));
+            context.SaveChanges();
         }
 
         public List<Address> GetAll()
@@ -35,7 +36,7 @@ namespace ECommerceMVC.Repository
 
         public void Insert(Address newaddress)
         {
-            context.Add(newaddress);
+            context.Address.Add(newaddress);
             context.SaveChanges();
         }
 

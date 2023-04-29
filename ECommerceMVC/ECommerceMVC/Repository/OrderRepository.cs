@@ -1,5 +1,6 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
+using System.Diagnostics.Metrics;
 
 namespace ECommerceMVC.Repository
 {
@@ -14,37 +15,40 @@ namespace ECommerceMVC.Repository
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            context.OrderDetails.Remove(GetById(id));
+            context.SaveChanges();
         }
 
         public List<OrderDetails> GetAll()
         {
-            throw new NotImplementedException();
+            return context.OrderDetails.ToList();
         }
 
-        public List<OrderDetails> GetAllByCustomerId()
+        public List<OrderDetails> GetAllByCustomerId(int userid)
         {
-            throw new NotImplementedException();
+            return context.OrderDetails.Where(i => i.CustomerId == userid).ToList();
         }
 
-        public List<OrderDetails> GetAllByOrderStatusId()
+        public List<OrderDetails> GetAllByOrderStatusId(int statusid)
         {
-            throw new NotImplementedException();
+            return context.OrderDetails.Where(i => i.OrderStatusId == statusid).ToList();
         }
 
         public OrderDetails GetById(int id)
         {
-            throw new NotImplementedException();
+            return context.OrderDetails.FirstOrDefault(i => i.Id == id);
         }
 
         public void Insert(OrderDetails newOrder)
         {
-            throw new NotImplementedException();
+            context.OrderDetails.Add(newOrder);
+            context.SaveChanges();
         }
 
         public void Update(int id, OrderDetails order)
         {
-            throw new NotImplementedException();
+            context.Update(order);
+            context.SaveChanges();
         }
     }
 }

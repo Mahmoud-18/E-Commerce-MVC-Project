@@ -14,32 +14,35 @@ namespace ECommerceMVC.Repository
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            context.Discount.Remove(GetById(id));
+            context.SaveChanges();
         }
 
         public List<Discount> GetActiveDiscounts()
         {
-            throw new NotImplementedException();
+            return context.Discount.Where(i => i.IsActice==true && DateTime.Now > i.StartDate && i.EndDate > DateTime.Now).ToList();
         }
 
         public List<Discount> GetAll()
         {
-            throw new NotImplementedException();
+            return context.Discount.ToList();
         }
 
         public Discount GetById(int id)
         {
-            throw new NotImplementedException();
+            return context.Discount.FirstOrDefault(i => i.Id == id);
         }
 
-        public void Insert(Country newDiscount)
+        public void Insert(Discount newDiscount)
         {
-            throw new NotImplementedException();
+            context.Discount.Add(newDiscount);
+            context.SaveChanges();
         }
 
-        public void Update(int id, Country discount)
+        public void Update(int id, Discount discount)
         {
-            throw new NotImplementedException();
+            context.Discount.Update(discount);
+            context.SaveChanges();
         }
     }
 }
