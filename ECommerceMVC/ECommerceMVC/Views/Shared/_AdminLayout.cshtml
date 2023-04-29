@@ -1,16 +1,13 @@
 ﻿<!DOCTYPE html>
-
-<html lang="en">
-
-<head>
-
+<html>
+ <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>Administration Page</title>
 
     <!-- Custom fonts for this template-->
     <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -21,8 +18,15 @@
     <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
 
-</head>
-<header>
+    <!--Custom styles for datatables -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+ </head>
+
+
+<body id="page-top">
+  <header>
     <div class="container-fluid">
         <div class="row align-items-center  py-3 px-xl-3 d-none d-lg-flex" style="background-color:#3d464d; ">
 
@@ -96,8 +100,8 @@
         </div>
         </div>*@
     </div>
-</header>
-<body id="page-top">
+  </header>
+  
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -142,7 +146,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         @*<h6 class="collapse-header">Customer Components:</h6>*@
-                        <a class="collapse-item" href="buttons.html">Account</a>
+                        <a class="collapse-item" asp-action="CustomerIndex" asp-controller="Admin" >Account</a>
                         <a class="collapse-item" href="cards.html">Roles</a>
                     </div>
                 </div>
@@ -247,11 +251,9 @@
                 <!-- Topbar -->
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <div class="container-fluid">              
+                    <!-- Page Heading -->                  
                     @RenderBody()
-                    <!-- Page Heading -->
-                    @*<h1 class="h3 mb-4 text-gray-800">Blank Page</h1>*@
-
                 </div>
                 <!-- /.container-fluid -->
 
@@ -288,9 +290,10 @@
             </div>
         </div>
     </div>
+    <!-- Footer Start -->
     <footer class="border-top text-muted">
 
-        <!-- Footer Start -->
+
         <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
             <div class="row px-xl-5 pt-5">
                 <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
@@ -372,8 +375,19 @@
 
     <!-- Custom scripts for all pages-->
     <script src="~/js/sb-admin-2.min.js"></script>
-    @RenderSection("Scripts",false);
-</body>
 
+    <!--Custom scripts for datatables -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#table').DataTable();
+        })
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+  </body>
 </html>
-
