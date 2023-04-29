@@ -22,12 +22,12 @@ namespace ECommerceMVC.Repository
 
         public List<Customer> GetAll()
         {
-            return context.Users.ToList();
+            return context.Users.Where(i => i.IsDeleted == false).ToList();
         }
 
         public Customer GetById(int id)
         {
-            return context.Users.Include("Country").FirstOrDefault(i => i.Id == id);
+            return context.Users.Include("Country").Where(i => i.IsDeleted == false).FirstOrDefault(i => i.Id == id);
         }
 
         public void Insert(Customer newcustomer)

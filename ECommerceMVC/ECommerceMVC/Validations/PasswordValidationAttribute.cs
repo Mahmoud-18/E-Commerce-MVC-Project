@@ -17,7 +17,7 @@ namespace ECommerceMVC.Validations
             var hasLowercaseLetter = password.Any(char.IsLower);
             var hasUppercaseLetter = password.Any(char.IsUpper);
             var hasNumber = password.Any(char.IsDigit);
-            var hasSpecialCharacter = Regex.IsMatch(password, "[^a-zA-Z0-9]");
+            //var hasSpecialCharacter = Regex.IsMatch(password, "[^a-zA-Z0-9]");
             if (hasLowercaseLetter && hasUppercaseLetter && hasNumber)
             {
                 return ValidationResult.Success;
