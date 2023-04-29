@@ -41,10 +41,11 @@ namespace ECommerceMVC.Controllers
         {
             return View();
         }
+
         #region Customer(Users) Controllers
         public IActionResult UsersIndex() 
         {
-            var Users = userManager.Users.ToList();            
+            var Users = customer.GetAll();            
             return View("UsersPage", Users);
         }
         public IActionResult AddUser()
@@ -89,20 +90,21 @@ namespace ECommerceMVC.Controllers
                 {
                     shoppingBag.CustomerId = userModel.Id;
                     address.CustomerId = userModel.Id;
+                    userModel.ShippingAddressId = address.Id;
                     addressRepo.Insert(address);
                     shopBagRepository.Insert(shoppingBag);
 
                     // add Claims
-                    Claim fullnameClaim = new Claim("FullName", $"{userModel.FirstName} {userModel.LastName}");
-                    Claim firstNameClaim = new Claim("FirstName", $"{userModel.FirstName}");
-                    Claim emailClaim = new Claim(ClaimTypes.Email, userModel.Email, ClaimValueTypes.Email);
-                    Claim idClaim = new Claim("UserId", $"{userModel.Id}");
-                    claims.Add(fullnameClaim);
-                    claims.Add(firstNameClaim);
-                    claims.Add(emailClaim);
-                    claims.Add(idClaim);
+                    //Claim fullnameClaim = new Claim("FullName", $"{userModel.FirstName} {userModel.LastName}");
+                    //Claim firstNameClaim = new Claim("FirstName", $"{userModel.FirstName}");
+                    //Claim emailClaim = new Claim(ClaimTypes.Email, userModel.Email, ClaimValueTypes.Email);
+                    //Claim idClaim = new Claim("UserId", $"{userModel.Id}");
+                    //claims.Add(fullnameClaim);
+                    //claims.Add(firstNameClaim);
+                    //claims.Add(emailClaim);
+                    //claims.Add(idClaim);
 
-                    await userManager.AddClaimsAsync(userModel, claims);
+                    //await userManager.AddClaimsAsync(userModel, claims);
 
                     if (userModel.IsAdmin == true)
                     {
@@ -128,9 +130,9 @@ namespace ECommerceMVC.Controllers
             var user = customer.GetById(id);
             return View(user);
         }
-        public IActionResult EditUser(int id)
+        public async Task<IActionResult> EditUser(int id)
         {
-            var user = customer.GetById(id);
+            var user = customer.GetById(id);           
             EditUserViewModel editUser = new EditUserViewModel();
             editUser.UserId = id;
             editUser.PhoneNumber = user.PhoneNumber;
@@ -152,10 +154,24 @@ namespace ECommerceMVC.Controllers
        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditUser([FromRoute] int id ,Customer user)
+        public async Task<IActionResult> EditUser([FromRoute] int id , EditUserViewModel updateduser)
         {
             if (ModelState.IsValid)
             {
+                var user = customer.GetById(id);
+                user.CountryId = updateduser.CountryId;
+                user.DataOfBirth = updateduser.DataOfBirth;
+                user.FirstName = updateduser.FirstName;
+                user.LastName = updateduser.LastName;
+                user.Gender = updateduser.Gender;
+                user.IsActive= updateduser.IsActive;
+                user.IsAdmin = updateduser.IsAdmin;
+                user.PhoneNumber = updateduser.PhoneNumber;
+                user.Email = updateduser.Email;
+                user.UserName = updateduser.UserName;
+
+                await userManager.UpdateAsync(user);
+
                 if (user.IsAdmin == true)
                 {
                     if (await userManager.IsInRoleAsync(user, "Admin") == false)
@@ -170,40 +186,52 @@ namespace ECommerceMVC.Controllers
                         await userManager.RemoveFromRoleAsync(user, "Admin");
                     }
                 }
-                if (user.IsDeleted == true)
-                {
-                    user.DeleteDate = DateTime.UtcNow;
-                }
-                else 
-                {
-                    user.DeleteDate = null;
-                }
-                await userManager.UpdateAsync(user);
+                              
+                
                 return RedirectToAction("UsersIndex");
             }
             else
             {
                 EditUserViewModel editUser = new EditUserViewModel();
                 editUser.UserId = id;
-                editUser.PhoneNumber = user.PhoneNumber;
-                editUser.UserName = user.UserName;
-                editUser.FirstName = user.FirstName;
-                editUser.LastName = user.LastName;
-                editUser.Gender = user.Gender;
-                editUser.CountryId = user.CountryId;
+                editUser.PhoneNumber = updateduser.PhoneNumber;
+                editUser.UserName = updateduser.UserName;
+                editUser.FirstName = updateduser.FirstName;
+                editUser.LastName = updateduser.LastName;
+                editUser.Gender = updateduser.Gender;
+                editUser.CountryId = updateduser.CountryId;
                 editUser.Countries = country.GetAll();
-                editUser.Email = user.Email;
-                editUser.IsActive = user.IsActive;
-                editUser.IsAdmin = user.IsAdmin;
-                editUser.IsDeleted = user.IsDeleted;
-                editUser.DataOfBirth = user.DataOfBirth;
+                editUser.Email = updateduser.Email;
+                editUser.IsActive = updateduser.IsActive;
+                editUser.IsAdmin = updateduser.IsAdmin;               
+                editUser.DataOfBirth = updateduser.DataOfBirth;
                 editUser.Roles = roleManager.Roles.ToList();
                 return View(editUser);
             }
         }
+        public IActionResult DeleteUser(int id)
+        {
+            var user = customer.GetById(id);                
+            user.IsDeleted = true;
+            user.DeleteDate = DateTime.UtcNow;
+            customer.Update(id, user);
+                      
+            return RedirectToAction("UsersIndex");
+        }
 
-        
         #endregion
+
+        #region Roles Controllers
+
+        public IActionResult RolesIndex()
+        {
+            var Roles = roleManager.Roles.ToList();
+            return View(Roles);
+        }
+
+
+        #endregion
+
 
     }
 }
