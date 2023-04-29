@@ -45,5 +45,17 @@ namespace ECommerceMVC.Repository
             context.Discount.Update(discount);
             context.SaveChanges();
         }
+        public bool IsDiscountActive(int id)
+        {
+            var discount = GetById(id);
+            if (discount.IsActice == true && DateTime.Now > discount.StartDate && discount.EndDate > DateTime.Now) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

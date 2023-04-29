@@ -27,7 +27,7 @@ public class ProductController : Controller
         }
         else
         {
-            ProductDetailsViewModel productDetailsViewModel = new ProductDetailsViewModel();
+            ProductDetailsViewModel productDetailsViewModel = new();
 
             Product product = productRepository.GetProductById(id);
             ProductItem productItem = productRepository.GetProductItemById(id);

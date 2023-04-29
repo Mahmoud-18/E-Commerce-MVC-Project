@@ -10,5 +10,6 @@ namespace ECommerceMVC.Repository
         void Insert(Discount newDiscount);
         void Update(int id, Discount discount);
         void Delete(int id);
+        bool IsDiscountActive(int id);
     }
 }
