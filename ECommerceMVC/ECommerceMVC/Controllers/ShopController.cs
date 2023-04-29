@@ -17,6 +17,18 @@ namespace ECommerceMVC.Controllers
         public IActionResult ShowAllProducts()
         {
             var products = ProductsServices.GetAllProducts();
+
+            //const int pageSize = 5;
+            //if (pg < 1)
+            //    pg = 1;
+
+            //int recsCount = products.Count();
+
+            //var pager = new Pager(recsCount, pg, pageSize);
+            //int recSkip = (pg - 1) * pageSize;
+            //var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
+            //this.ViewBag.Pager = pager;
+            //return View(data);
             return View(products);
         }
         public IActionResult ProductsByCategory(int id)

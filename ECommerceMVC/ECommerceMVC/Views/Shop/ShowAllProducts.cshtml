@@ -1,7 +1,16 @@
 ﻿@model List<ShoppingProductsViewModel>
 @{
     ViewData["Title"] = "ShowAllProducts";
+
+    //Pager pager = new Pager();
+    //int pageNo = 0;
+    //if(ViewBag.Pager != null)
+    //{
+    //    pager = ViewBag.Pager;
+    //    pageNo = pager.CurrentPage;
+    //}
 }
+
 <!-- Breadcrumb Start -->
     <div class="container-fluid">
         <div class="row px-xl-5">
@@ -139,7 +148,7 @@
 
 
             <!-- Shop Product Start -->
-            <div class="col-lg-9 col-md-8" id="container">
+            <div class="col-lg-9 col-md-8" >
                 <div class="row pb-3">
                     <div class="col-12 pb-1">
                         <div class="d-flex align-items-center justify-content-between mb-4">
@@ -223,6 +232,7 @@
             <!-- Shop Product End -->
         </div>
     </div>
+
     <!-- Shop End -->
     
     <!-- Footer End -->
@@ -258,3 +268,18 @@
 
     </script>
 }*@
+@*<div class="container1">
+    @if(pager.TotalPages > 0)
+    {
+        <ul class="pagination justify-content-end">
+
+            @for(var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+            {
+                <li class="page-item" @(pge == pager.CurrentPage ? "active" : "")>
+                    <a class="page-link" asp-controller="Shop" asp-action="GetAllProducts"></a>
+                </li>
+            }
+
+        </ul>
+    }
+</div>*@
