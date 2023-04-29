@@ -1,6 +1,7 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
 using ECommerceMVC.Repository;
+using ECommerceMVC.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -9,20 +10,15 @@ namespace ECommerceMVC.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        ProductsServices ProductsServices;
 
-     
-        //public HomeController(ILogger<HomeController> logger)
-        //{
-        //    _logger = logger;
-        //}
-        IProductRepository _productRepository;
-        public HomeController(IProductRepository productRepository)
+        public HomeController(ProductsServices productsServices)
         {
-            _productRepository = productRepository;
+            ProductsServices = productsServices;
         }
         public IActionResult Index()
         {
-            var products = _productRepository.GetAllProducts();
+            var products = ProductsServices.GetAllProducts();
             return View(products);
         }
      
