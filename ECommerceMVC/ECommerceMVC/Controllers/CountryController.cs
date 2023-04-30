@@ -1,9 +1,14 @@
 ﻿using ECommerceMVC.Models;
 using ECommerceMVC.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+
+
 
 namespace ECommerceMVC.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class CountryController : Controller
     {
         ICountryRepository _countries;

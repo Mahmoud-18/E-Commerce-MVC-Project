@@ -1,0 +1,34 @@
+﻿@model Pager
+<div class="col-12">
+    <nav class="pagination-container">
+        @if (Model.TotalPages > 0)
+        {
+            <ul class="pagination justify-content-center">
+                @if (Model.CurrentPage > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Shop" asp-action="ShowAllProducts" asp-route-pg="1">First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Shop" asp-action="ShowAllProducts" asp-route-pg="@(Model.CurrentPage - 1)">Previous</a>
+                    </li>
+                }
+                @for (var pge = Model.StartPage; pge <= Model.EndPage; pge++)
+                {
+                    <li class="page-item @(pge == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-controller="Shop" asp-action="ShowAllProducts" asp-route-pg="@pge">@pge</a>
+                    </li>
+                }
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Shop" asp-action="ShowAllProducts" asp-route-pg="@(Model.CurrentPage + 1)">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="Shop" asp-action="ShowAllProducts" asp-route-pg="@Model.TotalPages">Last</a>
+                    </li>
+                }
+            </ul>
+        }
+    </nav>
+</div>
