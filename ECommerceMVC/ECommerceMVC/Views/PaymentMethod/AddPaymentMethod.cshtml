@@ -1,0 +1,56 @@
+﻿@model ECommerceMVC.Models.PaymentMethod
+
+@{
+    ViewData["Title"] = "AddPaymentMethod";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+<nav class="breadcrumb bg-light mb-30 p-3">
+    <a class="breadcrumb-item text-dark" asp-action="Index" style="text-decoration:none">Admin</a>
+    <span class="breadcrumb-item active">PaymentMethod / Add</span>
+</nav>>
+
+<h4>PaymentMethod</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddPaymentMethod">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+   
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedOnUtc" class="control-label"></label>
+                <input asp-for="CreatedOnUtc" class="form-control" />
+                <span asp-validation-for="CreatedOnUtc" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedOnUtc" class="control-label"></label>
+                <input asp-for="UpdatedOnUtc" class="form-control" />
+                <span asp-validation-for="UpdatedOnUtc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeletedOnUtc" class="control-label"></label>
+                <input asp-for="DeletedOnUtc" class="form-control" />
+                <span asp-validation-for="DeletedOnUtc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

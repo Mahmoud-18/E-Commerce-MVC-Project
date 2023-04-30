@@ -30,11 +30,11 @@ namespace ECommerceMVC.Services
             foreach (Product pro in allProducts)
             {
 
-                //var Discount = product.GetDiscountById(pro.Id);
+                var Discount = product.GetDiscountById(pro.Id);
 
                 decimal? PriceBeforeDisc = pro.Price;
 
-                if (pro.DiscountId != null)
+                if (pro.DiscountId != null && Discount.IsActice )
                 {
                     if (discountRepo.IsDiscountActive((int)pro.DiscountId)) // Safwat : change ** pro.Discount.Id ** => ** (int)pro.DiscountId **
                     {
@@ -73,10 +73,10 @@ namespace ECommerceMVC.Services
                 foreach (var cProduct in catProducts)
                 {
                     Product? pro = cProduct.Product;
-
+                    var Discount = product.GetDiscountById(pro.Id);
                     decimal? PriceBeforeDisc = pro.Price;
 
-                    if (pro.DiscountId != null)
+                    if (pro.DiscountId != null && Discount.IsActice)
                     {
                         if (discountRepo.IsDiscountActive((int)pro.DiscountId))
                         {
@@ -114,8 +114,9 @@ namespace ECommerceMVC.Services
                     {
                         Product? pro = cProduct.Product;
                         decimal? PriceBeforeDisc = pro.Price;
+                        var Discount = product.GetDiscountById(pro.Id);
 
-                        if (pro.DiscountId != null)
+                        if (pro.DiscountId != null && Discount.IsActice)
                         {
                             if (discountRepo.IsDiscountActive((int)pro.DiscountId))
                             {
