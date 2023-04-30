@@ -293,6 +293,9 @@ namespace ECommerceMVC.Migrations
                     b.Property<int?>("ShippingAddressId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ShoppingBagId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -311,6 +314,8 @@ namespace ECommerceMVC.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("ShoppingBagId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -457,7 +462,7 @@ namespace ECommerceMVC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BrandId")
+                    b.Property<int?>("BrandId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAtUtc")
@@ -482,6 +487,9 @@ namespace ECommerceMVC.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("ProductTypeId")
                         .HasColumnType("int");
@@ -684,8 +692,7 @@ namespace ECommerceMVC.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId")
-                        .IsUnique();
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("ShoppingBag");
                 });
@@ -707,13 +714,134 @@ namespace ECommerceMVC.Migrations
                     b.Property<int>("ShoppingBagId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ShoppingBagId1")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductItemId");
 
                     b.HasIndex("ShoppingBagId");
 
+                    b.HasIndex("ShoppingBagId1");
+
                     b.ToTable("ShoppingBagItem");
+                });
+
+            modelBuilder.Entity("ECommerceMVC.ViewModels.EditUserViewModel", b =>
+                {
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DataOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.ToTable("EditUserViewModel");
+                });
+
+            modelBuilder.Entity("ECommerceMVC.ViewModels.RegisterViewModel", b =>
+                {
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ConfirmPassword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DataOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("RegisterViewModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -907,7 +1035,13 @@ namespace ECommerceMVC.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ECommerceMVC.Models.ShoppingBagItem", "ShoppingBag")
+                        .WithMany()
+                        .HasForeignKey("ShoppingBagId");
+
                     b.Navigation("Country");
+
+                    b.Navigation("ShoppingBag");
                 });
 
             modelBuilder.Entity("ECommerceMVC.Models.OrderDetails", b =>
@@ -967,10 +1101,8 @@ namespace ECommerceMVC.Migrations
             modelBuilder.Entity("ECommerceMVC.Models.Product", b =>
                 {
                     b.HasOne("ECommerceMVC.Models.Brand", "Brand")
-                        .WithMany("ProductItems")
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Products")
+                        .HasForeignKey("BrandId");
 
                     b.HasOne("ECommerceMVC.Models.Discount", "Discount")
                         .WithMany("Products")
@@ -1069,8 +1201,8 @@ namespace ECommerceMVC.Migrations
             modelBuilder.Entity("ECommerceMVC.Models.ShoppingBag", b =>
                 {
                     b.HasOne("ECommerceMVC.Models.Customer", "Customer")
-                        .WithOne("ShoppingBag")
-                        .HasForeignKey("ECommerceMVC.Models.ShoppingBag", "CustomerId")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1085,9 +1217,15 @@ namespace ECommerceMVC.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECommerceMVC.Models.ShoppingBag", "ShoppingBag")
-                        .WithMany("ShoppingBagItems")
+                    b.HasOne("ECommerceMVC.Models.ShoppingBagItem", "ShoppingBag")
+                        .WithMany()
                         .HasForeignKey("ShoppingBagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ECommerceMVC.Models.ShoppingBag", null)
+                        .WithMany("ShoppingBagItems")
+                        .HasForeignKey("ShoppingBagId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1159,7 +1297,7 @@ namespace ECommerceMVC.Migrations
 
             modelBuilder.Entity("ECommerceMVC.Models.Brand", b =>
                 {
-                    b.Navigation("ProductItems");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("ECommerceMVC.Models.Category", b =>
@@ -1183,8 +1321,6 @@ namespace ECommerceMVC.Migrations
                     b.Navigation("Complaints");
 
                     b.Navigation("Orders");
-
-                    b.Navigation("ShoppingBag");
                 });
 
             modelBuilder.Entity("ECommerceMVC.Models.Discount", b =>

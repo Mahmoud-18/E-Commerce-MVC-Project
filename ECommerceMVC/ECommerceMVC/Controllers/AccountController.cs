@@ -1,5 +1,6 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
+using ECommerceMVC.Repository;
 using ECommerceMVC.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,21 +12,25 @@ namespace ECommerceMVC.Controllers
     {
         private readonly UserManager<Customer> userManager;
         private readonly SignInManager<Customer> signInManager;
-        EcommerceDbContext context;
+        IAddressRepository addressRepo;
+        IShoppingBagRepository shopBagRepository;
+        ICountryRepository country;
         public AccountController
             (UserManager<Customer> _userManager,
-            SignInManager<Customer> _signInManager, EcommerceDbContext context)
+            SignInManager<Customer> _signInManager, IAddressRepository _addressRepository, IShoppingBagRepository shopBagRepository, ICountryRepository countryRepository)
         {
             userManager = _userManager;
             signInManager = _signInManager;
-            this.context = context;
+            addressRepo = _addressRepository;
+            this.shopBagRepository = shopBagRepository;
+            country = countryRepository;
         }
 
         public IActionResult Register()
         {
             RegisterViewModel register = new RegisterViewModel();
 
-            register.Countries = context.Country.ToList();
+            register.Countries =country.GetAll();
             return View(register);
         }
 
@@ -69,6 +74,7 @@ namespace ECommerceMVC.Controllers
             {
                 Customer userModel = new Customer();
                 Address address = new Address();
+                ShoppingBag shoppingBag = new ShoppingBag();
                 userModel.UserName = newUser.UserName;                
                 userModel.PasswordHash = newUser.Password;
                 userModel.Email = newUser.Email;
@@ -84,29 +90,31 @@ namespace ECommerceMVC.Controllers
                 address.City = newUser.City;
                 address.State = newUser.State;
                 address.CountryId = newUser.CountryId;
+                
                 //save db
                 IdentityResult result =
                     await userManager.CreateAsync(userModel, newUser.Password);   //Block create user in db
 
                 if (result.Succeeded)
                 {
+                    shoppingBag.CustomerId = userModel.Id;
                     address.CustomerId = userModel.Id;
-                    context.Address.Add(address);
-                    await context.SaveChangesAsync();
+                    userModel.ShippingAddressId = address.Id;
+                    addressRepo.Insert(address);
+                    shopBagRepository.Insert(shoppingBag);
 
                     // add Claims
-                    Claim fullnameClaim = new Claim("FullName", $"{userModel.FirstName} {userModel.LastName}");
-                    Claim firstNameClaim = new Claim("FirstName", $"{userModel.FirstName}");
-                    Claim emailClaim = new Claim(ClaimTypes.Email, userModel.Email, ClaimValueTypes.Email);
-                    Claim idClaim = new Claim("UserId", $"{userModel.Id}");
-                    claims.Add(fullnameClaim);
-                    claims.Add(firstNameClaim);
-                    claims.Add(emailClaim);
-                    claims.Add(idClaim);
+                    //Claim fullnameClaim = new Claim("FullName", $"{userModel.FirstName} {userModel.LastName}");
+                    //Claim firstNameClaim = new Claim("FirstName", $"{userModel.FirstName}");
+                    //Claim emailClaim = new Claim(ClaimTypes.Email, userModel.Email, ClaimValueTypes.Email);
+                    //Claim idClaim = new Claim("UserId", $"{userModel.Id}");
+                    //claims.Add(fullnameClaim);
+                    //claims.Add(firstNameClaim);
+                    //claims.Add(emailClaim);
+                    //claims.Add(idClaim);
 
-                    await userManager.AddClaimsAsync(userModel, claims);
+                    //await userManager.AddClaimsAsync(userModel, claims);
 
-                    //await userManager.AddToRoleAsync(userModel, "Admin");
 
                     //------------------Create Cookie Authorization
                     await signInManager.SignInAsync(userModel, false);//create cookie //create cookie client
@@ -120,7 +128,7 @@ namespace ECommerceMVC.Controllers
                 //    }
                 //}
             }
-            newUser.Countries = context.Country.ToList();
+            newUser.Countries = country.GetAll();
             return View(newUser);
         }
         public IActionResult Login()
@@ -142,9 +150,16 @@ namespace ECommerceMVC.Controllers
                     bool found = await userManager.CheckPasswordAsync(userModel, userVM.Password);
                     if (found)
                     {
-                        //cookie
-                        await signInManager.SignInAsync(userModel, userVM.RememberMe);
-                        return RedirectToAction("Index", "Home");
+                        if (userModel.IsActive)
+                        {
+                            //cookie
+                            await signInManager.SignInAsync(userModel, userVM.RememberMe);
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("key", "Account is Deactivated");
+                        }
                     }
                 }
                 
@@ -153,12 +168,6 @@ namespace ECommerceMVC.Controllers
             }
             return View(userVM);
         }
-
-
-
-
-
-
 
         //[HttpPost]
         //public JsonResult VerifyUsername(string username)
@@ -172,12 +181,6 @@ namespace ECommerceMVC.Controllers
         //    var isAvailable = !context.Users.Any(u => u.UserName == userName);
         //    return Json(isAvailable, JsonRequestBehavior.AllowGet);
         //}
-
-
-
-
-
-
 
         public async Task<IActionResult> SignOut()
         {

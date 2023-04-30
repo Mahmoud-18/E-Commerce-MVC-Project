@@ -1,4 +1,7 @@
-﻿using ECommerceMVC.Models;
+﻿using ECommerceMVC.Context;
+using ECommerceMVC.Models;
+using ECommerceMVC.Repository;
+using ECommerceMVC.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,18 +10,18 @@ namespace ECommerceMVC.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        ProductsServices ProductsServices;
 
-     
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ProductsServices productsServices)
         {
-            _logger = logger;
+            ProductsServices = productsServices;
         }
-        
         public IActionResult Index()
         {
-            return View();
+            var products = ProductsServices.GetAllProducts();
+            return View(products);
         }
-
+     
         public IActionResult Privacy()
         {
             return View();
@@ -29,5 +32,7 @@ namespace ECommerceMVC.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+       
+
     }
 }

@@ -23,20 +23,22 @@ public class ProductController : Controller
         }
         if (id == 0)
         {
-            return Redirect("http://localhost:5136/product/productdetails" + Id);
+            return Redirect("/Product/ProductDetails" + Id);
         }
         else
         {
-            ProductDetailsViewModel productDetailsViewModel = new ProductDetailsViewModel();
+            ProductDetailsViewModel productDetailsViewModel = new();
 
             Product product = productRepository.GetProductById(id);
             ProductItem productItem = productRepository.GetProductItemById(id);
             Brand brand = productRepository.GetBrandById(id);
             List<string> productImages = productRepository.GetImageById(id);
+            Discount discount = productRepository.GetDiscountById(id);
             //List<ProductImages> productImages = context.ProductImages.Where(im => im.ProductItemId == productItem.Id).ToList();
 
             productDetailsViewModel.Name = product.Name;
             productDetailsViewModel.price = (float)productItem.Price;
+            //productDetailsViewModel.PriceBeforeDiscount = (1-discount.DiscountPercentage/100.0f)*(float)productItem.Price;
             productDetailsViewModel.Image = productImages;// productImages.Select(img => img.ImageURL).ToList();
             productDetailsViewModel.Description = product.Description;
             productDetailsViewModel.CreatetAtUtc = productItem.CreatedAtUtc;

@@ -1,5 +1,17 @@
 ﻿@model ProductDetailsViewModel
-
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="/">Home</a>
+                <a class="breadcrumb-item text-dark" href="#">Shop</a>
+                <span class="breadcrumb-item active">Shop Detail</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
 <div class="container-fluid pb-5">
     <div class="row px-xl-5">
         <div class="col-lg-5 mb-30">
@@ -14,7 +26,7 @@
                         <div class="carousel-item ">
                             <img class="w-100 h-100" src="@Model.Image[i]" alt="Product Image">
                         </div>
-                        
+
                     }
                 </div>
                 <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
@@ -39,7 +51,12 @@
                     </div>
                     <small class="pt-1">(99 Reviews)</small>
                 </div>
+                <h3 class="text-muted mb-4 float-md-left" style="margin-right:20px">
+                    <del>
+                        $@Model.PriceBeforeDiscount
+                    </del>
                 <h3 class="font-weight-semi-bold mb-4">$@Model.price</h3>
+                </h3>
                 <p class="mb-4">
                     @Model.Description <!-- Product Description -->
                 </p>
@@ -92,7 +109,32 @@
                             <label class="custom-control-label" for="color-5">Green</label>
                         </div>
                     </form>
+
                 </div>
+                <div class="d-flex mb-4">
+                    <strong class="text-dark mr-3">Brand Name:</strong>
+                    <div>
+                        <label for="color-1">@Model.BrandImage</label>
+                    </div>
+                </div>
+             @*   <div class="d-flex mb-4">
+                    <strong class="text-dark mr-3">Create At UTC:</strong>
+                    <div>
+                        <label for="color-1">@Model.CreatetAtUtc</label>
+                    </div>
+                </div>*@
+                <div class="d-flex mb-4">
+                    <strong class="text-dark mr-3">SKU:</strong>
+                    <div>
+                        <label for="color-1">@Model.SUK</label>
+                    </div>
+                </div>
+              @*  <div class="d-flex mb-4">
+                    <strong class="text-dark mr-3">Stock Units:</strong>
+                    <div>
+                        <label for="color-1">@Model.StockUnits</label>
+                    </div>
+                </div>*@
                 <div class="d-flex align-items-center mb-4 pt-2">
                     <div class="input-group quantity mr-3" style="width: 130px;">
                         <div class="input-group-btn">
@@ -112,23 +154,23 @@
                         Cart
                     </button>
                 </div>
-                <div class="d-flex pt-2">
-                    <strong class="text-dark mr-2">Share on:</strong>
-                    <div class="d-inline-flex">
-                        <a class="text-dark px-2" href="">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a class="text-dark px-2" href="">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a class="text-dark px-2" href="">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a class="text-dark px-2" href="">
-                            <i class="fab fa-pinterest"></i>
-                        </a>
-                    </div>
+                @*<div class="d-flex pt-2">
+                <strong class="text-dark mr-2">Share on:</strong>
+                <div class="d-inline-flex">
+                <a class="text-dark px-2" href="">
+                <i class="fab fa-facebook-f"></i>
+                </a>
+                <a class="text-dark px-2" href="">
+                <i class="fab fa-twitter"></i>
+                </a>
+                <a class="text-dark px-2" href="">
+                <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a class="text-dark px-2" href="">
+                <i class="fab fa-pinterest"></i>
+                </a>
                 </div>
+                </div>*@
             </div>
         </div>
     </div>

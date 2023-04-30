@@ -27,12 +27,10 @@ namespace ECommerceMVC
             );
             builder.Services.AddIdentity<Customer, IdentityRole<int>>(options =>
             {
-                options.Password.RequireLowercase = true;
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 8;
-
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;                                           
             })
                 .AddEntityFrameworkStores<EcommerceDbContext>().AddDefaultTokenProviders();
 
@@ -45,12 +43,34 @@ namespace ECommerceMVC
 
             // Register
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<IShoppingBagItemRepository, ShoppingBagItemRepository>();
+            builder.Services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
+            builder.Services.AddScoped<IProductTypeAttributeRepository, ProductTypeAttributeRepository>();
+            builder.Services.AddScoped<IProductItemRepository, ProductItemRepository>();
+            builder.Services.AddScoped<IProductImagesRepository, ProductImagesRepository>();
+            builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+            builder.Services.AddScoped<IProductAttributeValuesRepository, ProductAttributeValuesRepository>();
+            builder.Services.AddScoped<IProductAttributeRepository, ProductAttributeRepository>();
+            builder.Services.AddScoped<IShoppingBagRepository, ShoppingBagRepository>();
+
 
             builder.Services.AddScoped<ProductsServices>();
 
             builder.Services.AddScoped<ProductRepository>();
+            builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+            builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+            builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<ICountryRepository, CountryRepository>();
+            builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+            builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+            builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+            builder.Services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
+            builder.Services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
+            
 
-
+   
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

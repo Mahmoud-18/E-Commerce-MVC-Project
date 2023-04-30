@@ -1,0 +1,44 @@
+﻿@model List<ShoppingProductsViewModel>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<form id="sr">
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for products..">
+
+    <ul id="myUL">
+        @foreach (ShoppingProductsViewModel product in Model)
+        {
+            <li id="lid"><a href="/product/ProductDetails/@product.Id"><img src="@product.Image" width="50" height="50" />  @product.Name</a></li>
+        }
+    </ul>
+
+</form>
+
+    <script>
+        function myFunction() {
+            var input, filter, ul, li, a, i, txtValue;
+            input = document.getElementById('myInput');
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("myUL");
+            li = ul.getElementsByTagName('li');
+
+
+            if (filter.length >= 1) {
+                ul.style.display = "block";
+
+                for (i = 0; i < li.length; i++) {
+                    a = li[i].getElementsByTagName("a")[0];
+                    txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        li[i].style.display = "";
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+            } else {
+                ul.style.display = "none";
+
+            }
+
+        }
+    </script>

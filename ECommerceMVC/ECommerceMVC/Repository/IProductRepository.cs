@@ -10,6 +10,6 @@ namespace ECommerceMVC.Repository
         ProductItem GetProductItemById(int id);
         Brand GetBrandById(int id);
         List<string> GetImageById(int id);
-        List<ShoppingProductsViewModel> GetAllProducts();
+        Discount GetDiscountById(int id);
     }
 }

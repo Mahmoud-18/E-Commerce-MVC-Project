@@ -1,0 +1,151 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "AddCustomer";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    SelectList CountriesOptions = new SelectList(Model.Countries, "Id", "Name");
+    ViewBag.Genders = new SelectList(Enum.GetValues(typeof(Gender)));
+}
+<div class="container-fluid">
+    <a asp-action="UsersIndex" asp-controller="Admin" class="btn btn-danger btn-block text-center my-3" style="width:180px">Back</a>
+    <div class="col-lg-10 mx-auto border border-1 p-2 rounded-3 bg-gray-100">
+        <h5 class="section-title position-relative text-uppercase mt-2 my-4 text-center">
+            <span class="pr-3">New Account</span>
+        </h5>
+        <form asp-action="AddUser" asp-controller="Admin">
+            @* <div asp-validation-summary="All" class="text-danger"></div>*@
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label asp-for="FirstName" class="control-label"></label>
+                    <input asp-for="FirstName" class="form-control" placeholder="Your First Name" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+        
+                <div class="col-md-6 form-group">
+                    <label asp-for="LastName" class="control-label"></label>
+                    <input asp-for="LastName" class="form-control" placeholder="Your Last Name" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+        
+                <div class="col-md-6 form-group">
+                    <label asp-for="UserName" class="control-label"></label>
+                    <input asp-for="UserName" class="form-control" placeholder="username" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+        
+        
+        
+                <div class="col-md-6 form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" placeholder="example@email.com" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+        
+        
+                <div class="col-md-6 form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <div class="input-group">
+                        <input asp-for="Password" id="password" class="form-control" placeholder="Enter Password" />
+        
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary password-toggle-btn"
+                                    type="button">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+        
+                <div class="col-md-6 form-group">
+        
+                    <label asp-for="ConfirmPassword" class="control-label"></label>
+                    <div class="input-group">
+                        <input asp-for="ConfirmPassword" id="repassword" class="form-control" placeholder="Re-Enter Password" />
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary password-toggle-btn" type="button" onclick="togglePasswordVisibility()">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+        
+                <div class="col-md-6 form-group">
+        
+                    <label asp-for="CountryId" class="control-label"></label>
+                    <select class="form-control custom-select" asp-for="CountryId" asp-items="CountriesOptions">
+                        <!--List<Country>-->
+                    </select>
+                    <span asp-validation-for="CountryId" class="text-danger"></span>
+                </div>
+        
+                <div class="col-md-6 form-group">
+                    <label asp-for="City" class="control-label"></label>
+                    <input asp-for="City" class="form-control" placeholder="Mansoura" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+        
+                <div class="col-md-6 form-group">
+                    <label asp-for="State" class="control-label"></label>
+                    <input asp-for="State" class="form-control" placeholder="Dakahlia" />
+                    <span asp-validation-for="State" class="text-danger"></span>
+                </div>
+        
+                <div class="col-md-6 form-group">
+                    <div>
+                        <label asp-for="PhoneNumber" class="control-label"></label>
+                    </div>
+                    <input asp-for="PhoneNumber" id="phone" class="form-control" placeholder="Enter your Phone Number" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+        
+                <input type="hidden" name="country_code" id="country_code" />
+        
+                <div class="col-md-6 form-group">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" placeholder="9-Street block Ab floor no. 5 apartment 56" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+        
+                <div class="col-md-6 form-group">
+                    <label asp-for="ZipCode" class="control-label"></label>
+                    <input asp-for="ZipCode" class="form-control" placeholder="123" />
+                    <span asp-validation-for="ZipCode" class="text-danger"></span>
+                </div>
+        
+                <div class="col-md-6 form-group">
+                    <label asp-for="DataOfBirth" class="control-label"></label>
+                    <input asp-for="DataOfBirth" class="form-control" />
+                    <span asp-validation-for="DataOfBirth" class="text-danger"></span>
+                </div>
+        
+                <div class="col-md-6 form-group">
+                    <label asp-for="Gender" class="control-label"></label>
+                    <select class="form-control" asp-for="Gender" asp-items="ViewBag.Genders">
+                        <!--List<Gender>-->
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+
+                <div  class="col-md-6 ml-3 form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IsAdmin" /> @Html.DisplayNameFor(model => model.IsAdmin)
+                    </label>
+                </div>
+        
+                <div class=" form-group mt-3 col-md-6 mx-auto text-center">
+                    <input type="submit" value="Add" class="btn btn-block btn-success py-3" style=" width:180px" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -6,29 +6,38 @@ namespace ECommerceMVC.Models
 {
     public class StartupDBInitializer
     {
- 
-        private static readonly List<IdentityRole<int>> Roles = new List<IdentityRole<int>>()
+        EcommerceDbContext dbContext;
+        public StartupDBInitializer(EcommerceDbContext dbContext)
         {
-            new IdentityRole<int>{Name = ApplicationRoles.Admin,
-                NormalizedName = ApplicationRoles.Admin.ToUpper(),
-                ConcurrencyStamp = Guid.NewGuid().ToString()},
-
-            new IdentityRole<int>{Name = ApplicationRoles.Member,
-                NormalizedName = ApplicationRoles.Member.ToUpper(),
-                ConcurrencyStamp = Guid.NewGuid().ToString()}
-        };
-
-        public static void SeedData(IServiceProvider serviceProvider, UserManager<Customer> userManager)
-        {
-            using (var dbContext =
-                new EcommerceDbContext(serviceProvider.GetRequiredService<DbContextOptions<EcommerceDbContext>>()))
-            {
-                dbContext.Database.EnsureCreated();
-                AddRoles(dbContext);
-            }
+            this.dbContext = dbContext;
         }
+        List<IdentityRole<int>> Roles = new List<IdentityRole<int>>()
+        {
+            new IdentityRole<int>
+            {
+                
+                Name = "Admin",
+                NormalizedName = "Admin".ToUpper(),
+                ConcurrencyStamp = Guid.NewGuid().ToString()
+            },
 
-        private static void AddRoles(EcommerceDbContext dbContext)
+            new IdentityRole<int>
+            {
+                
+                Name = "Member",
+                NormalizedName = "Member".ToUpper(),
+                ConcurrencyStamp = Guid.NewGuid().ToString()
+            },
+            new IdentityRole<int>
+            {
+                
+                Name = "Vendor",
+                NormalizedName = "Vendor".ToUpper(),
+                ConcurrencyStamp = Guid.NewGuid().ToString()
+            }
+        };
+      
+        public void AddRoles()
         {
             if (dbContext.Roles.Any()) return;
             foreach (var role in Roles)

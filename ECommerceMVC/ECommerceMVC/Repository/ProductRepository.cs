@@ -17,22 +17,10 @@ public class ProductRepository : IProductRepository
 
     public List<Product> GetAll()
     {
-        return context.Product.ToList();
+        
+        return context.Product.Include("Discount").ToList();
     }
-    public List<ShoppingProductsViewModel> GetAllProducts()
-    {
-        List<ShoppingProductsViewModel> products = new();
-        var allProducts = context.Product.ToList();
-        foreach (Product pro in allProducts)
-        {
-            //var DiscId = context.Product.Where(d => d.Id == pro.Id).FirstOrDefault()!.DiscountId;
-            //var DiscAmount = context.Discount.Where(d => d.Id == DiscId).FirstOrDefault()!.DiscountPercentage;
-            //var price = context.ProductItem.Where(i => i.Id == pro.Id).FirstOrDefault()!.Price;
-
-            products.Add(new ShoppingProductsViewModel { Id = pro.Id, Name = pro.Name, Image = pro.Image });
-        }
-        return (products);
-    }
+   
     // Repo
     public Product GetProductById(int id)
     {
@@ -50,5 +38,9 @@ public class ProductRepository : IProductRepository
     {
         ProductItem productItem = GetProductItemById(id);
         return context.ProductImages.Where(i => i.ProductItemId == productItem.Id).Select(i => i.ImageURL).ToList();
+    }
+    public Discount GetDiscountById(int id)
+    {
+        return context.Discount.FirstOrDefault(d => d.Id == GetProductById(id).DiscountId)!;
     }
 }
