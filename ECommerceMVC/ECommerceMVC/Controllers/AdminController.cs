@@ -163,21 +163,20 @@ namespace ECommerceMVC.Controllers
             productCategory.ProductId = productId;
             productCategory.CategoryId = addProductViewModel.CategoryId;
             productCategoryRepository.Insert(productCategory);
-
             #endregion
 
             #region Product Attribute
             List<ProductAttribute> productAttribute = productAttributeRepository.GetAll().Where(p => p.Name == "Size" || p.Name == "Color").ToList();
             #endregion
 
-            #region Create Product Type Attribute
-            foreach (var item in productAttribute)
-            {
-                ProductTypeAttribute productTypeAttribute = new ProductTypeAttribute();
-                productTypeAttribute.ProductTypeId = productTypeRepository.GetAll().FirstOrDefault(p => p.Name == "Clothes")!.Id;
-                productTypeAttribute.ProductAttributeId = item.Id;
-                productTypeAttributeRepository.Insert(productTypeAttribute);
-            }
+            #region  Create Product Type Attribute
+            //foreach (var item in productAttribute)
+            //{
+            //    ProductTypeAttribute productTypeAttribute = new ProductTypeAttribute();
+            //    productTypeAttribute.ProductTypeId = productTypeRepository.GetAll().FirstOrDefault(p => p.Name == "Clothes")!.Id;
+            //    productTypeAttribute.ProductAttributeId = item.Id;
+            //    productTypeAttributeRepository.Insert(productTypeAttribute);
+            //}
             #endregion
 
             #region Create Attribute Values
@@ -231,14 +230,9 @@ namespace ECommerceMVC.Controllers
             #endregion
 
 
-
             return View("AddProductSuccess");
         }
-        public IActionResult gg()
-        {
-
-            return View("AddProductSuccess");
-        }
+       
 
         #region Customer(Users) Controllers
         public IActionResult UsersIndex()
