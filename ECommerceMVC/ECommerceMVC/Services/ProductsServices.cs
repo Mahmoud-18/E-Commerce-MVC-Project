@@ -28,17 +28,15 @@ namespace ECommerceMVC.Services
             List<ShoppingProductsViewModel> products = new();
             var allProducts = product.GetAll();
             foreach (Product pro in allProducts)
-            {
-
-                var Discount = product.GetDiscountById(pro.Id);
+            {                
 
                 decimal? PriceBeforeDisc = pro.Price;
 
                 if (pro.DiscountId != null)
                 {
-                    if (discountRepo.IsDiscountActive(Discount.Id))// Safwat : change ** pro.Discount.Id ** => ** (int)pro.DiscountId **
+                    if (discountRepo.IsDiscountActive(pro.Discount.Id))// Safwat : change ** pro.Discount.Id ** => ** (int)pro.DiscountId **
                     {
-                        decimal priceAfterDiscount = pro.Price - (decimal)Discount.DiscountPercentage * pro.Price;
+                        decimal priceAfterDiscount = pro.Price - (decimal)pro.Discount.DiscountPercentage * pro.Price;
                         products.Add(new ShoppingProductsViewModel
                         {
                             Id = pro.Id,
@@ -84,14 +82,12 @@ namespace ECommerceMVC.Services
                 foreach (var cProduct in catProducts)
                 {
                     Product? pro = cProduct.Product;
-                    var Discount = product.GetDiscountById(pro.Id);
-                    decimal? PriceBeforeDisc = pro.Price;
 
                     if (pro.DiscountId != null)
                     {
-                        if (discountRepo.IsDiscountActive((int)Discount.Id))
+                        if (discountRepo.IsDiscountActive((int)pro.Discount.Id))
                         {
-                            decimal priceAfterDiscount = pro.Price - (decimal)Discount.DiscountPercentage * pro.Price;
+                            decimal priceAfterDiscount = pro.Price - (decimal)pro.Discount.DiscountPercentage * pro.Price;
                             products.Add(new ShoppingProductsViewModel
                             {
                                 Id = pro.Id,
@@ -130,18 +126,17 @@ namespace ECommerceMVC.Services
                 var cats = category.GetByParentCategoryId(id);
                 foreach (Category c in cats)
                 {
-                    var catProducts = productCategory.GetByCategoryId(c.Id);
+                    var catProducts = productCategory.GetByCategoryId(id);
                     foreach (var cProduct in catProducts)
                     {
                         Product? pro = cProduct.Product;
-                        decimal? PriceBeforeDisc = pro.Price;
-                        var Discount = product.GetDiscountById(pro.Id);
+
 
                         if (pro.DiscountId != null)
                         {
-                            if (discountRepo.IsDiscountActive((int)Discount.Id))
+                            if (discountRepo.IsDiscountActive((int)pro.Discount.Id))
                             {
-                                decimal priceAfterDiscount = pro.Price - (decimal)Discount.DiscountPercentage * pro.Price;
+                                decimal priceAfterDiscount = pro.Price - (decimal)pro.Discount.DiscountPercentage * pro.Price;
                                 products.Add(new ShoppingProductsViewModel
                                 {
                                     Id = pro.Id,

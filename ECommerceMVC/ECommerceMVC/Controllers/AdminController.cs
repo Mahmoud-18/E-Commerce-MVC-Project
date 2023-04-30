@@ -103,12 +103,7 @@ namespace ECommerceMVC.Controllers
             }
             // The Hell Start From Here ........
 
-            #region Product Type
-            //ProductType productType = new ProductType();
-            //productType.Name = "Clothes";
-            //productTypeRepository.Insert(productType);  
-
-            #endregion
+       
 
             #region Create Product
             Product product = new Product();
@@ -117,7 +112,7 @@ namespace ECommerceMVC.Controllers
             product.Image = addProductViewModel.Images[0];
             product.CreatedAtUtc = DateTime.UtcNow;
             product.IsDeleted = false;
-            product.DiscountId = addProductViewModel.DiscountId;
+            //product.DiscountId = addProductViewModel.DiscountId;
             product.Price = (decimal)addProductViewModel.Price;
             product.BrandId = addProductViewModel.BrandId;
             product.ProductTypeId = productTypeRepository.GetAll().FirstOrDefault(p => p.Name == "Clothes")!.Id;
