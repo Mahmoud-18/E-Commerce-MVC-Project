@@ -98,7 +98,7 @@ public class ProductController : Controller
     {
         ShoppingBagItem shoppingBagItem = new ShoppingBagItem();
 
-        Customer customer = customerRepository.GetByUserName(User.Identity.Name!);
+        Customer customer = customerRepository.GetByUserName(User.Identity!.Name!);
         ShoppingBag bag = shoppingBagRepository.GetByCustomerId(customer.Id);
 
         shoppingBagItem.ShoppingBagId = bag.Id;
