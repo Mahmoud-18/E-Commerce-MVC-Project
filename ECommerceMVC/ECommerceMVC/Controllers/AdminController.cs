@@ -426,9 +426,63 @@ namespace ECommerceMVC.Controllers
             var Roles = roleManager.Roles.ToList();
             return View(Roles);
         }
+        public IActionResult AddRole()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddRole(IdentityRole<int> newrole)
+        {
+            if(ModelState.IsValid)
+            {
+                await roleManager.CreateAsync(newrole);
+                return RedirectToAction("RolesIndex");
+            }
+            return View(newrole);
+        }
+        public async Task<IActionResult> EditRole(int id)
+        {
+            IdentityRole<int> role =await roleManager.FindByIdAsync(id.ToString());
+            return View(role);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditRole([FromRoute] int id ,IdentityRole<int> role)
+        {
+            if (ModelState.IsValid)
+            {
+                IdentityRole<int> updaterole = new();
+                updaterole.Id = id;
+                updaterole.Name=role.Name;
+                updaterole.ConcurrencyStamp = role.ConcurrencyStamp;
+                updaterole.NormalizedName = role.NormalizedName;
+                customer.SaveChanges();
+                return RedirectToAction("RolesIndex");
+            }
+            return View(role);
+        }
+        public async Task<IActionResult> DeleteRole(int id)
+        {
+            var role = await roleManager.FindByIdAsync(id.ToString());
+            List<Customer> users = (List<Customer>)await userManager.GetUsersInRoleAsync(role.Name);
+            if (users.Count > 0)
+            {
+                for (int i = 0; i < users.Count; i++)
+                {
+                    userManager.RemoveFromRoleAsync(users[i], role.Name);
+                }           
+            }
+            roleManager.DeleteAsync(role);
+            return RedirectToAction("RolesIndex");
+        }
 
         #endregion
+
+        
+
+
 
 
     }

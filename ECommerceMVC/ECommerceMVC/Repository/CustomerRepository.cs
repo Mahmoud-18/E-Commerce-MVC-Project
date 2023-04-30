@@ -31,7 +31,7 @@ namespace ECommerceMVC.Repository
         }
 
         public void Insert(Customer newcustomer)
-        {           
+        {
             context.Users.Add(newcustomer);
             context.SaveChanges();
         }
@@ -41,5 +41,10 @@ namespace ECommerceMVC.Repository
             context.Users.Update(customer);
             context.SaveChanges();
         }
+        public void SaveChanges()
+        {
+            context.SaveChanges();
+        }
+        
     }
 }

@@ -9,5 +9,6 @@ namespace ECommerceMVC.Repository
         void Insert(Customer newcustomer);
         void Update(int id, Customer customer);
         void Delete(int id);
+        void SaveChanges();
     }
 }

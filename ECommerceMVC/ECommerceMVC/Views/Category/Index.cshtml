@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ECommerceMVC.Models.Category>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- Breadcrumb Start -->
+<nav class="breadcrumb bg-light mb-30 p-3">
+    <a class="breadcrumb-item text-dark" style="text-decoration:none !important; color:inherit;" asp-action="Index">Admin</a>
+    <span class="breadcrumb-item active">Categories</span>
+</nav>
+<!-- Breadcrumb End -->
+
+<p>
+    <a class="btn btn-success" asp-action="AddCategory">Add New Category</a>
+</p>
+<table id="table" class="table table-striped  table-bordered" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>           
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAtUtc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedAtUtc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParentCategory)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAtUtc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedAtUtc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentCategory.Name)
+            </td>
+            <td>
+                    <a asp-action="EditCategory" asp-route-id="@item.Id" class="btn btn-warning mx-2">Edit</a>
+                    <a asp-action="CategoryDetails" asp-route-id="@item.Id" class="btn btn-info mx-2">Details</a>
+                    <a asp-action="DeleteCategory" asp-route-id="@item.Id" onclick="return confirm('Are you sure you want to delete this Category? \nNote: Make Sure That this Category doesn\'t have any Products assigned to it before deleting ' )" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
