@@ -66,7 +66,9 @@
                         <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">@User.Identity.Name</button>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a asp-action="Index" asp-controller="Account" class="dropdown-item" type="button">Profile</a>
+
+                                        <a style="text-decoration:none !important; color:inherit;" href="@Url.Action("MyAccount", "Account")" class="dropdown-item">My Account</a>
+                                @*<a asp-action="Index" asp-controller="Account" class="dropdown-item" type="button" >My Account</a>*@
                                 <a asp-action="SignOut" asp-controller="Account" class="dropdown-item" type="button">Sign out</a>
                             </div>
                         </div>
@@ -161,7 +163,7 @@
             </div>
         </div>
     </header>
-    <div class="container-fluid pb-10">
+    <div class="container-fluid pb-12">
         <main role="main" >
             @RenderBody()
         </main>
