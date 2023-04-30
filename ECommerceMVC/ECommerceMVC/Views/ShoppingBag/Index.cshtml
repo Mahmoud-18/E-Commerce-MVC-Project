@@ -35,7 +35,7 @@
                     <tr>
                         @foreach (var item in Model.Items)
                         {
-                        <td  class="align-middle" ><img src="#" alt="" style="width: 50px;"> @item.ProductItem.Name</td>
+                        <td  class="align-middle" ><img src="@item.ProductItem." alt="" style="width: 50px;"> @item.ProductItem.Name</td>
                         <td class="align-middle">@item.ProductItem.Price$</td>
                         <td class="align-middle">
                             <div class="input-group quantity mx-auto" style="width: 100px;">

@@ -23,10 +23,14 @@ public class ShoppingBagRepository : IShoppingBagRepository
     {
         return context.ShoppingBag.ToList();
     }
-
     public ShoppingBag GetById(int id)
     {
         return context.ShoppingBag.FirstOrDefault(sh => sh.Id == id)!;
+    }
+
+    public ShoppingBag GetByCustomerId(int id)
+    {
+        return context.ShoppingBag.FirstOrDefault(sh => sh.CustomerId == id)!;
     }
 
     public void Insert(ShoppingBag shoppingBag)
