@@ -36,7 +36,7 @@ namespace ECommerceMVC.Services
 
                 if (pro.DiscountId != null)
                 {
-                    if (discountRepo.IsDiscountActive(pro.Discount.Id))
+                    if (discountRepo.IsDiscountActive((int)pro.DiscountId)) // Safwat : change ** pro.Discount.Id ** => ** (int)pro.DiscountId **
                     {
                         decimal priceAfterDiscount = pro.Price - (decimal)pro.Discount.DiscountPercentage * pro.Price;
                         products.Add(new ShoppingProductsViewModel
@@ -78,7 +78,7 @@ namespace ECommerceMVC.Services
 
                     if (pro.DiscountId != null)
                     {
-                        if (discountRepo.IsDiscountActive(pro.Discount.Id))
+                        if (discountRepo.IsDiscountActive((int)pro.DiscountId))
                         {
                             decimal priceAfterDiscount = pro.Price - (decimal)pro.Discount.DiscountPercentage * pro.Price;
                             products.Add(new ShoppingProductsViewModel
@@ -117,7 +117,7 @@ namespace ECommerceMVC.Services
 
                         if (pro.DiscountId != null)
                         {
-                            if (discountRepo.IsDiscountActive(pro.Discount.Id))
+                            if (discountRepo.IsDiscountActive((int)pro.DiscountId))
                             {
                                 decimal priceAfterDiscount = pro.Price - (decimal)pro.Discount.DiscountPercentage * pro.Price;
                                 products.Add(new ShoppingProductsViewModel

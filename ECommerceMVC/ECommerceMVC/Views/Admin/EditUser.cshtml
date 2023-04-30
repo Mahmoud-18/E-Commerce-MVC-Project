@@ -7,9 +7,14 @@
     ViewBag.Genders = new SelectList(Enum.GetValues(typeof(Gender)));
 }
 
-<h1>EditUser</h1>
+<!-- Breadcrumb Start -->
+<nav class="breadcrumb bg-light mb-30 p-3">
+    <a class="breadcrumb-item text-dark" style="text-decoration:none !important; color:inherit;" asp-action="Index">Admin</a>
+    <span class="breadcrumb-item active">Users / Edit</span>
+</nav>
+<!-- Breadcrumb End -->
 
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="EditUser">

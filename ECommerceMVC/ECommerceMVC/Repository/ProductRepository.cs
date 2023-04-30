@@ -14,12 +14,6 @@ public class ProductRepository : IProductRepository
     {
         context = _context;
     }
-
-    public List<Product> GetAll()
-    {
-        
-        return context.Product.Include("Discount").ToList();
-    }
    
     // Repo
     public Product GetProductById(int id)
@@ -42,5 +36,34 @@ public class ProductRepository : IProductRepository
     public Discount GetDiscountById(int id)
     {
         return context.Discount.FirstOrDefault(d => d.Id == GetProductById(id).DiscountId)!;
+    }
+    // CURD Methods
+    public void Delete(int id)
+    {
+        Product product = GetById(id);
+        context.Product.Remove(product);
+        context.SaveChanges();
+    }
+
+    public List<Product> GetAll()
+    {
+        return context.Product.ToList();
+    }
+
+    public Product GetById(int id)
+    {
+        return context.Product.FirstOrDefault(sh => sh.Id == id)!;
+    }
+
+    public void Insert(Product product)
+    {
+        context.Product.Add(product);
+        context.SaveChanges();
+    }
+
+    public void Update(int id, Product product)
+    {
+        context.Update(product);
+        context.SaveChanges();
     }
 }

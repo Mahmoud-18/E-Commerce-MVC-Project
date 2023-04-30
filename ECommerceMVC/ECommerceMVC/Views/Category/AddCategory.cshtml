@@ -1,0 +1,60 @@
+﻿@model ECommerceMVC.Models.Category
+
+@{
+    ViewData["Title"] = "AddCategory";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    List<Category> CatList = (List<Category>)ViewData["CategoryList"]!;
+    SelectList CaterogyList = new SelectList((List<Category>)ViewData["CategoryList"]!, "Id", "Name");
+}
+
+<!-- Breadcrumb Start -->
+<nav class="breadcrumb bg-light mb-30 p-3">
+    <a class="breadcrumb-item" style="text-decoration:none !important; color:inherit;" asp-action="Index">Admin</a>
+    <span class="breadcrumb-item active">Category / Add</span>
+</nav>
+<!-- Breadcrumb End -->
+
+<div class="container-fluid">
+   <div class="col-lg-5 mx-auto border border-1 p-3 rounded-3 bg-gray-100">
+        <h5 class="section-title position-relative text-uppercase mt-2 my-4 text-center">
+            <span class="pr-3">New Category</span>
+        </h5>
+        <form asp-action="AddCategory">
+        <div class="row">
+            <div class="col-md-12">
+             
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ParentCategoryId" class="control-label"></label>                        
+                        <select asp-for="ParentCategoryId" class="form-control">
+                            <option value="null">No Parent Category</option>
+                            @foreach (var item in CatList)
+                            {                              
+                              <option>@item.Name</option>                                                               
+                            }
+                        </select>
+                    </div>
+                    <div class=" form-group mt-3 col-md-6 mx-auto text-center">
+                        <input type="submit" value="Add" class="btn btn-success py-3" style=" width:180px" />
+                    </div>
+              
+           </div>
+        </div>
+      </form>
+   
+   </div>
+</div>
+<div>
+    <a asp-action="Index" asp-controller="Category" class="btn btn-danger btn-block text-center my-3" style="width:180px">Back</a>
+</div>
+

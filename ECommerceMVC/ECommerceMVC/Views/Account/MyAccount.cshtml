@@ -1,0 +1,79 @@
+﻿ <style>
+ #main { 
+ display: flex;
+ gap: 40px;
+ flex-wrap: wrap;
+ width: 100%;
+}
+.cell { display: inline-block; }
+.card { border: 1px solid black; width: 15em; height: 30em; }
+.card img { width: 15em; height: 20em; }
+.container { padding: 2px 16px; height: 10em; width: 100%; box-sizing: border-box; }
+    </style>
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="@Url.Action("MyAccount", "Account")">MyAccount</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+      <div id="main" style="display: flex; justify-content: center; align-items: center;">
+        
+       <div class="cell"
+           style="padding: 10px; border: 1px solid #ccc; background-color: #f0f0f0; color: #333; text-align: center; cursor: pointer; border-radius: 5px; box-shadow: 2px 2px 2px #ccc;"
+     onmouseover="this.style.backgroundColor='#e0e0e0'; this.style.color='#000';"
+     onmouseout="this.style.backgroundColor='#f0f0f0'; this.style.color='#333';" > 
+          <div class="ya-card-cell" >
+              <a href="@Url.Action("YourOrders", "Account")" class="ya-card__whole-card-link" style="text-decoration:none;">
+            <img src="/img/YourAccountimages/ordersdone.png" width="200" height="200">
+            <div class="container">
+              <h4><b>Your Orders</b></h4>
+              <p style="color:black;">Track, return, or buy things again</p>
+            </div>
+            </a>
+          </div>
+          </div>
+
+
+       <div class="cell"
+           style="padding: 10px; border: 1px solid #ccc; background-color: #f0f0f0; color: #333; text-align: center; cursor: pointer; border-radius: 5px; box-shadow: 2px 2px 2px #ccc;"
+     onmouseover="this.style.backgroundColor='#e0e0e0'; this.style.color='#000';"
+     onmouseout="this.style.backgroundColor='#f0f0f0'; this.style.color='#333';" > 
+          <div class="ya-card-cell">
+              <a href="@Url.Action("YourAddresses", "Account")" class="ya-card__whole-card-link" style="text-decoration:none;">
+            <img src="/img/YourAccountimages/addressesdone.png"  width="200" height="200">
+            <div class="container">
+              <h4><b>Your Addresses</b></h4>
+              <p style="color:black;">Edit addresses for orders</p>
+            </div>
+            </a>
+          </div>
+          </div>
+          
+          
+          <div class="cell"
+            style="padding: 10px; border: 1px solid #ccc; background-color: #f0f0f0; color: #333; text-align: center; cursor: pointer; border-radius: 5px; box-shadow: 2px 2px 2px #ccc;"
+     onmouseover="this.style.backgroundColor='#e0e0e0'; this.style.color='#000';"
+     onmouseout="this.style.backgroundColor='#f0f0f0'; this.style.color='#333';"  >
+          <div class="ya-card-cell">
+              <a href="@Url.Action("EditProfile", "Account")" class="ya-card__whole-card-link" style="text-decoration:none;">
+            <img src="/img/YourAccountimages/03.png" width="200" height="200">
+            <div class="container">
+              <h4><b>Login &amp; security</b></h4>
+              <p style="color:black;" >Manage password, email, and mobile number</p>
+            </div>
+            </a>
+          </div>
+          </div>
+
+
+        </div>
+
+   
+

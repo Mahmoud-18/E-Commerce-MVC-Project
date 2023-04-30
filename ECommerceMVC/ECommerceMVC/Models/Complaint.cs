@@ -12,6 +12,11 @@ namespace ECommerceMVC.Models
 
         public string Message { get; set; }
 
+        public DateTime CreatedOnUtc { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
+        public DateTime? DeletedOnUtc { get; set; }
+
 
         [ForeignKey("Customer")]
         public int CustomerId { get; set; }

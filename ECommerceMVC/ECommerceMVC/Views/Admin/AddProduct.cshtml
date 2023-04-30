@@ -1,0 +1,200 @@
+﻿@model AddProductViewModel
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    List<Category> catList = (List<Category>)ViewData["CategoryList"]!;
+    List<ProductAttribute> prdAttList = (List<ProductAttribute>)ViewData["ProductAttributes"]!;
+    List<AttributeValues> AttValList = (List<AttributeValues>)ViewData["AttributeValues"]!;
+    //
+    SelectList caterogyList = new SelectList((List<Category>)ViewData["CategoryList"]!, "Id", "Name");
+    SelectList brandList = new SelectList((List<Brand>)ViewData["BrandList"]!, "Id", "Name");
+    SelectList discountList = new SelectList((List<Discount>)ViewData["DiscountList"]!, "Id", "Name");
+    SelectList productAttributesList = new SelectList((List<ProductAttribute>)ViewData["ProductAttributes"]!, "Id", "Name");
+
+}
+
+<h1>AddProduct</h1>
+<form asp-action="AddProduct" asp-controller="Admin">
+    <div class="container-fluid">
+        <div asp-validation-summary="ModelOnly" class="text-danger">
+        </div>
+        <div class="row px-xl-4">
+            <div class="col-lg-6 mb-5">
+                <div class="contact-form bg-light p-30">
+                    <div>
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" placeholder="Enter The Product Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                        <br />
+                    </div>
+                    <div>
+                        <label asp-for="CategoryId"></label>
+                        <select asp-for="CategoryId" class="form-control">
+                            @foreach (var item in catList)
+                            {
+                                if (item.ParentCategoryId == null)
+                                {
+                                    <optgroup label="@item.Name">
+                                        @foreach (var sub_Item in catList)
+                                        {
+                                            if (sub_Item.ParentCategory != null && sub_Item.ParentCategoryId == item.Id)
+                                            {
+                                                <option value="@sub_Item.Id">@sub_Item.Name</option>
+                                            }
+                                        }
+                                    </optgroup>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        <br />
+                    </div>
+                    <div>
+                        <label asp-for="BrandId"></label>
+                        <select asp-for="BrandId" asp-items="brandList" class="form-control"></select>
+                        <span asp-validation-for="BrandId" class="text-danger"></span>
+                        <br />
+                    </div>
+                    <div>
+                        <label asp-for="Price"></label>
+                        <input asp-for="Price" placeholder="Enter The Price" type="number" class="form-control" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                        <br />
+                    </div>
+                    <div>
+                        <label asp-for="DiscountId"></label>
+                        <select class="form-control" asp-for="DiscountId" asp-items="discountList"></select>
+                        <br />
+                    </div>
+                    @*   <div>
+                    <label asp-for="StockUnits"></label>
+                    <input asp-for="StockUnits" placeholder="Enter The Stock Units" type="number" class="form-control" />
+                    <span asp-validation-for="StockUnits" class="text-danger"></span>
+                    <br />
+                    </div>*@
+                    <div>
+                        <label asp-for="Description"></label>
+                        <textarea asp-for="Description" placeholder="Enter The Description" style="height:100px;" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                        <br />
+                    </div>
+                    <div>
+                        <label>Image</label>
+                        <br />
+                        <label class="btn btn-outline-primary" for="inputTag" asp-for="Images" multiple>
+                            <i class="fa fa-2x fa-image" style="{color: #ffd424}:hover{color:#ffffff}"></i>
+                            <input id="inputTag" asp-for="Images" style="display:none;" type="file" multiple />
+                            <br />
+                            <span id="imageName"></span>
+                        </label>
+                        <span asp-validation-for="Images" class="text-danger"></span>
+                        <label>(you can select more than one image)</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-5">
+                <div class="contact-form bg-light p-30">
+                    <label class="font-weight-bold">Product Attribute</label>
+                    <div>
+
+
+                        @for (int i = 0; i < prdAttList.Count; i++)
+                        {
+                            <div>
+                                <label>@prdAttList[i].Name</label>
+                                <select id="@i" class="form-control" multiple data-live-search="true">
+                                    @for (int j = 0; j < AttValList.Count; j++)
+                                    {
+                                        if (AttValList[j].ProductAttributeId == prdAttList[i].Id)
+                                        {
+                                            <option value="@AttValList[j].Id">@AttValList[j].Value</option>
+                                        }
+                                    }
+                                </select>
+                                <br />
+                            </div>
+                        }
+                    </div>
+
+                    <a class="btn btn-outline-primary" style="margin-bottom:10px;" onclick="addRow()">Create Attribute Table</a>
+
+                    <div id="tableContainer">
+                    </div>
+
+                    <div id="Attribute">
+
+                        <table id="myTable" class="table">
+                            <tr>
+                                <th>Color</th>
+                                <th>Size</th>
+                                <th>Count</th>
+                            </tr>
+
+                        </table>
+
+                    </div>
+                    <div>
+                        <input type="submit" value="Add Product" class="btn btn-primary py-2 px-5" />
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+    {
+    <script>
+
+        function addRow() {
+            event.preventDefault();
+            let countItemInList_1 = $('#0 option:selected').length;
+            let countItemInList_2 = $('#1 option:selected').length;
+            var numberOfRows = countItemInList_1 * countItemInList_2;
+            $('#myTable').empty();
+            $('#myTable').append("  <tr> <th> Color <\/th> <th> Size <\/th> <th> Count <\/th> <\/tr> ");
+            console.log($('#0 option:selected').toArray().map(item => item.text[0]));
+            var x = 0;
+            var counter = 0;
+            for (let n = 0; n < countItemInList_1; n++) {
+                for (let z = 0; z < countItemInList_2; z++) {
+                    const table = document.getElementById("myTable");
+                    const newRow = table.insertRow(-1);
+                    const nameCell = newRow.insertCell(0);
+                    const emailCell = newRow.insertCell(1);
+                    const phoneCell = newRow.insertCell(2);
+                    const add = newRow.insertCell(3);
+                    var th = document.getElementById("add_table_row")
+                    var value_1 = $('#0').find(":selected").toArray().map(item => item.value)[n];
+                    var value_2 = $('#1').find(":selected").toArray().map(item => item.value)[z];
+                    var text_1 = $('#0').find(":selected").toArray().map(item => item.text)[n];
+                    var text_2 = $('#1').find(":selected").toArray().map(item => item.text)[z];
+                    nameCell.innerHTML = `  <input value=${text_1} readonly type="text" class="item_sel"  data-val="true" id="ProductAttribute[${counter}].ColorAttributeValueID" name="ProductAttribute[${counter}].ColorAttributeValueID" \"  style=\"box-sizing: border-box; border: 1px solid #ccc;width:100px;\"></input>`;
+                    emailCell.innerHTML = ` <input value=${text_2} readonly type="text"  class="item_sel" data-val="true" id="ProductAttribute[${counter}].SizeAttributeValueID" name="ProductAttribute[${counter}].SizeAttributeValueID" \" style=\"box-sizing: border-box; border: 1px solid #ccc;width:100px;\"></input>`;
+                    phoneCell.innerHTML = ` <input value=${x}  type="number" class="item_sel" data-val="true" id="ProductAttribute[${counter}].CountAttributeValue" name="ProductAttribute[${counter}].CountAttributeValue"  \" style=\"box-sizing: border-box; border: 1px solid #ccc;width:100px;\"></input>`;
+                    add.innerHTML = '<td><a onclick="removeRow(this)" class="fa fa-trash" aria-hidden="true" /></td>';
+                    counter++;
+                }
+            }
+        }
+
+        //
+        function removeRow(button) {
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+        // Image
+        let input = document.getElementById("inputTag");
+        let imageName = document.getElementById("imageName")
+
+        input.addEventListener("change", () => {
+            let inputImage = document.querySelector("input[type=file]").files[0];
+
+            imageName.innerText = inputImage.name;
+        })
+
+    </script>
+
+}
+
