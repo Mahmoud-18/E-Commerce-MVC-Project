@@ -36,9 +36,8 @@
             CurrentPage = currentPage;
             PageSize = pageSize;
             TotalPages = totalPages;
-            EndPage = startPage;
-            StartPage = endPage;
-
+            StartPage = startPage;
+            EndPage = endPage;
         }
     }
 }
