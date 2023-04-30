@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "CategoryDetails";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    List<Category> CatList = (List<Category>)ViewData["CategoryList"]!;
 }
 
 <!-- Breadcrumb Start -->
@@ -12,7 +13,7 @@
 </nav>
 <!-- Breadcrumb End -->
 
-<h3>@Html.DisplayNameFor(model => model.Name)</h3>
+<h3>@Html.DisplayFor(model => model.Name)</h3>
 <div>   
     <hr />
     <dl class="row">
@@ -44,8 +45,22 @@
             @Html.DisplayNameFor(model => model.ParentCategory)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ParentCategory.Id)
+            @Html.DisplayFor(model => model.ParentCategory.Name)
         </dd>
+        @if(CatList.Count > 0 )
+        {
+            <dt class="col-sm-2">
+                List of its Sub-Categries
+            </dt>
+            <dd class="col-sm-10">
+                <ul >
+                 @foreach(Category cat in CatList)
+                 {
+                    <li class="list-group-item">@cat.Name</li>                                                         
+                 }
+                </ul>
+            </dd>
+        }
     </dl>
 </div>
 <div>

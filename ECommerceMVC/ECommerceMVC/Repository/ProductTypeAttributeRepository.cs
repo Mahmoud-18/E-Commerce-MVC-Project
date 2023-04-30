@@ -28,6 +28,10 @@ namespace ECommerceMVC.Repository
         {
             return context.ProductTypeAttribute.FirstOrDefault(sh => sh.Id == id)!;
         }
+        public List<ProductTypeAttribute> GetByProductTypeId(int id)
+        {
+            return context.ProductTypeAttribute.Where(sh => sh.ProductTypeId == id).ToList();
+        }
 
         public void Insert(ProductTypeAttribute productTypeAttribute)
         {

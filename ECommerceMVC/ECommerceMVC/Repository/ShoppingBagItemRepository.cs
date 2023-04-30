@@ -1,5 +1,6 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceMVC.Repository
 {
@@ -21,7 +22,7 @@ namespace ECommerceMVC.Repository
 
         public List<ShoppingBagItem> GetAll()
         {
-            return context.ShoppingBagItem.ToList();
+            return context.ShoppingBagItem.Include("ProductItem").ToList();
         }
 
         public ShoppingBagItem GetById(int id)
