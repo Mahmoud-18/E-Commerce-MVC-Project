@@ -13,17 +13,14 @@
 <!-- Breadcrumb End -->
 
 <p>
-    <a class="btn btn-success" asp-action="AddRole">Add New Category</a>
+    <a class="btn btn-success" asp-action="AddCategory">Add New Category</a>
 </p>
-<table id="table" class="table table-striped">
+<table id="table" class="table table-striped  table-bordered" style="width:100%">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
+            </th>           
             <th>
                 @Html.DisplayNameFor(model => model.CreatedAtUtc)
             </th>
@@ -41,9 +38,6 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAtUtc)

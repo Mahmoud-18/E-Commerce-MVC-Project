@@ -1,0 +1,52 @@
+﻿@model ECommerceMVC.Models.Category
+
+@{
+    ViewData["Title"] = "EditCategory";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    List<Category> CatList = (List<Category>)ViewData["CategoryList"]!;
+    SelectList CaterogyList = new SelectList((List<Category>)ViewData["CategoryList"]!, "Id", "Name");
+}
+
+<!-- Breadcrumb Start -->
+<nav class="breadcrumb bg-light mb-30 p-3">
+    <a class="breadcrumb-item text-dark" style="text-decoration:none !important; color:inherit;" asp-action="Index">Admin</a>
+    <span class="breadcrumb-item active">Categories / Edit</span>
+</nav>
+<!-- Breadcrumb End -->
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditCategory">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParentCategoryId" class="control-label"></label>
+                <select asp-for="ParentCategoryId" class="form-control">
+                    <option value="null">No Parent Category</option>
+                    @foreach (var item in CatList)
+                    {
+                        <option>@item.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group mt-3 col-md-6 mx-auto text-center">
+                <input type="submit" value="Save" class="btn btn-success" py-3 />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-danger" asp-action="Index">Back to List</a>
+</div>
+
