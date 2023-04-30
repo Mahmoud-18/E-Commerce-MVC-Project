@@ -4,8 +4,14 @@
     ViewData["Title"] = "UserDetails";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<!-- Breadcrumb Start -->
+<nav class="breadcrumb bg-light mb-30 p-3">
+    <a class="breadcrumb-item text-dark" style="text-decoration:none !important; color:inherit;" asp-action="Index">Admin</a>
+    <span class="breadcrumb-item active">Users / Detail</span>
+</nav>
+<!-- Breadcrumb End -->
 
-<h3>@Html.DisplayNameFor(model => model.UserName) Details</h3>
+<h3>@Html.DisplayNameFor(model => model.UserName)</h3>
 
 <div>       
     <dl class="row">

@@ -1,5 +1,6 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace ECommerceMVC.Repository
@@ -21,7 +22,7 @@ namespace ECommerceMVC.Repository
 
         public List<Category> GetAll()
         {
-            return context.Category.ToList();
+            return context.Category.Include("ParentCategory").ToList();
         }       
         public Category GetById(int id)
         {

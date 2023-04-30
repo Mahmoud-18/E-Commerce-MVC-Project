@@ -7,13 +7,12 @@
 }
 <!-- Breadcrumb Start -->
 <nav class="breadcrumb bg-light mb-30 p-3">
-    <a class="breadcrumb-item text-dark" asp-action="Index">Admin</a>
-    <span class="breadcrumb-item active">Roles/Add</span>
+    <a class="breadcrumb-item text-dark" style="text-decoration:none !important; color:inherit;" asp-action="Index">Admin</a>
+    <span class="breadcrumb-item active">Roles / Add</span>
 </nav>
 <!-- Breadcrumb End -->
 <hr />
-<div class="container-fluid">
-    <a asp-action="RolesIndex" asp-controller="Admin" class="btn btn-danger btn-block text-center my-3" style="width:180px">Back</a>
+<div class="container-fluid">   
     <div class="col-lg-10 mx-auto border border-1 p-2 rounded-3 bg-gray-100">
         <h5 class="section-title position-relative text-uppercase mt-2 my-4 text-center">
             <span class="pr-3">New Role</span>
@@ -31,6 +30,7 @@
             </div>
         </form>
     </div>
+    <a asp-action="RolesIndex" asp-controller="Admin" class="btn btn-danger btn-block text-center my-3" style="width:180px">Back</a>
 </div>
 
 @section Scripts {

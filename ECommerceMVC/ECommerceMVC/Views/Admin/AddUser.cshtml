@@ -5,8 +5,14 @@
     SelectList CountriesOptions = new SelectList(Model.Countries, "Id", "Name");
     ViewBag.Genders = new SelectList(Enum.GetValues(typeof(Gender)));
 }
-<div class="container-fluid">
-    <a asp-action="UsersIndex" asp-controller="Admin" class="btn btn-danger btn-block text-center my-3" style="width:180px">Back</a>
+<!-- Breadcrumb Start -->
+<nav class="breadcrumb bg-light mb-30 p-3">
+    <a class="breadcrumb-item text-dark" style="text-decoration:none !important; color:inherit;" asp-action="Index">Admin</a>
+    <span class="breadcrumb-item active">Users / Add</span>
+</nav>
+<!-- Breadcrumb End -->
+
+<div class="container-fluid">  
     <div class="col-lg-10 mx-auto border border-1 p-2 rounded-3 bg-gray-100">
         <h5 class="section-title position-relative text-uppercase mt-2 my-4 text-center">
             <span class="pr-3">New Account</span>
@@ -139,6 +145,7 @@
             </div>
         </form>
     </div>
+    <a asp-action="UsersIndex" asp-controller="Admin" class="btn btn-danger btn-block text-center my-3" style="width:180px">Back</a>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

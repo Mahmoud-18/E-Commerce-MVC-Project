@@ -155,7 +155,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         @*<h6 class="collapse-header">Login Screens:</h6>*@
                         <a class="collapse-item" href="login.html">Product</a>
-                        <a class="collapse-item" asp-action="Index" asp-controller="Admin">Caterogy</a>
+                        <a class="collapse-item" asp-action="Index" asp-controller="Category">Caterogy</a>
                         <a class="collapse-item" asp-action="Index" asp-controller="Brand">Brands </a>
                         <a class="collapse-item" asp-action="Index" asp-controller="Admin">Attribute </a>
 
@@ -173,15 +173,9 @@
                 </a>
                 <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-<<<<<<< HEAD
-                        <a class="collapse-item" href="/Country/Index">Countries</a>
-                        <a class="collapse-item" href="cards.html">Payment Methods</a>
-                        <a class="collapse-item" href="cards.html">Order Status</a>
-=======
-                        <a class="collapse-item" href="#">Countries</a>
-                        <a class="collapse-item" href="#">Payment Methods</a>
-                        <a class="collapse-item" href="#">Order Status</a>
->>>>>>> 195cea1ba2c4ce527808d6732902b9ec3febe1be
+                        <a class="collapse-item" asp-action="Index" asp-controller="Country">Countries</a>
+                        <a class="collapse-item" asp-action="Index" asp-controller="Admin">Payment Methods</a>
+                        <a class="collapse-item" asp-action="Index" asp-controller="Admin">Order Status</a>
                     </div>
                 </div>
             </li>
@@ -202,7 +196,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" asp-action="Index" asp-controller="Admin">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Content Management</span>
                 </a>

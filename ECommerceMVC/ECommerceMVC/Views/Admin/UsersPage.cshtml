@@ -5,14 +5,18 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Users</h1>
-
+<!-- Breadcrumb Start -->
+<nav class="breadcrumb bg-light mb-30 p-3">
+    <a class="breadcrumb-item text-dark" style="text-decoration:none !important; color:inherit;" asp-action="Index">Admin</a>
+    <span class="breadcrumb-item active">Users</span>
+</nav>
+<!-- Breadcrumb End -->
 <p>
-    <a class="btn btn-btn btn-success my-3" asp-action="AddUser">Add New User</a>
+    <a class="btn btn-success my-3" asp-action="AddUser">Add New User</a>
 </p>
 <table id="table" class="table table-striped" style="width:100%">
     <thead>
-        <tr>
+        <tr class="text-center">
             <th>
                 @Html.DisplayNameFor(model => model.UserName)
             </th>
@@ -31,7 +35,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.IsAdmin)
             </th>   
-            <th class="text-center">Actions</th>
+            <th >Actions</th>
         </tr>
     </thead>
     <tbody>

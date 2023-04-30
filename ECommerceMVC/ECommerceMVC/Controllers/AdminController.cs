@@ -244,9 +244,9 @@ namespace ECommerceMVC.Controllers
             }
             return View(newrole);
         }
-        public IActionResult EditRole(int id)
+        public async Task<IActionResult> EditRole(int id)
         {
-            var role = roleManager.FindByIdAsync(id.ToString());
+            IdentityRole<int> role =await roleManager.FindByIdAsync(id.ToString());
             return View(role);
         }
         [HttpPost]
@@ -255,7 +255,12 @@ namespace ECommerceMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                await roleManager.UpdateAsync(role);
+                IdentityRole<int> updaterole = new();
+                updaterole.Id = id;
+                updaterole.Name=role.Name;
+                updaterole.ConcurrencyStamp = role.ConcurrencyStamp;
+                updaterole.NormalizedName = role.NormalizedName;
+                customer.SaveChanges();
                 return RedirectToAction("RolesIndex");
             }
             return View(role);
@@ -269,14 +274,17 @@ namespace ECommerceMVC.Controllers
                 for (int i = 0; i < users.Count; i++)
                 {
                     userManager.RemoveFromRoleAsync(users[i], role.Name);
-                }
-
-                roleManager.DeleteAsync(role);
+                }           
             }
-            return RedirectToAction("UsersIndex");
+            roleManager.DeleteAsync(role);
+            return RedirectToAction("RolesIndex");
         }
 
         #endregion
+
+        
+
+
 
 
     }
