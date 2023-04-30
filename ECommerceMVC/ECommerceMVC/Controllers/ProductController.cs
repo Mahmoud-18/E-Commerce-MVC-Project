@@ -15,11 +15,13 @@ public class ProductController : Controller
     IProductAttributeRepository productAttributeRepository;
     ICustomerRepository customerRepository;
     IShoppingBagRepository shoppingBagRepository;
+    IDiscountRepository discountRepository;
+
     int Id { get; set; }
-    public ProductController(IProductRepository _productRepository, IProductItemRepository _productItemRepository, 
+    public ProductController(IProductRepository _productRepository, IProductItemRepository _productItemRepository,
         IProductImagesRepository _productImagesRepository, IAttributeValuesRepository _attributeValuesRepository,
         IProductAttributeValuesRepository _productAttributeValuesRepository, IProductAttributeRepository _productAttributeRepository,
-            ICustomerRepository _customerRepository, IShoppingBagRepository _shoppingBagRepository)
+            ICustomerRepository _customerRepository, IShoppingBagRepository _shoppingBagRepository, IDiscountRepository _discountRepository)
     {
         productRepository = _productRepository;
         productItemRepository = _productItemRepository;
@@ -29,6 +31,7 @@ public class ProductController : Controller
         productAttributeRepository = _productAttributeRepository;
         customerRepository = _customerRepository;
         shoppingBagRepository = _shoppingBagRepository;
+        discountRepository = _discountRepository;
     }
 
     [HttpGet]
@@ -51,11 +54,18 @@ public class ProductController : Controller
             Brand brand = productRepository.GetBrandById(id);
             List<string> productImages = productRepository.GetImageById(id);
             Discount discount = productRepository.GetDiscountById(id);
+            if (discountRepository.IsDiscountActive(discount.Id))
+            {
+                productDetailsViewModel.PriceBeforeDiscount = (1 - discount.DiscountPercentage) * (float)product.Price;
+            }
+            else
+            {
+                productDetailsViewModel.PriceBeforeDiscount = 0;
+            }
             //List<ProductImages> productImages = context.ProductImages.Where(im => im.ProductItemId == productItem.Id).ToList();
 
             productDetailsViewModel.Name = product.Name;
             productDetailsViewModel.price = (float)product.Price;
-            productDetailsViewModel.PriceBeforeDiscount = (1 - discount.DiscountPercentage) * (float)product.Price;
             productDetailsViewModel.Description = product.Description;
             int count = 0;
             foreach (var item in productItemList)
@@ -70,9 +80,9 @@ public class ProductController : Controller
                     }
                     count++;
                 }
-                 
+
                 // Add Size And Color For the Product Item
-                ProductAttributeValues productAttributeValues = productAttributeValuesRepository.GetAll().Where(p=>p.ProductItemId==item.Id).FirstOrDefault()!;
+                ProductAttributeValues productAttributeValues = productAttributeValuesRepository.GetAll().Where(p => p.ProductItemId == item.Id).FirstOrDefault()!;
                 AttributeValues attributeValues = attributeValuesRepository.GetById(productAttributeValues.AttributeValuesId);
 
                 int productAttributeSizeId = productAttributeRepository.GetAll().Where(p => p.Name == "Size").FirstOrDefault()!.Id;
@@ -83,13 +93,16 @@ public class ProductController : Controller
                 }
                 else if (attributeValues.ProductAttributeId == productAttributeColorId)
                 {
-                    productDetailsViewModel.Color!.Add(attributeValues.Value);
+                    if (!productDetailsViewModel.Color!.Contains(attributeValues.Value))
+                    {
+                        productDetailsViewModel.Color!.Add(attributeValues.Value);
+                    }
                 }
 
 
             }
             productDetailsViewModel.BrandName = brand.Name;
-   
+
             return View("ProductDetails", productDetailsViewModel);
         }
     }
@@ -102,7 +115,7 @@ public class ProductController : Controller
         ShoppingBag bag = shoppingBagRepository.GetByCustomerId(customer.Id);
 
         shoppingBagItem.ShoppingBagId = bag.Id;
-        //shoppingBagItem.ProductItemId;//=
+        //shoppingBagItem.ProductItemId = 
         shoppingBagItem.Quantity = productDetailsViewModel.ProductCount;
 
         return View();
