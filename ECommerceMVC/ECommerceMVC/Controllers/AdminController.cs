@@ -114,7 +114,7 @@ namespace ECommerceMVC.Controllers
             Product product = new Product();
             product.Name = addProductViewModel.Name;
             product.Description = addProductViewModel.Description;
-            product.Image = addProductViewModel.Images[0];
+            product.Image = "/img/" + addProductViewModel.Images[0];
             product.CreatedAtUtc = DateTime.UtcNow;
             product.IsDeleted = false;
             product.DiscountId = addProductViewModel.DiscountId;
@@ -127,7 +127,7 @@ namespace ECommerceMVC.Controllers
             #endregion
 
             #region Create Product Item
-            int productId = productRepository.GetAll().FirstOrDefault(p => p.Name == addProductViewModel.Name && p.Description == addProductViewModel.Description && p.IsDeleted == false && p.Image == addProductViewModel.Images[0] && p.DiscountId == addProductViewModel.DiscountId)!.Id; ;
+            int productId = product.Id ;
             foreach (var item in addProductViewModel.ProductAttribute)
             {
                 ProductItem productItem = new ProductItem();
@@ -170,7 +170,7 @@ namespace ECommerceMVC.Controllers
                 foreach (var item in addProductViewModel.Images)
                 {
                     ProductImages productImages = new ProductImages();
-                    productImages.ImageURL = item;
+                    productImages.ImageURL = "/img/" +item;
                     productImages.ProductItemId = item_1.Id;
                     productImagesRepository.Insert(productImages);
                 }

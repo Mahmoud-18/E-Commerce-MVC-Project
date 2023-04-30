@@ -8,24 +8,22 @@ using System.Data;
 
 namespace ECommerceMVC.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository categoryRepository;
-        private readonly IProductRepository productRepository;
 
 
-        public CategoryController(ICategoryRepository _categoryRepository, IProductRepository _product) 
+        public CategoryController(ICategoryRepository _categoryRepository) 
         {
             categoryRepository = _categoryRepository;
-            productRepository = _product;
+           
         }
-
-        [Authorize(Roles = "Admin")]
+       
         public IActionResult Index()
         {
             return View(categoryRepository.GetAll());
         }
-        [Authorize(Roles = "Admin")]
         public IActionResult AddCategory()
         {
 
