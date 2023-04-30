@@ -1,0 +1,592 @@
+﻿ <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="@Url.Action("MyAccount", "Account")">MyAccount</a>
+                    <span class="breadcrumb-item active">Edit your Profile</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Customer SignUp Start --> 
+  
+
+    <style>
+   .grid-container-element { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    grid-gap: 20px; 
+    border: 1px solid black; 
+    width: 50%; 
+} 
+.grid-child-element { 
+    margin: 10px; 
+    border: 1px solid red; 
+}
+    </style>
+
+<div class="grid-container-element">
+    <div class="grid-child-element purple col-md-4">
+
+         <div class="col-md-4 form-group">
+                <label>First444444444444444 Name</label>
+                <input class="form-control col-md-6" type="text"  placeholder="Ahmed"  />
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Last Name</label>
+                <input class=" col-md-6 form-control" type="text" placeholder="Muhamed"  />
+              </div>
+            <div class="col-md-6 form-group">
+                <label>User Name</label>
+                <input
+                  class="col-md-6 form-control"
+                  type="text"
+                  placeholder="Professor Trousers"
+                />
+              </div>
+              <div class="col-md-6 form-group">
+                <label>E-mail</label>
+                <input
+                  class="col-md-6 form-control"
+                  type="text"
+                  placeholder="example@email.com"
+                />
+              <!-- Content-->
+              </div>
+              </div>
+              </div>
+              </div>
+
+
+
+
+
+
+
+
+
+
+    <div class="grid-child-element green col-md-4">
+
+
+         <div class="col-md-4 form-group">
+                <label>First Name</label>
+                <input class="col-md-6 form-control" type="text" style="width: 25%" placeholder="Ahmed"  />
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Last Name</label>
+                <input class="col-md-6 form-control" type="text" placeholder="Muhamed" />
+              </div>
+            <div class="col-md-6 form-group">
+                <label>User Name</label>
+                <input
+                  class="col-md-6 form-control"
+                  type="text"
+                  placeholder="Professor Trousers"
+
+                />
+              </div>
+              <div class="col-md-6 form-group">
+                <label>E-mail</label>
+                <input
+                  class="col-md-6 form-control"
+                  type="text"
+                  placeholder="example@email.com"
+                />
+              <!-- Content-->
+              </div>
+              </div>
+              </div>
+              </div>
+
+
+
+</div>
+
+
+      
+    <!-- Checkout End -->
+
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"
+      ><i class="fa fa-angle-double-up"></i
+    ></a>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.js"></script>            
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+
+@*  <div class="col-md-6 form-group">
+                <label>First Name</label>
+                <input class="form-control" type="text" placeholder="Ahmed" />
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Last Name</label>
+                <input class="form-control" type="text" placeholder="Muhamed" />
+              </div>
+            <div class="col-md-6 form-group">
+                <label>User Name</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Professor Trousers"
+                />
+              </div>
+              <div class="col-md-6 form-group">
+                <label>E-mail</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="example@email.com"
+                />
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Password</label>
+                <div class="input-group">
+                  <input
+                    class="form-control"
+                    type="password"
+                    placeholder="Enter Password"
+                    id="password"/>
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary password-toggle-btn"
+                      type="button">
+                      <i class="fa fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Re-Enter Password</label>
+                <div class="input-group">
+                  <input
+                    class="form-control"
+                    type="password"
+                    placeholder="Re-Enter Password"
+                    id="repassword"
+                  />
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary repassword-toggle-btn"
+                      type="button"
+                    >
+                      <i class="fa fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+      <div class="col-md-6 form-group">
+        <div class="form-group">
+          <div>
+            <label>Phone Number</label>
+          </div>
+          <div>
+            <input
+              class="form-control"
+              type="tel"
+              name="phone"
+              id="phone"
+              placeholder="Enter your Phone Number"
+            />
+          </div>
+        </div>
+      </div>
+      <input type="hidden" name="country_code" id="country_code" />
+              <div class="col-md-6 form-group">
+                <label>Gender</label>
+                <select class="form-control" id="gender">
+                  <option value="">Select your gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+            </div>
+          </div>
+              </div>
+
+              <button type="submit" class="btn btn-block btn-primary font-weight-bold py-3">
+                Sign Up
+              </button>
+
+
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+
+
+
+
+          <div class="col-lg-10 mx-auto">
+          <h5 class="section-title position-relative text-uppercase mb-3 text-center">
+            <span class="bg-secondary pr-3">Current Account Informations</span>
+          </h5>
+          <div class="bg-light p-30 mb-5">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label>First Name</label>
+                <input class="form-control" type="text" placeholder="Ahmed" />
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Last Name</label>
+                <input class="form-control" type="text" placeholder="Muhamed" />
+              </div>
+            <div class="col-md-6 form-group">
+                <label>User Name</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Professor Trousers"
+                />
+              </div>
+              <div class="col-md-6 form-group">
+                <label>E-mail</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="example@email.com"
+                />
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Password</label>
+                <div class="input-group">
+                  <input
+                    class="form-control"
+                    type="password"
+                    placeholder="Enter Password"
+                    id="password"/>
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary password-toggle-btn"
+                      type="button">
+                      <i class="fa fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Re-Enter Password</label>
+                <div class="input-group">
+                  <input
+                    class="form-control"
+                    type="password"
+                    placeholder="Re-Enter Password"
+                    id="repassword"
+                  />
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary repassword-toggle-btn"
+                      type="button"
+                    >
+                      <i class="fa fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+      <div class="col-md-6 form-group">
+        <div class="form-group">
+          <div>
+            <label>Phone Number</label>
+          </div>
+          <div>
+            <input
+              class="form-control"
+              type="tel"
+              name="phone"
+              id="phone"
+              placeholder="Enter your Phone Number"
+            />
+          </div>
+        </div>
+      </div>
+      <input type="hidden" name="country_code" id="country_code" />
+
+              <div class="col-md-6 form-group">
+                <label>Date of Birth</label>
+                <input type="date" class="form-control" name="Date of Birth" />
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Gender</label>
+                <select class="form-control" id="gender">
+                  <option value="">Select your gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+            </div>
+          </div>
+              </div>
+              </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*    <!--Parent Div-->
+    <div class="grid-container-element">
+        <!--Child Div-->
+        <div class="grid-child-element">
+      <div class="container-fluid bg-light p-30 mb-5">
+        <div class="row px-xl-5"></div>
+        <div class="col-lg-10 mx-auto">
+          <h5 class="section-title position-relative text-uppercase mb-3 text-center">
+            <span class="bg-secondary pr-3">Account Information</span>
+          </h5>
+          <div class="bg-light p-30 mb-5">
+            <div class="row">
+     <!-- Content-->
+            <div class="col-md-6 form-group">
+                <label>First Name</label>
+                <input class="form-control" type="text" placeholder="Ahmed" />
+              </div><div class="col-md-6 form-group">
+                <label>First Name</label>
+                <input class="form-control" type="text" placeholder="Ahmed" />
+              </div><div class="col-md-6 form-group">
+                <label>First Name</label>
+                <input class="form-control" type="text" placeholder="Ahmed" />
+              </div>
+              <!-- Content-->
+              </div>
+              </div>
+              </div>
+              </div>
+ </div>
+ <!--Child Div-->
+  <!--Child Div-->
+        <div class="grid-child-element">
+
+      <div class="container-fluid">
+        <div class="row px-xl-5"></div>
+        <div class="col-lg-10 mx-auto">
+          <h5 class="section-title position-relative text-uppercase mb-3 text-center">
+            <span class="bg-secondary pr-3">Account Information</span>
+          </h5>
+          <div class="bg-light p-30 mb-5">
+            <div class="row">
+     <!-- Content-->
+            <div class="col-md-6 form-group">
+                <label>First Name</label>
+                <input class="form-control" type="text" placeholder="Ahmed" />
+              </div><div class="col-md-6 form-group">
+                <label>First Name</label>
+                <input class="form-control" type="text" placeholder="Ahmed" />
+              </div><div class="col-md-6 form-group">
+                <label>First Name</label>
+                <input class="form-control" type="text" placeholder="Ahmed" />
+              </div>
+              <!-- Content-->
+              </div>
+              </div>
+              </div>
+              </div>
+ </div>
+ <!--Child Div-->
+              </div>
+               <!--Parent Div-->*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*                 <div class="container-fluid pb-6">
+<div class="row px-xl-5"></div>
+        <div class="col-lg-10 mx-auto">
+          <h5 class="section-title position-relative text-uppercase mb-3 text-center">
+            <span class="bg-secondary pr-3">Account Information</span>
+          </h5>
+          <div class="bg-light p-30 mb-5">
+            <div class="row">
+              <div class="form-group">
+                <label>First Name</label>
+                <input class="form-control" type="text" style="width: 25%" placeholder="Ahmed" style="display:inline;" />
+              </div>
+              <div class="form-group">
+                <label>Last Name</label>
+                <input class="form-control" type="text" placeholder="Muhamed" style="display:inline;" />
+              </div>
+            <div class="form-group">
+                <label>User Name</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Professor Trousers"
+                  style="display:inline;"
+                />
+              </div>
+              <div class="form-group">
+                <label>E-mail</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="example@email.com"
+                  style="display:inline;"
+                />
+              </div>
+              </div>
+              <button type="submit" class="btn btn-block btn-primary font-weight-bold py-3">
+                Sign Up
+              </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>*@
+
+
+
+
+
+
+
+
+
+
+@*
+    <style>
+   .grid-container-element { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    grid-gap: 20px; 
+    border: 1px solid black; 
+    width: 50%; 
+} 
+.grid-child-element { 
+    margin: 10px; 
+    border: 1px solid red; 
+}
+    </style>
+
+<div class="grid-container-element">
+    <div class="grid-child-element purple">
+
+         <div class="col-md-6 form-group">
+                <label>First444444444444444 Name</label>
+                <input class="form-control col-md-6" type="text"  placeholder="Ahmed"  />
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Last Name</label>
+                <input class=" col-md-6 form-control" type="text" placeholder="Muhamed"  />
+              </div>
+            <div class="col-md-6 form-group">
+                <label>User Name</label>
+                <input
+                  class="col-md-6 form-control"
+                  type="text"
+                  placeholder="Professor Trousers"
+                />
+              </div>
+              <div class="col-md-6 form-group">
+                <label>E-mail</label>
+                <input
+                  class="col-md-6 form-control"
+                  type="text"
+                  placeholder="example@email.com"
+                />
+              <!-- Content-->
+              </div>
+              </div>
+              </div>
+              </div>
+
+
+
+
+
+
+
+
+
+
+    <div class="grid-child-element green">
+
+
+         <div class="col-md-6 form-group">
+                <label>First Name</label>
+                <input class="col-md-6 form-control" type="text" style="width: 25%" placeholder="Ahmed"  />
+              </div>
+              <div class="col-md-6 form-group">
+                <label>Last Name</label>
+                <input class="col-md-6 form-control" type="text" placeholder="Muhamed" />
+              </div>
+            <div class="col-md-6 form-group">
+                <label>User Name</label>
+                <input
+                  class="col-md-6 form-control"
+                  type="text"
+                  placeholder="Professor Trousers"
+
+                />
+              </div>
+              <div class="col-md-6 form-group">
+                <label>E-mail</label>
+                <input
+                  class="col-md-6 form-control"
+                  type="text"
+                  placeholder="example@email.com"
+                />
+              <!-- Content-->
+              </div>
+              </div>
+              </div>
+              </div>
+
+
+
+</div>*@
