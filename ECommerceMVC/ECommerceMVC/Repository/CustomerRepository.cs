@@ -29,9 +29,13 @@ namespace ECommerceMVC.Repository
         {
             return context.Users.Include("Country").Where(i => i.IsDeleted == false).FirstOrDefault(i => i.Id == id);
         }
+        public Customer GetByUserName(string username)
+        {
+            return context.Users.Include("Country").FirstOrDefault(i => i.UserName == username);
+        }
 
         public void Insert(Customer newcustomer)
-        {           
+        {
             context.Users.Add(newcustomer);
             context.SaveChanges();
         }
@@ -41,5 +45,10 @@ namespace ECommerceMVC.Repository
             context.Users.Update(customer);
             context.SaveChanges();
         }
+        public void SaveChanges()
+        {
+            context.SaveChanges();
+        }
+        
     }
 }

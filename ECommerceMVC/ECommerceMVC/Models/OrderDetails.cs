@@ -9,6 +9,14 @@ public class OrderDetails
     public decimal OrderTotalPrice { get; set; }
     public decimal ShippingPrice { get; set; }
 
+    public DateTime CreatedOnUtc { get; set; }
+
+    public bool IsDeleted { get; set; } = false;
+
+    public bool IsCanceled { get; set; }= false; 
+
+    public DateTime? DeletedOnUtc { get; set; }
+
     [ForeignKey("Customer")]
     public int CustomerId { get; set; }
 

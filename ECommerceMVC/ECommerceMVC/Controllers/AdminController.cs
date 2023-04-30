@@ -10,6 +10,7 @@ using Microsoft.Win32;
 using System.Data;
 using System.Security.Claims;
 using Microsoft.Build.Evaluation;
+using System;
 
 namespace ECommerceMVC.Controllers
 {
@@ -130,16 +131,34 @@ namespace ECommerceMVC.Controllers
             foreach (var item in addProductViewModel.ProductAttribute)
             {
                 ProductItem productItem = new ProductItem();
+                
                 productItem.Name = $"{product.Name}-{item.SizeAttributeValueID}-{item.ColorAttributeValueID}";
                 // Create a random number form 0 to 1M
-                Random random = new Random();
-                productItem.SKU = random.Next(0, 1000000);
+                int num;
+                do
+                {
+                    Random random = new Random();
+                    num = random.Next(1000000, 10000000);
+                }
+                while (!(productItemRepository.GetAll().Where(i => i.SKU == num).Count() == 0));
+    
+
+                productItem.SKU = num;
                 productItem.StockQuantity = item.CountAttributeValue;
                 productItem.ProductId = productId;
                 productItem.Price = product.Price;
                 productItem.CreatedAtUtc = DateTime.UtcNow;
                 productItem.IsDeleted = false;
-                productItemRepository.Insert(productItem);
+                productItemRepository.Insert(productItem); 
+                
+                var attributevalues = AttributeValuesRepository.GetAll().Where(i => i.Value == item.SizeAttributeValueID || i.Value == item.ColorAttributeValueID);
+                foreach (var attribute in attributevalues)
+                {
+                    ProductAttributeValues productAttributeValues = new ProductAttributeValues();
+                    productAttributeValues.ProductItemId = productItem.Id;
+                    productAttributeValues.AttributeValuesId = attribute.Id;
+                    productAttributeValuesRepository.Insert(productAttributeValues);
+                }
 
             }
             #endregion
@@ -166,69 +185,14 @@ namespace ECommerceMVC.Controllers
             #endregion
 
             #region Product Attribute
-            List<ProductAttribute> productAttribute = productAttributeRepository.GetAll().Where(p => p.Name == "Size" || p.Name == "Color").ToList();
+            //List<ProductAttribute> productAttribute = productAttributeRepository.GetAll().Where(p => p.Name == "Size" || p.Name == "Color").ToList();
             #endregion
 
-            #region  Create Product Type Attribute
-            //foreach (var item in productAttribute)
-            //{
-            //    ProductTypeAttribute productTypeAttribute = new ProductTypeAttribute();
-            //    productTypeAttribute.ProductTypeId = productTypeRepository.GetAll().FirstOrDefault(p => p.Name == "Clothes")!.Id;
-            //    productTypeAttribute.ProductAttributeId = item.Id;
-            //    productTypeAttributeRepository.Insert(productTypeAttribute);
-            //}
-            #endregion
 
-            #region Create Attribute Values
-            //foreach (var item in productAttribute)
-            //{
-            //    foreach (var item_2 in addProductViewModel.ProductAttribute)
-            //    {
-            //        if (item.Name == "Color")
-            //        {
-            //            AttributeValues attributeValues = new AttributeValues();
-            //            attributeValues.ProductAttributeId = productAttributeRepository.GetAll().FirstOrDefault(p => p.Name == "Color")!.Id;
-            //            attributeValues.Value = item_2.ColorAttributeValueID;
-            //            //AttributeValuesRepository.Insert(attributeValues);
-            //        }
-            //        if (item.Name == "Size")
-            //        {
-            //            AttributeValues attributeValues = new AttributeValues();
-            //            attributeValues.ProductAttributeId = productAttributeRepository.GetAll().FirstOrDefault(p => p.Name == "Size")!.Id;
-            //            attributeValues.Value = item_2.SizeAttributeValueID;
-            //            //AttributeValuesRepository.Insert(attributeValues);
-
-            //        }
-            //    }
-
-            //}
-            #endregion
-
-            #region Create Product Attribute Values
-            List<AttributeValues> attributeValuesList = AttributeValuesRepository.GetAll();
-            List<AttributeValues> attributeValuesList_2 = new List<AttributeValues>();
-            foreach (var item in attributeValuesList)
-            {
-                foreach (var item_2 in addProductViewModel.ProductAttribute)
-                {
-                    if (item.Value == item_2.ColorAttributeValueID || item.Value == item_2.SizeAttributeValueID)
-                    {
-                        attributeValuesList_2.Add(item);
-                    }
-                }
-            }
-            foreach (var item in productItemsListForImage)
-            {
-                foreach (var item_2 in attributeValuesList_2)
-                {
-                    ProductAttributeValues productAttributeValues = new ProductAttributeValues();
-                    productAttributeValues.ProductItemId = item.Id;
-                    productAttributeValues.AttributeValuesId = item_2.Id;
-                    productAttributeValuesRepository.Insert(productAttributeValues);
-                }
-            }
-            #endregion
-
+            return View("AddProductSuccess");
+        }
+        public IActionResult gg()
+        {
 
             return View("AddProductSuccess");
         }
@@ -319,6 +283,7 @@ namespace ECommerceMVC.Controllers
 
         public IActionResult UserDetails(int id)
         {
+            
             var user = customer.GetById(id);
             return View(user);
         }
@@ -420,9 +385,63 @@ namespace ECommerceMVC.Controllers
             var Roles = roleManager.Roles.ToList();
             return View(Roles);
         }
+        public IActionResult AddRole()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddRole(IdentityRole<int> newrole)
+        {
+            if(ModelState.IsValid)
+            {
+                await roleManager.CreateAsync(newrole);
+                return RedirectToAction("RolesIndex");
+            }
+            return View(newrole);
+        }
+        public async Task<IActionResult> EditRole(int id)
+        {
+            IdentityRole<int> role =await roleManager.FindByIdAsync(id.ToString());
+            return View(role);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditRole([FromRoute] int id ,IdentityRole<int> role)
+        {
+            if (ModelState.IsValid)
+            {
+                IdentityRole<int> updaterole = new();
+                updaterole.Id = id;
+                updaterole.Name=role.Name;
+                updaterole.ConcurrencyStamp = role.ConcurrencyStamp;
+                updaterole.NormalizedName = role.NormalizedName;
+                customer.SaveChanges();
+                return RedirectToAction("RolesIndex");
+            }
+            return View(role);
+        }
+        public async Task<IActionResult> DeleteRole(int id)
+        {
+            var role = await roleManager.FindByIdAsync(id.ToString());
+            List<Customer> users = (List<Customer>)await userManager.GetUsersInRoleAsync(role.Name);
+            if (users.Count > 0)
+            {
+                for (int i = 0; i < users.Count; i++)
+                {
+                    userManager.RemoveFromRoleAsync(users[i], role.Name);
+                }           
+            }
+            roleManager.DeleteAsync(role);
+            return RedirectToAction("RolesIndex");
+        }
 
         #endregion
+
+        
+
+
 
 
     }

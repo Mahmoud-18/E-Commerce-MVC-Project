@@ -1,5 +1,6 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace ECommerceMVC.Repository
@@ -15,21 +16,25 @@ namespace ECommerceMVC.Repository
 
         public void Delete(int id)
         {
-            context.Category.Remove(GetById(id));
+            Category category = GetById(id);
+            category.IsDeleted = true;
+            category.DeletedAtUtc = DateTime.UtcNow;
+            
+            //context.Category.Remove(category);
             context.SaveChanges();
         }
 
         public List<Category> GetAll()
         {
-            return context.Category.ToList();
+            return context.Category.Include("ParentCategory").Where(i => i.IsDeleted == false).ToList();
         }       
         public Category GetById(int id)
         {
-            return context.Category.FirstOrDefault(i => i.Id == id);           
+            return context.Category.Include("ParentCategory").FirstOrDefault(i => i.Id == id);           
         }
         public List<Category> GetByParentCategoryId(int id)
         {
-            return context.Category.Where(i => i.ParentCategoryId == id).ToList();
+            return context.Category.Where(i => i.ParentCategoryId == id && i.IsDeleted == false).ToList();
         }
 
         public void Insert(Category newCategory)
