@@ -1,5 +1,6 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceMVC.Repository
 {
@@ -14,18 +15,20 @@ namespace ECommerceMVC.Repository
 
         public void Delete(int id)
         {
-            context.OrderStatus.Remove(GetById(id));
+            OrderStatus or = GetById(id);
+            or.IsDeleted = true;
+            or.DeletedOnUtc = DateTime.UtcNow;
             context.SaveChanges();
         }
 
         public List<OrderStatus> GetAll()
         {
-            return context.OrderStatus.ToList();
+            return context.OrderStatus.Where(i => i.IsDeleted == false).ToList();
         }
 
         public OrderStatus GetById(int id)
         {
-            return context.OrderStatus.FirstOrDefault(i => i.Id == id);
+            return context.OrderStatus.Include("Orders").FirstOrDefault(i => i.Id == id);
         }
 
         public void Insert(OrderStatus newOrderStatus)
