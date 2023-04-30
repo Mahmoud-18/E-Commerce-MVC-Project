@@ -182,74 +182,12 @@ namespace ECommerceMVC.Controllers
             productCategory.ProductId = productId;
             productCategory.CategoryId = addProductViewModel.CategoryId;
             productCategoryRepository.Insert(productCategory);
-
             #endregion
 
             #region Product Attribute
             //List<ProductAttribute> productAttribute = productAttributeRepository.GetAll().Where(p => p.Name == "Size" || p.Name == "Color").ToList();
             #endregion
 
-            #region Create Product Type Attribute
-            //foreach (var item in productAttribute)
-            //{
-            //    ProductTypeAttribute productTypeAttribute = new ProductTypeAttribute();
-            //    productTypeAttribute.ProductTypeId = productTypeRepository.GetAll().FirstOrDefault(p => p.Name == "Clothes")!.Id;
-            //    productTypeAttribute.ProductAttributeId = item.Id;
-            //    productTypeAttributeRepository.Insert(productTypeAttribute);
-            //}
-            #endregion
-
-            #region Create Attribute Values
-            //foreach (var item in productAttribute)
-            //{
-            //    foreach (var item_2 in addProductViewModel.ProductAttribute)
-            //    {
-            //        if (item.Name == "Color")
-            //        {
-            //            AttributeValues attributeValues = new AttributeValues();
-            //            attributeValues.ProductAttributeId = productAttributeRepository.GetAll().FirstOrDefault(p => p.Name == "Color")!.Id;
-            //            attributeValues.Value = item_2.ColorAttributeValueID;
-            //            //AttributeValuesRepository.Insert(attributeValues);
-            //        }
-            //        if (item.Name == "Size")
-            //        {
-            //            AttributeValues attributeValues = new AttributeValues();
-            //            attributeValues.ProductAttributeId = productAttributeRepository.GetAll().FirstOrDefault(p => p.Name == "Size")!.Id;
-            //            attributeValues.Value = item_2.SizeAttributeValueID;
-            //            //AttributeValuesRepository.Insert(attributeValues);
-
-            //        }
-            //    }
-
-            //}
-            #endregion
-
-            #region Create Product Attribute Values
-
-            //List<AttributeValues> attributeValuesList = AttributeValuesRepository.GetAll();
-            //List<AttributeValues> attributeValuesList_2 = new List<AttributeValues>();
-            //foreach (var item in attributeValuesList)
-            //{
-            //    foreach (var item_2 in addProductViewModel.ProductAttribute)
-            //    {
-            //        if (item.Value == item_2.ColorAttributeValueID || item.Value == item_2.SizeAttributeValueID)
-            //        {
-            //            attributeValuesList_2.Add(item);
-            //        }
-            //    }
-                
-            //}
-            //foreach (var item in productItemsListForImage)
-            //{
-            //    foreach (var item_2 in attributeValuesList_2)
-            //    {
-            //        ProductAttributeValues productAttributeValues = new ProductAttributeValues();
-            //        productAttributeValues.ProductItemId = item.Id;
-            //        productAttributeValues.AttributeValuesId = item_2.Id;
-            //        productAttributeValuesRepository.Insert(productAttributeValues);
-            //    }
-            //}
-            #endregion
 
             return View("AddProductSuccess");
         }
@@ -258,6 +196,7 @@ namespace ECommerceMVC.Controllers
 
             return View("AddProductSuccess");
         }
+       
 
         #region Customer(Users) Controllers
         public IActionResult UsersIndex()
