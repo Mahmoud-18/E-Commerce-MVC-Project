@@ -50,6 +50,7 @@ namespace ECommerceMVC
             builder.Services.AddScoped<IProductAttributeValuesRepository, ProductAttributeValuesRepository>();
             builder.Services.AddScoped<IProductAttributeRepository, ProductAttributeRepository>();
             builder.Services.AddScoped<IShoppingBagRepository, ShoppingBagRepository>();
+            builder.Services.AddScoped<IAttributeValuesRepository, AttributeValuesRepository>();
 
 
             builder.Services.AddScoped<ProductsServices>();
