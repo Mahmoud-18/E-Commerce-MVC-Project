@@ -1,5 +1,6 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace ECommerceMVC.Repository
@@ -26,7 +27,7 @@ namespace ECommerceMVC.Repository
 
         public Brand GetById(int id)
         {
-            return context.Brand.FirstOrDefault(i => i.Id == id);
+            return context.Brand.Include("Products").FirstOrDefault(i => i.Id == id);
         }
 
         public void Insert(Brand newBrand)

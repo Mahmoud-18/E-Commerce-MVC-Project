@@ -7,5 +7,5 @@ public class Brand
     public string? Image { get; set; }
 
     //Navigation Properties
-    public ICollection<Product> ProductItems { get; set; } = new List<Product>();
+    public ICollection<Product> Products { get; set; } = new List<Product>();
 }

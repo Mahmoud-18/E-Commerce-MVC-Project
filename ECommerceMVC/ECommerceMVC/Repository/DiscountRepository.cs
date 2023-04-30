@@ -1,5 +1,6 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceMVC.Repository
 {
@@ -30,7 +31,7 @@ namespace ECommerceMVC.Repository
 
         public Discount GetById(int id)
         {
-            return context.Discount.FirstOrDefault(i => i.Id == id);
+            return context.Discount.Include("Products").FirstOrDefault(i => i.Id == id);
         }
 
         public void Insert(Discount newDiscount)
@@ -43,6 +44,18 @@ namespace ECommerceMVC.Repository
         {
             context.Discount.Update(discount);
             context.SaveChanges();
+        }
+        public bool IsDiscountActive(int id)
+        {
+            var discount = GetById(id);
+            if (discount.IsActice == true && DateTime.Now > discount.StartDate && discount.EndDate > DateTime.Now) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

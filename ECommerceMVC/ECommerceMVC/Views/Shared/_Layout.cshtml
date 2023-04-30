@@ -46,7 +46,7 @@
 
 </head>
 <body>
-    <header>
+    <header >
 
         @if (User.IsInRole("Admin") == true)
         {
@@ -69,7 +69,7 @@
                 <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
             </a>
         </div>
-        <div class="col-lg-4 col-6 text-left">
+        <div class="col-lg-4 col-6 text-left" id="srch">
             <partial model="@products.GetAllProducts()" name="_Searchpartialview"></partial>
         </div>
         @if (User.Identity.IsAuthenticated)
@@ -99,7 +99,7 @@
 
         
         </div>
-            <!--HERE ARE MY DROPDOWN CATEGORIES-->
+            <!--HERE ARE THE DROPDOWN CATEGORIES-->
             <div class="container-fluid bg-dark mb-30">
                 <div class="row px-xl-5">
                     <div class="col-lg-3 d-none d-lg-block">
@@ -124,7 +124,7 @@
                             </button>
                             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                                 <div class="navbar-nav mr-auto py-0">
-                                    <a href="index.html" class="nav-item nav-link active">Home</a>
+                                    <a href="/Home/index" class="nav-item nav-link active">Home</a>
                                     <a asp-action="ShowAllProducts" asp-controller="Shop" class="nav-item nav-link">Shop</a>
 
                                     <a href="@Url.Action("Index", "Contact")" class="nav-item nav-link">ContactUs</a>

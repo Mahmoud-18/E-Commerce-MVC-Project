@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
+using ECommerceMVC.ViewModels;
 
 namespace ECommerceMVC.Context;
 
@@ -55,7 +56,7 @@ public class EcommerceDbContext : IdentityDbContext<Customer, IdentityRole<int>,
             }
         };
 
-       //builder.Entity<IdentityRole<int>>().HasData(Roles);        
+        //builder.Entity<IdentityRole<int>>().HasData(Roles);
     }
 
     #region Tables
@@ -80,6 +81,8 @@ public class EcommerceDbContext : IdentityDbContext<Customer, IdentityRole<int>,
     public DbSet<ProductTypeAttribute> ProductTypeAttribute { get; set; }
     public DbSet<ShoppingBag> ShoppingBag { get; set; }
     public DbSet<ShoppingBagItem> ShoppingBagItem { get; set; }
+    public DbSet<ECommerceMVC.ViewModels.RegisterViewModel> RegisterViewModel { get; set; } = default!;
+    public DbSet<ECommerceMVC.ViewModels.EditUserViewModel> EditUserViewModel { get; set; } = default!;
 
     #endregion
 }

@@ -40,7 +40,6 @@ body {
     padding: 0;
     margin: 0;
     display:none;
-    z-index:2;
 }
 
     #myUL li a {
@@ -51,9 +50,18 @@ body {
         text-decoration: none;
         font-size: 18px;
         color: black;
-        display: block
+        display: block;
+      
     }
 
         #myUL li a:hover:not(.header) {
             background-color: #eee;
         }
+#sr {
+    position: absolute;
+    top: -25px;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    z-index: 9999;
+}

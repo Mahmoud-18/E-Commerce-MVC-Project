@@ -1,15 +1,13 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
+<html>
+ <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>Administration Page</title>
 
     <!-- Custom fonts for this template-->
     <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -20,8 +18,11 @@
     <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
 
-</head>
-<header>
+ </head>
+
+
+<body id="page-top">
+  <header>
     <div class="container-fluid">
         <div class="row align-items-center  py-3 px-xl-3 d-none d-lg-flex" style="background-color:#3d464d; ">
 
@@ -43,8 +44,6 @@
                 </div>
                 </form>*@
             </div>
-            @if (User.Identity.IsAuthenticated)
-            {
                 <div class="col-lg-4 col-6 text-right">
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">@User.Identity.Name</button>
@@ -53,50 +52,11 @@
                             <a asp-action="SignOut" asp-controller="Account" class="dropdown-item" type="button">Sign out</a>
                         </div>
                     </div>
-                </div>
-            }
-            else
-            {
-                <div class="col-lg-4 col-6 text-right">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a asp-action="Login" asp-controller="Account" class="dropdown-item" type="button">Sign in</a>
-                            <a asp-action="Register" asp-controller="Account" class="dropdown-item" type="button">Sign up</a>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-        <!--HERE ARE MY DROPDOWN CATEGORIES-->
-        @*      <div class="container-fluid bg-dark mb-30">
-        <div class="row px-xl-5">
-
-        <div class="col-lg-9">
-        <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
-        <a href="" class="text-decoration-none d-block d-lg-none">
-        <span class="h1 text-uppercase text-dark bg-light px-2">Multi</span>
-        <span class="h1 text-uppercase text-light bg-primary px-2 ml-n1">Shop</span>
-        </a>
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-        <div class="navbar-nav mr-auto py-0">
-        <a href="index.html" class="nav-item nav-link active">Home</a>
-        <a href="/Shop/Index" class="nav-item nav-link">Shop</a>
-
-        <a href="@Url.Action("Index", "Contact")" class="nav-item nav-link">ContactUs</a>
-        </div>
-
-        </div>
-        </nav>
-        </div>
-        </div>
-        </div>*@
+                </div>                 
+        </div>       
     </div>
-</header>
-<body id="page-top">
+  </header>
+  
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -143,8 +103,8 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         @*<h6 class="collapse-header">Customer Components:</h6>*@
-                        <a class="collapse-item" href="buttons.html">Account</a>
-                        <a class="collapse-item" href="cards.html">Roles</a>
+                        <a class="collapse-item" asp-action="UsersIndex" asp-controller="Admin">Account</a>
+                        <a class="collapse-item" asp-action="RolesIndex" asp-controller="Admin">Roles</a>
                     </div>
                 </div>
             </li>
@@ -171,13 +131,11 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Catelog
-            </div>
+         
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item active">
+
                 <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
                    aria-controls="collapsePages">
                     <i class="fas fa-fw fa-folder"></i>
@@ -188,33 +146,21 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         @*<h6 class="collapse-header">Login Screens:</h6>*@
                         <a class="collapse-item" href="~/Admin/AddProduct">Product</a>
-                        <a class="collapse-item" href="register.html">Caterogy</a>
-                        <a class="collapse-item" href="forgot-password.html">Brands </a>
-                        <a class="collapse-item" href="forgot-password.html">Attribute </a>
+                        <a class="collapse-item" asp-action="Index" asp-controller  ="Admin">Caterogy</a>
+                        <a class="collapse-item" asp-action="Index" asp-controller="Brand">Brands </a>
+                        <a class="collapse-item" asp-action="Index" asp-controller="Admin">Attribute </a>
 
                     </div>
        
            
             </div>
+
             </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                   aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Configurations</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="buttons.html">Countries</a>
-                        <a class="collapse-item" href="cards.html">Payment Methods</a>
-                        <a class="collapse-item" href="cards.html">Order Status</a>
-                    </div>
-                </div>
-            </li>
+          
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" asp-action="Index" asp-controller="Discount">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Discount</span>
                 </a>
@@ -222,13 +168,13 @@
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" asp-action="Index" asp-controller="Orders">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Orders</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="#">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Content Management</span>
                 </a>
@@ -248,11 +194,9 @@
                 <!-- Topbar -->
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <div class="container-fluid p-3 bg-gray-200">
+                    <!-- Page Heading -->                  
                     @RenderBody()
-                    <!-- Page Heading -->
-                    @*<h1 class="h3 mb-4 text-gray-800">Blank Page</h1>*@
-
                 </div>
                 <!-- /.container-fluid -->
 
@@ -289,9 +233,10 @@
             </div>
         </div>
     </div>
+    <!-- Footer Start -->
     <footer class="border-top text-muted">
 
-        <!-- Footer Start -->
+
         <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
             <div class="row px-xl-5 pt-5">
                 <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
@@ -364,6 +309,21 @@
 
     </footer>
 
+
+
+    <!--Custom scripts for datatables -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Register Javascript -->
+    @*<script src="~/js/SignUp.js"></script>*@
+
+   @* <!-- International phone Javascript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.js"></script>*@
+
+    @*//*@
     <!-- Bootstrap core JavaScript-->
     <script src="~/vendor/jquery/jquery.min.js"></script>
     <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -373,12 +333,16 @@
 
     <!-- Custom scripts for all pages-->
     <script src="~/js/sb-admin-2.min.js"></script>
-    @RenderSection("Scripts",false);
-</body>
 
-<<<<<<< HEAD
-</html>
 
-=======
+
+    <script>
+        $(document).ready(function () {
+            $('#table').DataTable();
+        })
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+  </body>
 </html>
->>>>>>> c2b66603173a517aff36ceaa840e1e73af4ac203

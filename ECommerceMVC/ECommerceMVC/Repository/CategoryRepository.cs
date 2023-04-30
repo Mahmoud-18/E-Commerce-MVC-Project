@@ -25,8 +25,7 @@ namespace ECommerceMVC.Repository
         }       
         public Category GetById(int id)
         {
-            return context.Category.FirstOrDefault(i => i.Id == id);
-            
+            return context.Category.FirstOrDefault(i => i.Id == id);           
         }
         public List<Category> GetByParentCategoryId(int id)
         {

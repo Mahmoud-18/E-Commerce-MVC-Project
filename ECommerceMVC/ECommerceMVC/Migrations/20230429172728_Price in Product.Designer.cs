@@ -4,6 +4,7 @@ using ECommerceMVC.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerceMVC.Migrations
 {
     [DbContext(typeof(EcommerceDbContext))]
-    partial class EcommerceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230429172728_Price in Product")]
+    partial class PriceinProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -462,7 +465,7 @@ namespace ECommerceMVC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BrandId")
+                    b.Property<int>("BrandId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAtUtc")
@@ -1101,8 +1104,10 @@ namespace ECommerceMVC.Migrations
             modelBuilder.Entity("ECommerceMVC.Models.Product", b =>
                 {
                     b.HasOne("ECommerceMVC.Models.Brand", "Brand")
-                        .WithMany("Products")
-                        .HasForeignKey("BrandId");
+                        .WithMany("ProductItems")
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ECommerceMVC.Models.Discount", "Discount")
                         .WithMany("Products")
@@ -1297,7 +1302,7 @@ namespace ECommerceMVC.Migrations
 
             modelBuilder.Entity("ECommerceMVC.Models.Brand", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("ProductItems");
                 });
 
             modelBuilder.Entity("ECommerceMVC.Models.Category", b =>

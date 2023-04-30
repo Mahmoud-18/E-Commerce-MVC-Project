@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model List<IdentityRole<int>>
+
+@{
+    ViewData["Title"] = "RolesIndex";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- Breadcrumb Start -->
+
+    <div class="row px-xl-5">
+        <div class="col-12">
+           
+        </div>
+    </div>
+<nav class="breadcrumb bg-light mb-30">
+    <a class="breadcrumb-item text-dark" asp-action="Index" asp-controller="Admin">Admin</a>
+    <span class="breadcrumb-item active">Roles</span>
+</nav>
+
+<!-- Breadcrumb End -->
+<p>
+    <a class="btn btn-success" asp-action="CreateRole">Create New</a>
+</p>
+<table id="table" class="table">
+    <thead>
+        <tr>
+            <th>
+                Roles
+            </th>           
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>      
+            <td>
+                <a class="btn btn-Warning" asp-action="Edit" asp-route-id="@item.Id">Rename</a> |
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

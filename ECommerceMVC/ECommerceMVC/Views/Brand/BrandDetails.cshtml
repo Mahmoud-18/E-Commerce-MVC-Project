@@ -1,0 +1,63 @@
+﻿@model ECommerceMVC.Models.Brand
+
+@{
+    ViewData["Title"] = "BrandDetails";
+    
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    SelectList brandsOptions = new SelectList(Model.Products, "Id", "Name");
+}
+
+<h1>
+    <!-- Breadcrumb Start -->
+    <nav class="breadcrumb bg-light mb-30 p-3">
+        <a class="breadcrumb-item text-dark" asp-action="Index" style="text-decoration:none">Admin</a>
+        <span class="breadcrumb-item active">Brand/Details</span>
+    </nav>
+    <!-- Breadcrumb End -->
+</h1>
+
+<div>
+    <h4>Brand</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Image)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Products)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach(var products in Model.Products)
+            {
+                <a style="border: 1px solid #ddd;
+                          margin-top: -1px;  Prevent double borders
+                          background-color: #f6f6f6;
+                          padding: 12px;
+                          text-decoration: none;
+                          font-size: 18px;
+                          color: black;
+                          display: block" href="/product/ProductDetails/@products.Id"><img src="@products.Image" width="50" height="50" />  @products.Name</a>
+
+            }
+            
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -5,12 +5,15 @@ namespace ECommerceMVC.Repository
 {
     public interface IProductRepository
     {
-        List<Product> GetAll();
         Product GetProductById(int id);
         ProductItem GetProductItemById(int id);
         Brand GetBrandById(int id);
         List<string> GetImageById(int id);
         Discount GetDiscountById(int id);
-        List<ShoppingProductsViewModel> GetAllProducts();
+        public void Delete(int id);
+        public List<Product> GetAll();
+        public Product GetById(int id);
+        public void Insert(Product product);
+        public void Update(int id, Product product);
     }
 }
