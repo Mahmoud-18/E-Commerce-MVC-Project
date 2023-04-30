@@ -1,9 +1,13 @@
 ﻿using ECommerceMVC.Models;
 using ECommerceMVC.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace ECommerceMVC.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class PaymentMethodController : Controller
     {
         IPaymentMethodRepository _PaymentMethod;

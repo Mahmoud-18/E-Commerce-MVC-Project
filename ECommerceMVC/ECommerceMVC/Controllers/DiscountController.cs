@@ -2,9 +2,13 @@
 using ECommerceMVC.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.OleDb;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace ECommerceMVC.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class DiscountController : Controller
     {
    
