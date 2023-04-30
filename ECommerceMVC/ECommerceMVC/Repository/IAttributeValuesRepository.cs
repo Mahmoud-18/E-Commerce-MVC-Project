@@ -4,6 +4,7 @@ namespace ECommerceMVC.Repository
 {
     public interface IAttributeValuesRepository
     {
+        List<AttributeValues> GetByAttributeId(int id);
         List<AttributeValues> GetAll();
         AttributeValues GetById(int id);
         void Insert(AttributeValues attributeValues);

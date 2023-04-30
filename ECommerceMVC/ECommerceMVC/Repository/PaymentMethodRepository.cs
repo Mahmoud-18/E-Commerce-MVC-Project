@@ -1,5 +1,6 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
+using System.Diagnostics.Metrics;
 
 namespace ECommerceMVC.Repository
 {
@@ -13,27 +14,32 @@ namespace ECommerceMVC.Repository
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            PaymentMethod pm = GetById(id);
+            pm.IsDeleted = true;
+            pm.DeletedOnUtc = DateTime.UtcNow;
+            _context.SaveChanges();
         }
 
         public List<PaymentMethod> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.PaymentMethod.Where(i => i.IsDeleted == false).ToList();
         }
 
         public PaymentMethod GetById(int id)
         {
-            throw new NotImplementedException();
+            return _context.PaymentMethod.FirstOrDefault(i => i.Id == id);
         }
 
         public void Insert(PaymentMethod newPaymentMethod)
         {
-            throw new NotImplementedException();
+            _context.PaymentMethod.Add(newPaymentMethod);
+            _context.SaveChanges();
         }
 
         public void Update(int id, PaymentMethod paymentMethod)
         {
-            throw new NotImplementedException();
+            _context.Update(paymentMethod);
+            _context.SaveChanges();
         }
     }
 }

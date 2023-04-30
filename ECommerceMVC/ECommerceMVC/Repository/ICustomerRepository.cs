@@ -4,6 +4,7 @@ namespace ECommerceMVC.Repository
 {
     public interface ICustomerRepository
     {
+        Customer GetByUserName(string username);
         List<Customer> GetAll();      
         Customer GetById(int id);
         void Insert(Customer newcustomer);

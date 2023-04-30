@@ -23,6 +23,11 @@ namespace ECommerceMVC.Repository
             return context.AttributeValues.ToList();
         }
 
+        public List<AttributeValues> GetByAttributeId(int id)
+        {
+            return context.AttributeValues.Where(i => i.ProductAttributeId == id).ToList();
+        }
+
 
         public AttributeValues GetById(int id)
         {

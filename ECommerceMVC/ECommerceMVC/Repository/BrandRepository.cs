@@ -16,13 +16,15 @@ namespace ECommerceMVC.Repository
 
         public void Delete(int id)
         {
-            context.Brand.Remove(GetById(id));
+            Brand brand = GetById(id);
+            brand.IsDeleted = true;
+            brand.DeletedOnUtc = DateTime.UtcNow;
             context.SaveChanges();
         }
 
         public List<Brand> GetAll()
         {
-            return context.Brand.ToList();
+            return context.Brand.Where(i => i.IsDeleted == false).ToList();
         }
 
         public Brand GetById(int id)

@@ -15,13 +15,15 @@ namespace ECommerceMVC.Repository
 
         public void Delete(int id)
         {
-            context.Country.Remove(GetById(id));
+            Country country = GetById(id);
+            country.IsDeleted = true;
+            country.DeletedOnUtc = DateTime.UtcNow;
             context.SaveChanges();
         }
 
         public List<Country> GetAll()
         {
-            return context.Country.ToList();
+            return context.Country.Where(i => i.IsDeleted == false).ToList();
         }
 
         public Country GetById(int id)
