@@ -55,7 +55,7 @@
                                   </div>
                               </td>
                             <td class="align-middle">@item.Quantity*item.ProductItem.Price $ </td>
-                        <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
+                            <td class="align-middle"><button asp-action="RemoveFromBag" asp-controller="ShoppingBag" asp-route-id="@item.Id" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
                         }
                     </tr>               
                 </tbody>

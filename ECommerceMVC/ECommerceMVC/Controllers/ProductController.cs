@@ -54,14 +54,14 @@ public class ProductController : Controller
             Brand brand = productRepository.GetBrandById(id);
             List<string> productImages = productRepository.GetImageById(id);
             Discount discount = productRepository.GetDiscountById(id);
-            if (discountRepository.IsDiscountActive(discount.Id))
-            {
-                productDetailsViewModel.PriceBeforeDiscount = (1 - discount.DiscountPercentage) * (float)product.Price;
-            }
-            else
-            {
-                productDetailsViewModel.PriceBeforeDiscount = 0;
-            }
+            //if (discountRepository.IsDiscountActive(discount.Id))
+            //{
+            //    productDetailsViewModel.PriceBeforeDiscount = (1 - discount.DiscountPercentage) * (float)product.Price;
+            //}
+            //else
+            //{
+            //    productDetailsViewModel.PriceBeforeDiscount = 0;
+            //}
             //List<ProductImages> productImages = context.ProductImages.Where(im => im.ProductItemId == productItem.Id).ToList();
 
             productDetailsViewModel.Name = product.Name;
@@ -98,8 +98,6 @@ public class ProductController : Controller
                         productDetailsViewModel.Color!.Add(attributeValues.Value);
                     }
                 }
-
-
             }
             productDetailsViewModel.BrandName = brand.Name;
 
