@@ -6,7 +6,7 @@ namespace ECommerceMVC.Repository
     public interface IProductRepository
     {
         Product GetProductById(int id);
-        ProductItem GetProductItemById(int id);
+        public List<ProductItem> GetProductItemById(int id);
         Brand GetBrandById(int id);
         List<string> GetImageById(int id);
         Discount GetDiscountById(int id);

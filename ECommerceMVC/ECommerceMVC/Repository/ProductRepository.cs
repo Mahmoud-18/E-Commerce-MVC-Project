@@ -20,9 +20,9 @@ public class ProductRepository : IProductRepository
     {
         return context.Product.FirstOrDefault(p => p.Id == id)!;
     }
-    public ProductItem GetProductItemById(int id)
+    public List<ProductItem> GetProductItemById(int id)
     {
-        return context.ProductItem.FirstOrDefault(i => i.ProductId == id)!;
+        return context.ProductItem.Where(i => i.ProductId == id)!.ToList();
     }
     public Brand GetBrandById(int id)
     {
@@ -30,7 +30,7 @@ public class ProductRepository : IProductRepository
     }
     public List<string> GetImageById(int id)
     {
-        ProductItem productItem = GetProductItemById(id);
+        ProductItem productItem = GetProductItemById(id)[0];
         return context.ProductImages.Where(i => i.ProductItemId == productItem.Id).Select(i => i.ImageURL).ToList();
     }
     public Discount GetDiscountById(int id)
