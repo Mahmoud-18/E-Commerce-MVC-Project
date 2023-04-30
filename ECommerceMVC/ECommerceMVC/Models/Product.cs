@@ -21,7 +21,7 @@ public class Product
     public int? ProductTypeId { get; set; }
 
     [ForeignKey("Brand")]
-    public int BrandId { get; set; }
+    public int? BrandId { get; set; }
 
     //Navigation Properties
     public Discount? Discount { get; set; }

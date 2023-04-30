@@ -7,7 +7,14 @@
     SelectList brandsOptions = new SelectList(Model.Products, "Id", "Name");
 }
 
-<h1>BrandDetails</h1>
+<h1>
+    <!-- Breadcrumb Start -->
+    <nav class="breadcrumb bg-light mb-30 p-3">
+        <a class="breadcrumb-item text-dark" asp-action="Index" style="text-decoration:none">Admin</a>
+        <span class="breadcrumb-item active">Brand/Details</span>
+    </nav>
+    <!-- Breadcrumb End -->
+</h1>
 
 <div>
     <h4>Brand</h4>

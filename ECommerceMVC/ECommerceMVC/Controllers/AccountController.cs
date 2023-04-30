@@ -34,6 +34,37 @@ namespace ECommerceMVC.Controllers
             return View(register);
         }
 
+        public IActionResult MyAccount()
+        {
+            return View();
+        }
+        public IActionResult YourOrders()
+        {
+            return View();
+        }
+        public IActionResult YourAddresses()
+        {
+            return View();
+        }
+        public IActionResult EditProfile()
+        {
+            //Customer currentUser = new Customer();
+            //currentUser = context.Customer.FirstOrDefault(c => c.UserName == User.Identity.Name);
+            //return View(currentUser);
+
+
+
+            return View();
+        }
+
+
+        public IActionResult Temp()
+        {
+            return View();
+        }
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel newUser)
@@ -131,6 +162,7 @@ namespace ECommerceMVC.Controllers
                         }
                     }
                 }
+                
                 ModelState.AddModelError("", "incorrect username or password");
 
             }
