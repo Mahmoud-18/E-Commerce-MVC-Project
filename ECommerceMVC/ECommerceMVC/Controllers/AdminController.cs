@@ -2,31 +2,53 @@
 using ECommerceMVC.Repository;
 using ECommerceMVC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Win32;
 using System.Data;
 using System.Security.Claims;
+using Microsoft.Build.Evaluation;
 
 namespace ECommerceMVC.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
+        //
+        ICategoryRepository categoryRepository;
+        IBrandRepository brandRepository;
+        IDiscountRepository discountRepository;
+        IProductAttributeRepository productAttributeRepository;
+        IAttributeValuesRepository AttributeValuesRepository;
+        IProductRepository productRepository;
+        IProductItemRepository productItemRepository;
+        IProductTypeRepository productTypeRepository;
+        IProductImagesRepository productImagesRepository;
+        IProductCategoryRepository productCategoryRepository;
+        IProductTypeAttributeRepository productTypeAttributeRepository;
+        IProductAttributeValuesRepository productAttributeValuesRepository;
+
+        //
         private readonly UserManager<Customer> userManager;
         private readonly SignInManager<Customer> signInManager;
-        private readonly RoleManager<IdentityRole<int>> roleManager;   
+        private readonly RoleManager<IdentityRole<int>> roleManager;
         IAddressRepository addressRepo;
         IShoppingBagRepository shopBagRepository;
         ICountryRepository country;
         ICustomerRepository customer;
 
         public AdminController
-            (UserManager<Customer> _userManager,SignInManager<Customer> _signInManager,
+            (UserManager<Customer> _userManager, SignInManager<Customer> _signInManager,
             IAddressRepository _addressRepository, IShoppingBagRepository shopBagRepository,
             ICountryRepository countryRepository, RoleManager<IdentityRole<int>> _roleManager,
-            ICustomerRepository _customer)
+            ICustomerRepository _customer, ICategoryRepository _categoryRepository, IBrandRepository _brandRepository,
+            IDiscountRepository _discountRepository, IProductAttributeRepository _productAttributeRepository,
+            IAttributeValuesRepository _AttributeValuesRepository, IProductRepository _productRepository,
+            IProductItemRepository _productItemRepository, IProductTypeRepository _productTypeRepository,
+            IProductImagesRepository _productImagesRepository, IProductCategoryRepository _productCategoryRepository,
+            IProductTypeAttributeRepository _productTypeAttributeRepository, IProductAttributeValuesRepository _productAttributeValuesRepository)
         {
             userManager = _userManager;
             signInManager = _signInManager;
@@ -35,22 +57,198 @@ namespace ECommerceMVC.Controllers
             country = countryRepository;
             roleManager = _roleManager;
             this.customer = _customer;
+            //
+            categoryRepository = _categoryRepository;
+            brandRepository = _brandRepository;
+            discountRepository = _discountRepository;
+            productAttributeRepository = _productAttributeRepository;
+            AttributeValuesRepository = _AttributeValuesRepository;
+            productRepository = _productRepository;
+            productItemRepository = _productItemRepository;
+            productTypeRepository = _productTypeRepository;
+            productImagesRepository = _productImagesRepository;
+            productCategoryRepository = _productCategoryRepository;
+            productTypeAttributeRepository = _productTypeAttributeRepository;
+            productAttributeValuesRepository = _productAttributeValuesRepository;
         }
 
         public IActionResult Index()
         {
             return View();
         }
+        public IActionResult AddProduct()
+        {
+            ViewData["CategoryList"] = categoryRepository.GetAll();
+            ViewData["BrandList"] = brandRepository.GetAll();
+            ViewData["DiscountList"] = discountRepository.GetAll();
+            ViewData["ProductAttributes"] = productAttributeRepository.GetAll();
+            ViewData["AttributeValues"] = AttributeValuesRepository.GetAll();
+
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddProduct(AddProductViewModel addProductViewModel)
+        {
+            ViewData["CategoryList"] = categoryRepository.GetAll();
+            ViewData["BrandList"] = brandRepository.GetAll();
+            ViewData["DiscountList"] = discountRepository.GetAll();
+            ViewData["ProductAttributes"] = productAttributeRepository.GetAll();
+            ViewData["AttributeValues"] = AttributeValuesRepository.GetAll();
+
+            if (!ModelState.IsValid)
+            {
+                return View(addProductViewModel);
+            }
+            // The Hell Start From Here ........
+
+            #region Product Type
+            //ProductType productType = new ProductType();
+            //productType.Name = "Clothes";
+            //productTypeRepository.Insert(productType);  
+
+            #endregion
+
+            #region Create Product
+            Product product = new Product();
+            product.Name = addProductViewModel.Name;
+            product.Description = addProductViewModel.Description;
+            product.Image = addProductViewModel.Images[0];
+            product.CreatedAtUtc = DateTime.UtcNow;
+            product.IsDeleted = false;
+            product.DiscountId = addProductViewModel.DiscountId;
+            product.Price = (decimal)addProductViewModel.Price;
+            product.BrandId = addProductViewModel.BrandId;
+            product.ProductTypeId = productTypeRepository.GetAll().FirstOrDefault(p => p.Name == "Clothes")!.Id;
+
+            productRepository.Insert(product);
+
+            #endregion
+
+            #region Create Product Item
+            int productId = productRepository.GetAll().FirstOrDefault(p => p.Name == addProductViewModel.Name && p.Description == addProductViewModel.Description && p.IsDeleted == false && p.Image == addProductViewModel.Images[0] && p.DiscountId == addProductViewModel.DiscountId)!.Id; ;
+            foreach (var item in addProductViewModel.ProductAttribute)
+            {
+                ProductItem productItem = new ProductItem();
+                productItem.Name = $"{product.Name}-{item.SizeAttributeValueID}-{item.ColorAttributeValueID}";
+                // Create a random number form 0 to 1M
+                Random random = new Random();
+                productItem.SKU = random.Next(0, 1000000);
+                productItem.StockQuantity = item.CountAttributeValue;
+                productItem.ProductId = productId;
+                productItem.Price = product.Price;
+                productItem.CreatedAtUtc = DateTime.UtcNow;
+                productItem.IsDeleted = false;
+                productItemRepository.Insert(productItem);
+
+            }
+            #endregion
+
+            #region Create Product Images
+            List<ProductItem> productItemsListForImage = productItemRepository.GetAll().Where(p => p.ProductId == productId).ToList();
+            foreach (var item_1 in productItemsListForImage)
+            {
+                foreach (var item in addProductViewModel.Images)
+                {
+                    ProductImages productImages = new ProductImages();
+                    productImages.ImageURL = item;
+                    productImages.ProductItemId = item_1.Id;
+                    productImagesRepository.Insert(productImages);
+                }
+            }
+            #endregion
+
+            #region Create Product Category
+            ProductCategory productCategory = new ProductCategory();
+            productCategory.ProductId = productId;
+            productCategory.CategoryId = addProductViewModel.CategoryId;
+            productCategoryRepository.Insert(productCategory);
+
+            #endregion
+
+            #region Product Attribute
+            List<ProductAttribute> productAttribute = productAttributeRepository.GetAll().Where(p => p.Name == "Size" || p.Name == "Color").ToList();
+            #endregion
+
+            #region Create Product Type Attribute
+            foreach (var item in productAttribute)
+            {
+                ProductTypeAttribute productTypeAttribute = new ProductTypeAttribute();
+                productTypeAttribute.ProductTypeId = productTypeRepository.GetAll().FirstOrDefault(p => p.Name == "Clothes")!.Id;
+                productTypeAttribute.ProductAttributeId = item.Id;
+                productTypeAttributeRepository.Insert(productTypeAttribute);
+            }
+            #endregion
+
+            #region Create Attribute Values
+            //foreach (var item in productAttribute)
+            //{
+            //    foreach (var item_2 in addProductViewModel.ProductAttribute)
+            //    {
+            //        if (item.Name == "Color")
+            //        {
+            //            AttributeValues attributeValues = new AttributeValues();
+            //            attributeValues.ProductAttributeId = productAttributeRepository.GetAll().FirstOrDefault(p => p.Name == "Color")!.Id;
+            //            attributeValues.Value = item_2.ColorAttributeValueID;
+            //            //AttributeValuesRepository.Insert(attributeValues);
+            //        }
+            //        if (item.Name == "Size")
+            //        {
+            //            AttributeValues attributeValues = new AttributeValues();
+            //            attributeValues.ProductAttributeId = productAttributeRepository.GetAll().FirstOrDefault(p => p.Name == "Size")!.Id;
+            //            attributeValues.Value = item_2.SizeAttributeValueID;
+            //            //AttributeValuesRepository.Insert(attributeValues);
+
+            //        }
+            //    }
+
+            //}
+            #endregion
+
+            #region Create Product Attribute Values
+            List<AttributeValues> attributeValuesList = AttributeValuesRepository.GetAll();
+            List<AttributeValues> attributeValuesList_2 = new List<AttributeValues>();
+            foreach (var item in attributeValuesList)
+            {
+                foreach (var item_2 in addProductViewModel.ProductAttribute)
+                {
+                    if (item.Value == item_2.ColorAttributeValueID || item.Value == item_2.SizeAttributeValueID)
+                    {
+                        attributeValuesList_2.Add(item);
+                    }
+                }
+            }
+            foreach (var item in productItemsListForImage)
+            {
+                foreach (var item_2 in attributeValuesList_2)
+                {
+                    ProductAttributeValues productAttributeValues = new ProductAttributeValues();
+                    productAttributeValues.ProductItemId = item.Id;
+                    productAttributeValues.AttributeValuesId = item_2.Id;
+                    productAttributeValuesRepository.Insert(productAttributeValues);
+                }
+            }
+            #endregion
+
+
+
+            return View("AddProductSuccess");
+        }
+        public IActionResult gg()
+        {
+
+            return View("AddProductSuccess");
+        }
 
         #region Customer(Users) Controllers
-        public IActionResult UsersIndex() 
+        public IActionResult UsersIndex()
         {
-            var Users = customer.GetAll();            
+            var Users = customer.GetAll();
             return View("UsersPage", Users);
         }
         public IActionResult AddUser()
         {
-            RegisterViewModel register = new RegisterViewModel();           
+            RegisterViewModel register = new RegisterViewModel();
             register.Countries = country.GetAll();
             register.Roles = roleManager.Roles.ToList();
             return View(register);
@@ -61,7 +259,7 @@ namespace ECommerceMVC.Controllers
         {
             List<Claim> claims = new List<Claim>();
             if (ModelState.IsValid)
-            {               
+            {
                 Customer userModel = new Customer();
                 Address address = new Address();
                 ShoppingBag shoppingBag = new ShoppingBag();
@@ -108,8 +306,8 @@ namespace ECommerceMVC.Controllers
 
                     if (userModel.IsAdmin == true)
                     {
-                       await userManager.AddToRoleAsync(userModel, "Admin");
-                    }                                    
+                        await userManager.AddToRoleAsync(userModel, "Admin");
+                    }
                     return RedirectToAction("UsersIndex", "Admin");
                 }
                 //else
@@ -132,7 +330,7 @@ namespace ECommerceMVC.Controllers
         }
         public async Task<IActionResult> EditUser(int id)
         {
-            var user = customer.GetById(id);           
+            var user = customer.GetById(id);
             EditUserViewModel editUser = new EditUserViewModel();
             editUser.UserId = id;
             editUser.PhoneNumber = user.PhoneNumber;
@@ -140,21 +338,21 @@ namespace ECommerceMVC.Controllers
             editUser.FirstName = user.FirstName;
             editUser.LastName = user.LastName;
             editUser.Gender = user.Gender;
-            editUser.CountryId= user.CountryId;
-            editUser.Countries= country.GetAll();
+            editUser.CountryId = user.CountryId;
+            editUser.Countries = country.GetAll();
             editUser.Email = user.Email;
             editUser.IsActive = user.IsActive;
             editUser.IsAdmin = user.IsAdmin;
             editUser.IsDeleted = user.IsDeleted;
             editUser.DataOfBirth = user.DataOfBirth;
-            editUser.Roles= roleManager.Roles.ToList();
+            editUser.Roles = roleManager.Roles.ToList();
 
             return View(editUser);
         }
-       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditUser([FromRoute] int id , EditUserViewModel updateduser)
+        public async Task<IActionResult> EditUser([FromRoute] int id, EditUserViewModel updateduser)
         {
             if (ModelState.IsValid)
             {
@@ -164,7 +362,7 @@ namespace ECommerceMVC.Controllers
                 user.FirstName = updateduser.FirstName;
                 user.LastName = updateduser.LastName;
                 user.Gender = updateduser.Gender;
-                user.IsActive= updateduser.IsActive;
+                user.IsActive = updateduser.IsActive;
                 user.IsAdmin = updateduser.IsAdmin;
                 user.PhoneNumber = updateduser.PhoneNumber;
                 user.Email = updateduser.Email;
@@ -175,19 +373,19 @@ namespace ECommerceMVC.Controllers
                 if (user.IsAdmin == true)
                 {
                     if (await userManager.IsInRoleAsync(user, "Admin") == false)
-                    { 
+                    {
                         await userManager.AddToRoleAsync(user, "Admin");
                     }
                 }
                 else
                 {
-                    if  (await userManager.IsInRoleAsync(user, "Admin"))
+                    if (await userManager.IsInRoleAsync(user, "Admin"))
                     {
                         await userManager.RemoveFromRoleAsync(user, "Admin");
                     }
                 }
-                              
-                
+
+
                 return RedirectToAction("UsersIndex");
             }
             else
@@ -203,7 +401,7 @@ namespace ECommerceMVC.Controllers
                 editUser.Countries = country.GetAll();
                 editUser.Email = updateduser.Email;
                 editUser.IsActive = updateduser.IsActive;
-                editUser.IsAdmin = updateduser.IsAdmin;               
+                editUser.IsAdmin = updateduser.IsAdmin;
                 editUser.DataOfBirth = updateduser.DataOfBirth;
                 editUser.Roles = roleManager.Roles.ToList();
                 return View(editUser);
@@ -211,11 +409,11 @@ namespace ECommerceMVC.Controllers
         }
         public IActionResult DeleteUser(int id)
         {
-            var user = customer.GetById(id);                
+            var user = customer.GetById(id);
             user.IsDeleted = true;
             user.DeleteDate = DateTime.UtcNow;
             customer.Update(id, user);
-                      
+
             return RedirectToAction("UsersIndex");
         }
 
@@ -289,4 +487,4 @@ namespace ECommerceMVC.Controllers
 
     }
 }
-    
+

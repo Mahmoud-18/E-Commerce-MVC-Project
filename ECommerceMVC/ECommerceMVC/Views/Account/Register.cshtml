@@ -5,18 +5,7 @@
     ViewBag.Genders = new SelectList(Enum.GetValues(typeof(Gender)));
 }
 
-<!-- Breadcrumb Start -->
-    <div class="container-fluid">
-      <div class="row px-xl-5">
-        <div class="col-12">
-          <nav class="breadcrumb bg-light mb-30">
-            <a class="breadcrumb-item text-dark" href="#">My Account</a>
-            <span class="breadcrumb-item active">Sign Up</span>
-          </nav>
-        </div>
-      </div>
-    </div>
-    <!-- Breadcrumb End -->
+
 
     <!-- Customer SignUp Start -->
     <div class="container-fluid">
@@ -31,7 +20,9 @@
 
 
             <form asp-action="Register" asp-controller="Account">
-               @* <div asp-validation-summary="All" class="text-danger"></div>*@
+
+                <div asp-validation-summary="All" ></div>
+
                <div class="row">                                 
                    <div class="col-md-6 form-group">
                      <label asp-for="FirstName" class="control-label"></label>                    
@@ -68,7 +59,7 @@
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary password-toggle-btn"
                                         type="button">
-                                    <i class="fa fa-eye"></i>
+                                    <i class="fa fa-eye" style= "color: Black;   cursor: pointer;"></i>
                                 </button>
                             </div>                          
                         </div>
@@ -82,7 +73,7 @@
                           <input asp-for="ConfirmPassword"  id="repassword" class="form-control" placeholder="Re-Enter Password" />                         
                           <div class="input-group-append">
                               <button class="btn btn-outline-secondary password-toggle-btn" type="button" onclick="togglePasswordVisibility()">
-                     <i class="fa fa-eye"></i>
+                     <i class="fa fa-eye" style= "color: Black;"></i>
                          </button>
                           </div>                         
                       </div>
