@@ -34,7 +34,7 @@ namespace ECommerceMVC.Controllers
             if (ors.Orders != null)
 
             {
-            
+                ors.UpdatedOnUtc= DateTime.UtcNow;
                 _orderStatusRepository.Update(id, ors);
                 return RedirectToAction("Index");
             }
@@ -55,7 +55,7 @@ namespace ECommerceMVC.Controllers
             if (ors.Orders != null)
 
             {
-
+                ors.CreatedOnUtc= DateTime.UtcNow;
                 _orderStatusRepository.Insert( ors);
                 return RedirectToAction("Index");
             }
