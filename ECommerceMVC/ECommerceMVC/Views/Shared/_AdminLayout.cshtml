@@ -18,14 +18,6 @@
     <link href="~/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
 
-    <!--Custom styles for datatables -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-
-    <!-- International phone Number -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
-
  </head>
 
 
@@ -83,6 +75,8 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
+           
+
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
                 <a class="nav-link" href="index.html">
@@ -137,10 +131,7 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Catelog
-            </div>
+         
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item active">
@@ -154,8 +145,8 @@
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         @*<h6 class="collapse-header">Login Screens:</h6>*@
-                        <a class="collapse-item" href="login.html">Product</a>
-                        <a class="collapse-item" asp-action="Index" asp-controller="Admin">Caterogy</a>
+                        <a class="collapse-item" href="~/Admin/AddProduct">Product</a>
+                        <a class="collapse-item" asp-action="Index" asp-controller  ="Admin">Caterogy</a>
                         <a class="collapse-item" asp-action="Index" asp-controller="Brand">Brands </a>
                         <a class="collapse-item" asp-action="Index" asp-controller="Admin">Attribute </a>
 
@@ -165,26 +156,7 @@
             </div>
 
             </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour"
-                   aria-expanded="true" aria-controls="collapseFour">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Configurations</span>
-                </a>
-                <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-<<<<<<< HEAD
-                        <a class="collapse-item" href="/Country/Index">Countries</a>
-                        <a class="collapse-item" href="cards.html">Payment Methods</a>
-                        <a class="collapse-item" href="cards.html">Order Status</a>
-=======
-                        <a class="collapse-item" href="#">Countries</a>
-                        <a class="collapse-item" href="#">Payment Methods</a>
-                        <a class="collapse-item" href="#">Order Status</a>
->>>>>>> 195cea1ba2c4ce527808d6732902b9ec3febe1be
-                    </div>
-                </div>
-            </li>
+          
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
@@ -207,7 +179,9 @@
                     <span>Content Management</span>
                 </a>
             </li>
-
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
 
         </ul>
         <!-- End of Sidebar -->
@@ -335,6 +309,21 @@
 
     </footer>
 
+
+
+    <!--Custom scripts for datatables -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Register Javascript -->
+    @*<script src="~/js/SignUp.js"></script>*@
+
+   @* <!-- International phone Javascript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.js"></script>*@
+
+    @*//*@
     <!-- Bootstrap core JavaScript-->
     <script src="~/vendor/jquery/jquery.min.js"></script>
     <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -345,17 +334,7 @@
     <!-- Custom scripts for all pages-->
     <script src="~/js/sb-admin-2.min.js"></script>
 
-    <!--Custom scripts for datatables -->
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
-    <!-- Register Javascript -->
-    <script src="/js/SignUp.js"></script>
-
-   @* <!-- International phone Javascript -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.js"></script>*@
 
     <script>
         $(document).ready(function () {
