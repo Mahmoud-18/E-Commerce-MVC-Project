@@ -51,12 +51,19 @@ public class ProductController : Controller
 
             Product product = productRepository.GetProductById(id);
             List<ProductItem> productItemList = productRepository.GetProductItemById(id);
-            Brand brand = productRepository.GetBrandById(id);
+            //Brand brand = productRepository.GetBrandById(id);
             List<string> productImages = productRepository.GetImageById(id);
             Discount discount = productRepository.GetDiscountById(id);
-            if (discountRepository.IsDiscountActive(discount.Id))
+            if (discount != null)
             {
-                productDetailsViewModel.PriceBeforeDiscount = (1 - discount.DiscountPercentage) * (float)product.Price;
+                if (discountRepository.IsDiscountActive(discount.Id))
+                {
+                    productDetailsViewModel.PriceBeforeDiscount = (1 - discount.DiscountPercentage) * (float)product.Price;
+                }
+                else
+                {
+                    productDetailsViewModel.PriceBeforeDiscount = 0;
+                }
             }
             else
             {
@@ -101,7 +108,7 @@ public class ProductController : Controller
 
 
             }
-            productDetailsViewModel.BrandName = brand.Name;
+            //productDetailsViewModel.BrandName = brand.Name;
 
             return View("ProductDetails", productDetailsViewModel);
         }
