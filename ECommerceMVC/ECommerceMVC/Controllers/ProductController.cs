@@ -138,9 +138,9 @@ public class ProductController : Controller
 
         }
         shoppingBagItemRepository.Insert(shoppingBagItem);
-
-
-        return View("ProductDetails");
+        
+        //return RedirectToAction("ProductDetails",)
+        return RedirectToAction("Index","ShoppingBag");
     }
 
 
