@@ -26,7 +26,12 @@
 
 
 <body id="page-top">
-  <header>
+  <header>       
+        <style>
+            .navbar-brand:hover {
+                transform: scale(1.1);
+            }
+        </style>
     <div class="container-fluid">
         <div class="row align-items-center  py-3 px-xl-3 d-none d-lg-flex" style="background-color:#3d464d; ">
 
@@ -52,7 +57,7 @@
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">@User.Identity.Name</button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a asp-action="Profile" asp-controller="Account" class="dropdown-item" type="button">Profile</a>
+                            <a asp-action="MyAccount" asp-controller="Account" class="dropdown-item" type="button">Profile</a>
                             <a asp-action="SignOut" asp-controller="Account" class="dropdown-item" type="button">Sign out</a>
                         </div>
                     </div>
@@ -171,7 +176,7 @@
 
             <!-- Nav Item - Orders -->
             <li class="nav-item">
-                <a class="nav-link" asp-action="Index" asp-controller="Orders">
+                <a class="nav-link" asp-action="Index" asp-controller="Order">
                     <i class="fas fa-fw fa-shopping-cart"></i>
                     <span>Orders</span>
                 </a>

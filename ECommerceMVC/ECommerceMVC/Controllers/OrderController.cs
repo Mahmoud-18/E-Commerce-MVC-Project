@@ -40,10 +40,9 @@ namespace ECommerceMVC.Controllers
         }
 
         [Authorize]
-        public IActionResult Checkout()
-        {
-            OrderDetailsViewModel order = new OrderDetailsViewModel();
-            return View(order);
+        public IActionResult Checkout(ShoppingBagViewModel bagViewModel)
+        {                   
+            return View(bagViewModel);
         }
     }
 

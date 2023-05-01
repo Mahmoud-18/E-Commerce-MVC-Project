@@ -37,6 +37,8 @@ namespace ECommerceMVC.Controllers
             Customer customer = await userManager.GetUserAsync(User);          
             ShoppingBag bag = shoppingBagRepository.GetByCustomerId(customer.Id);
             ShoppingBagViewModel bagViewModel = new ShoppingBagViewModel();
+            bagViewModel.CustomerId = customer.Id;
+            bagViewModel.Id = bag.Id;
             bagViewModel.Items = shoppingBagItemRepository.GetAllByBagId(bag.Id);
             decimal sumafterdisc = 0;
             decimal sumbeforedisc = 0;
@@ -61,7 +63,7 @@ namespace ECommerceMVC.Controllers
                     }
                    
                 }
-            }
+            }                   
             bagViewModel.TotalPriceBeforeDiscount = sumbeforedisc;           
             bagViewModel.TotalPriceAfterDiscount = sumafterdisc;
             bagViewModel.TotalDiscount = sumbeforedisc-sumafterdisc;              
