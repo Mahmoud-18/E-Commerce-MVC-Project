@@ -1,8 +1,5 @@
 ﻿@model ContactViewModel
-@if (TempData["Message"] != null)
-{
-        <div class="alert alert-success">@TempData["Message"]</div>
-}
+
 
     <!-- Breadcrumb Start -->
     <div class="container-fluid">
@@ -51,10 +48,8 @@
 </div>
 
 
-                   
                     <div>
-                         <input type="submit" value="Send Message"class="btn btn-primary py-2 px-4" />
-                        
+                         <button asp-controller="Contact" asp-action="Submit" type="submit" class="btn btn-primary py-2 px-4">Send Message</button>
                     </div>
                 </form>
             </div>

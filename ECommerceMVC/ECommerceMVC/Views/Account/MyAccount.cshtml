@@ -1,4 +1,6 @@
-﻿ <style>
+﻿
+
+<style>
  #main { 
  display: flex;
  gap: 40px;
@@ -57,12 +59,13 @@
           </div>
           
           
+          
           <div class="cell"
             style="padding: 10px; border: 1px solid #ccc; background-color: #f0f0f0; color: #333; text-align: center; cursor: pointer; border-radius: 5px; box-shadow: 2px 2px 2px #ccc;"
      onmouseover="this.style.backgroundColor='#e0e0e0'; this.style.color='#000';"
      onmouseout="this.style.backgroundColor='#f0f0f0'; this.style.color='#333';"  >
           <div class="ya-card-cell">
-              <a href="@Url.Action("EditProfile", "Account")" class="ya-card__whole-card-link" style="text-decoration:none;">
+              <a asp-controller="Account" asp-action="EditProfile" class="ya-card__whole-card-link" style="text-decoration:none;">
             <img src="/img/YourAccountimages/03.png" width="200" height="200">
             <div class="container">
               <h4><b>Login &amp; security</b></h4>
@@ -72,8 +75,14 @@
           </div>
           </div>
 
+      
+
+          
+
+
+
 
         </div>
 
    
-
+          
