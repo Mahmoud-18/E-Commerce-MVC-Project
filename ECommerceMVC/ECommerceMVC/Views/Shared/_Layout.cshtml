@@ -10,9 +10,13 @@
 @inject IShoppingBagItemRepository shoppingBagItemRepository;
 
 @{
-    Customer customer = await userManager.GetUserAsync(User);
-    ShoppingBag bag = shoppingBagRepository.GetByCustomerId(customer.Id);
-    int bagcount = shoppingBagItemRepository.GetAllByBagId(bag.Id).Count;
+    int bagcount = 0;
+    if (User.Identity.IsAuthenticated == true)
+    {
+        Customer customer = await userManager.GetUserAsync(User);
+        ShoppingBag bag = shoppingBagRepository.GetByCustomerId(customer.Id);
+        bagcount = shoppingBagItemRepository.GetAllByBagId(bag.Id).Count;
+    }
 }
 
 <!DOCTYPE html>
