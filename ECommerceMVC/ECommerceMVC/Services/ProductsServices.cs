@@ -126,11 +126,10 @@ namespace ECommerceMVC.Services
                 var cats = category.GetByParentCategoryId(id);
                 foreach (Category c in cats)
                 {
-                    var catProducts = productCategory.GetByCategoryId(id);
+                    var catProducts = productCategory.GetByCategoryId(c.Id);
                     foreach (var cProduct in catProducts)
                     {
                         Product? pro = cProduct.Product;
-
 
                         if (pro.DiscountId != null)
                         {
