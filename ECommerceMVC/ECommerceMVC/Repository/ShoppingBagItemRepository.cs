@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceMVC.Repository
 {
+   
     public class ShoppingBagItemRepository : IShoppingBagItemRepository
     {
 

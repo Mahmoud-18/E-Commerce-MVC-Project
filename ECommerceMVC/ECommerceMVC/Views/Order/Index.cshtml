@@ -15,7 +15,7 @@
     <a asp-action="Create" class="btn btn-success my-3">add new order</a>
 </p>
 *@
-<table class="table">
+<table id="table" class="table table-striped table-bordered">
     <thead>
         <tr>
             <th>
@@ -70,13 +70,7 @@
                 @Html.DisplayFor(modelItem => item.CreatedOnUtc)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.IsCanceled)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedOnUtc)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.OrderStatus.Id)
