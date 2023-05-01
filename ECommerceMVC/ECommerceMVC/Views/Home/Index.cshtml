@@ -28,7 +28,7 @@
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-5" style="max-width: 700px;">
                                 <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Men Fashion</h1>
-                                <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" href="#">Shop Now</a>
+                                <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" href="/Shop/ProductsByCategory/1">Shop Now</a>
                             </div>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-5" style="max-width: 700px;">
                                 <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">Women Fashion</h1>
-                                <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" href="#">Shop Now</a>
+                                <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" href="/Shop/ProductsByCategory/2">Shop Now</a>
                             </div>
                         </div>
                     </div>
@@ -70,17 +70,17 @@
         </h5>
     </div>
     <div class="row px-xl-5">
-        @for (int i = 0; i < 26; i=i+3)
+        @for (int i = 0; i <17; i=i+2)
                 {
                     var product = Model[i];
 
                     <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
                             <div class="product-item bg-light mb-4">
-                                <div class="product-img position-relative overflow-hidden">                    
-                                    <img class="img-fluid w-100" src="@product.Image" alt="">
+                                <div class="product-img position-relative overflow-hidden">
+                        <img class="img-fluid w-100" src="/img/@product.Image" alt="">
                                     <div class="product-action">
-                            <a class="btn btn-outline-dark btn-square" asp-action="Index" asp-controller="ShoppingBag"><i class="fa fa-shopping-cart"></i></a>
-                            <a class="btn btn-outline-dark btn-square" asp-action="ProductDetails" asp-controller="Product" asp-route-id="@product.Id"><i class="fa fa-sync-alt"></i></a>
+                            <a class="btn btn-outline-dark" asp-action="ProductDetails" asp-controller="Product" asp-route-id="@product.Id"><i>Order Now!</i></a>
+
                                     </div>
                                 </div>
                                 <div class="text-center py-4">
@@ -89,14 +89,14 @@
                                     <div class="d-flex align-items-center justify-content-center mt-2">
                                         <h5>@product.PriceBeforeDisc</h5>
                                     </div>
-                                    <div class="d-flex align-items-center justify-content-center mb-1">
+                                    @*<div class="d-flex align-items-center justify-content-center mb-1">
                                         <small class="fa fa-star text-primary mr-1"></small>
                                         <small class="fa fa-star text-primary mr-1"></small>
                                         <small class="fa fa-star text-primary mr-1"></small>
                                         <small class="fa fa-star text-primary mr-1"></small>
                                         <small class="fa fa-star text-primary mr-1"></small>
                                         <small>(99)</small>
-                                    </div>
+                                    </div>*@
                                 </div>
                             </div>
                     </div>
@@ -143,17 +143,17 @@
         </h5>
     </div>
         <div class="row px-xl-5">
-            @for (int i = 25; i >0; i = i - 3)
+            @for (int i =1; i <18; i = i+2)
             {
                 var product = Model[i];
 
                 <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
                     <div class="product-item bg-light mb-4">
                         <div class="product-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="@product.Image" alt="">
+                        <img class="img-fluid w-100" src="/img/@product.Image" alt="">
                             <div class="product-action">
-                            <a class="btn btn-outline-dark btn-square" asp-action="Index" asp-controller="ShoppingBag"><i class="fa fa-shopping-cart"></i></a>
-                            <a class="btn btn-outline-dark btn-square" asp-action="ProductDetails" asp-controller="Product" asp-route-id="@product.Id"><i class="fa fa-sync-alt"></i></a>
+                            <a class="btn btn-outline-dark" asp-action="ProductDetails" asp-controller="Product" asp-route-id="@product.Id"><i>Order Now!</i></a>
+
                             </div>
                         </div>
                         <div class="text-center py-4">
@@ -162,14 +162,14 @@
                             <div class="d-flex align-items-center justify-content-center mt-2">
                                 <h5>@product.PriceBeforeDisc</h5>
                             </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
+                            @*<div class="d-flex align-items-center justify-content-center mb-1">
                                 <small class="fa fa-star text-primary mr-1"></small>
                                 <small class="fa fa-star text-primary mr-1"></small>
                                 <small class="fa fa-star text-primary mr-1"></small>
                                 <small class="fa fa-star text-primary mr-1"></small>
                                 <small class="fa fa-star text-primary mr-1"></small>
                                 <small>(99)</small>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
                 </div>

@@ -8,7 +8,7 @@
     <ul id="myUL">
         @foreach (ShoppingProductsViewModel product in Model)
         {
-            <li id="lid"><a href="/product/ProductDetails/@product.Id"><img src="@product.Image" width="50" height="50" />  @product.Name</a></li>
+            <li id="lid"><a href="/product/ProductDetails/@product.Id"><img src="/img/@product.Image" width="50" height="50" />  @product.Name</a></li>
         }
     </ul>
 

@@ -1,0 +1,225 @@
+﻿@model ECommerceMVC.ViewModels.EditProfileViewModel
+@{
+    ViewData["Title"] = "EditProfile";
+    ViewBag.Genders = new SelectList(Enum.GetValues(typeof(Gender)));
+}
+
+@*in order to show a customer model and on the other side show an EditProfileviewmodel we will
+unify the type of model used here
+
+therfore all must be Editprofileviewmodel , thus we will create 2 actions
+one to send the preview data while the second will send the data to the action to modify it
+*@
+
+
+
+ <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="@Url.Action("MyAccount", "Account")">MyAccount</a>
+                    <span class="breadcrumb-item active">Edit your Profile</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Data Start --> 
+<div class="container bootstrap snippets bootdey">
+    <hr>
+    <div class="row">
+
+      <!-- Current Data column -->
+       <div class="col-md-6 personal-info">
+        <h3>Current Account Information</h3>
+
+        <form class="form-horizontal" role="form">
+
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.UserName)</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.UserName)" readonly>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.Email)</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.Email)" readonly>
+            </div>
+          </div>
+
+         <div class="form-group">
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.FirstName)</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.FirstName)" readonly>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.LastName)</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.LastName)" readonly>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.PhoneNumber)</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.PhoneNumber)" readonly>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.DataOfBirth)</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.DataOfBirth)" readonly>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.Gender)</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.Gender)" readonly>
+            </div>
+          </div>
+        </form>
+      </div>
+       <!-- Current Data column -->
+      <!-- Modified Data column -->
+
+ <div class="col-md-6 personal-info">
+        <h3>Current Account Information</h3>
+
+        <form asp-controller="Account" asp-action="SubmitProfileModifications"  class="form-horizontal" >
+
+
+          <div class="form-group">
+            <label asp-for="UserName" class="col-lg-3 control-label"></label>
+            <div class="col-lg-8">
+              <input asp-for="UserName" class="form-control" type="text" value="@Html.DisplayFor(model => model.UserName)" >
+            </div>
+            <span asp-validation-for="UserName" class="text-danger"></span>
+          </div>
+
+
+          <div class="form-group">
+            <label asp-for="Email" class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.Email)</label>
+            <div class="col-lg-8">
+              <input asp-for="Email" class="form-control" type="text" value="@Html.DisplayFor(model => model.Email)" >
+            </div>
+            <span asp-validation-for="Email" class="text-danger"></span>
+          </div>
+
+         <div class="form-group">
+            <label asp-for="FirstName" class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.FirstName)</label>
+            <div class="col-lg-8">
+              <input asp-for="FirstName" class="form-control" type="text" value="@Html.DisplayFor(model => model.FirstName)" >
+            </div>
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+          </div>
+
+          <div class="form-group">
+            <label asp-for="LastName" class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.LastName)</label>
+            <div class="col-lg-8">
+              <input asp-for="LastName" class="form-control" type="text" value="@Html.DisplayFor(model => model.LastName)" >
+            </div>
+            <span asp-validation-for="LastName" class="text-danger"></span>
+          </div>
+
+
+          <div class="form-group">
+            <label asp-for="PhoneNumber" class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.PhoneNumber)</label>
+            <div class="col-lg-8">
+              <input asp-for="PhoneNumber" class="form-control" type="text" value="@Html.DisplayFor(model => model.PhoneNumber)" >
+            </div>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+          </div>
+
+
+
+          <div class="form-group">
+             <label asp-for="DataOfBirth" class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.DataOfBirth)</label>
+                 <div class="col-lg-8">
+                     <input asp-for="DataOfBirth" class="form-control"/>
+                </div>
+             <span asp-validation-for="DataOfBirth" class="text-danger"></span>                       
+          </div>
+
+
+          <div class="form-group">
+                <label asp-for="Gender" class="col-lg-3 control-label"></label>
+                <div class="col-lg-8">
+                <select asp-for="Gender" class="form-control"  asp-items="ViewBag.Genders">
+                    <!--List<Gender>-->
+                </select>
+                </div>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+          </div>
+
+
+
+          <div class="form-group">
+            <label asp-for="OldPassword" class="col-lg-3 control-label"></label>
+            <div class="col-lg-8">
+              <input asp-for="OldPassword" class="form-control" type="text"  >
+            </div>
+            <span asp-validation-for="OldPassword" class="text-danger"></span>
+          </div>
+
+          <div class="form-group">
+            <label asp-for="NewPassword" class="col-lg-3 control-label"></label>
+            <div class="col-lg-8">
+              <input asp-for="NewPassword" class="form-control" type="text"  >
+            </div>
+            <span asp-validation-for="NewPassword" class="text-danger"></span>
+          </div>
+
+          <div class="form-group">
+            <label asp-for="ConfirmNewPassword" class="col-lg-3 control-label"></label>
+            <div class="col-lg-8">
+              <input asp-for="ConfirmNewPassword" class="form-control" type="text"  >
+            </div>
+            <span asp-validation-for="ConfirmNewPassword" class="text-danger"></span>
+          </div>
+
+
+
+          <div class="form-group">
+                        <input type="submit" value="Sign Up" class="btn btn-block btn-primary font-weight-bold py-3" />
+                 </div>
+
+
+
+        </form>
+      </div>
+
+
+
+       <!-- Modified Data  column -->
+
+       <!-- Data End --> 
+         </div>
+    <hr>
+</div>
+
+
+
+                <a href="#" class="btn btn-primary back-to-top"
+      ><i class="fa fa-angle-double-up"></i
+    ></a>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.js"></script>            
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

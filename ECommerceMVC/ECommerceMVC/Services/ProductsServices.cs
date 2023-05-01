@@ -28,15 +28,13 @@ namespace ECommerceMVC.Services
             List<ShoppingProductsViewModel> products = new();
             var allProducts = product.GetAll();
             foreach (Product pro in allProducts)
-            {
-
-                var Discount = product.GetDiscountById(pro.Id);
+            {                
 
                 decimal? PriceBeforeDisc = pro.Price;
 
-                if (pro.DiscountId != null && Discount.IsActice )
+                if (pro.DiscountId != null)
                 {
-                    if (discountRepo.IsDiscountActive((int)pro.DiscountId)) // Safwat : change ** pro.Discount.Id ** => ** (int)pro.DiscountId **
+                    if (discountRepo.IsDiscountActive(pro.Discount.Id))// Safwat : change ** pro.Discount.Id ** => ** (int)pro.DiscountId **
                     {
                         decimal priceAfterDiscount = pro.Price - (decimal)pro.Discount.DiscountPercentage * pro.Price;
                         products.Add(new ShoppingProductsViewModel
@@ -48,6 +46,17 @@ namespace ECommerceMVC.Services
                             PriceAfterDisc = priceAfterDiscount
                         });
                     }
+                    else
+                    {
+                        products.Add(new ShoppingProductsViewModel
+                        {
+                            Id = pro.Id,
+                            Name = pro.Name,
+                            Image = pro.Image,
+                            PriceBeforeDisc = pro.Price,
+                        });
+                    }
+                    
                 }
                 else
                 {
@@ -73,12 +82,10 @@ namespace ECommerceMVC.Services
                 foreach (var cProduct in catProducts)
                 {
                     Product? pro = cProduct.Product;
-                    var Discount = product.GetDiscountById(pro.Id);
-                    decimal? PriceBeforeDisc = pro.Price;
 
-                    if (pro.DiscountId != null && Discount.IsActice)
+                    if (pro.DiscountId != null)
                     {
-                        if (discountRepo.IsDiscountActive((int)pro.DiscountId))
+                        if (discountRepo.IsDiscountActive((int)pro.Discount.Id))
                         {
                             decimal priceAfterDiscount = pro.Price - (decimal)pro.Discount.DiscountPercentage * pro.Price;
                             products.Add(new ShoppingProductsViewModel
@@ -88,6 +95,16 @@ namespace ECommerceMVC.Services
                                 Image = pro.Image,
                                 PriceBeforeDisc = pro.Price,
                                 PriceAfterDisc = priceAfterDiscount
+                            });
+                        }
+                        else
+                        {
+                            products.Add(new ShoppingProductsViewModel
+                            {
+                                Id = pro.Id,
+                                Name = pro.Name,
+                                Image = pro.Image,
+                                PriceBeforeDisc = pro.Price,
                             });
                         }
                     }
@@ -113,12 +130,10 @@ namespace ECommerceMVC.Services
                     foreach (var cProduct in catProducts)
                     {
                         Product? pro = cProduct.Product;
-                        decimal? PriceBeforeDisc = pro.Price;
-                        var Discount = product.GetDiscountById(pro.Id);
 
-                        if (pro.DiscountId != null && Discount.IsActice)
+                        if (pro.DiscountId != null)
                         {
-                            if (discountRepo.IsDiscountActive((int)pro.DiscountId))
+                            if (discountRepo.IsDiscountActive((int)pro.Discount.Id))
                             {
                                 decimal priceAfterDiscount = pro.Price - (decimal)pro.Discount.DiscountPercentage * pro.Price;
                                 products.Add(new ShoppingProductsViewModel
@@ -128,6 +143,16 @@ namespace ECommerceMVC.Services
                                     Image = pro.Image,
                                     PriceBeforeDisc = pro.Price,
                                     PriceAfterDisc = priceAfterDiscount
+                                });
+                            }
+                            else
+                            {
+                                products.Add(new ShoppingProductsViewModel
+                                {
+                                    Id = pro.Id,
+                                    Name = pro.Name,
+                                    Image = pro.Image,
+                                    PriceBeforeDisc = pro.Price,
                                 });
                             }
                         }

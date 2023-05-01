@@ -1,16 +1,27 @@
-﻿
+﻿@*@model ECommerceMVC.Models.Customer
+@{
+    ViewData["Title"] = "EditProfile";
+}
 
+ <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="@Url.Action("MyAccount", "Account")">MyAccount</a>
+                    <span class="breadcrumb-item active">Edit your Profile</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
 
-
-
+    <!-- Data Start --> 
 <div class="container bootstrap snippets bootdey">
-
-    <h1 class="text-primary text-center" >Edit Profile</h1>
-      <hr>
+    <hr>
     <div class="row">
 
-
-      <!-- left column -->
+      <!-- Current Data column -->
        <div class="col-md-6 personal-info">
         <h3>Current Account Information</h3>
 
@@ -18,114 +29,178 @@
 
 
           <div class="form-group">
-            <label class="col-lg-3 control-label">UserName</label>
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.UserName)</label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="@User.Identity.Name" readonly>
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.UserName)" readonly>
             </div>
           </div>
 
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label">UserName</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.Email)" readonly>
+            </div>
+          </div>
 
          <div class="form-group">
-            <label class="col-lg-3 control-label">FirstName</label>
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.FirstName)</label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="" readonly>
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.FirstName)" readonly>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="col-lg-3 control-label">LastName</label>
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.LastName)</label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="" readonly>
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.LastName)" readonly>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="col-lg-3 control-label">Email</label>
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.Email)</label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="" readonly>
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.Email)" readonly>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.PhoneNumber)</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.PhoneNumber)" readonly>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="col-lg-3 control-label">UserName</label>
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.DataOfBirth)</label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="@User.Identity.Name" readonly>
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.DataOfBirth)" readonly>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="col-lg-3 control-label">UserName</label>
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.Gender)</label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="@User.Identity.Name" readonly>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-lg-3 control-label">UserName</label>
-            <div class="col-lg-8">
-              <input class="form-control" type="text" value="@User.Identity.Name" readonly>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-lg-3 control-label">UserName</label>
-            <div class="col-lg-8">
-              <input class="form-control" type="text" value="@User.Identity.Name" readonly>
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.Gender)" readonly>
             </div>
           </div>
         </form>
       </div>
-
-      <!-- edit form column -->
-      <div class="col-md-6 personal-info">
-        <h3>Updated Account information</h3>
+       <!-- Current Data column -->
+      <!-- Modified Data column -->
+      
+ <div class="col-md-6 personal-info">
+        <h3>Current Account Information</h3>
 
         <form class="form-horizontal" role="form">
+
+
           <div class="form-group">
-            <label class="col-lg-3 control-label">First name:</label>
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.UserName)</label>
             <div class="col-lg-8">
-                 <input class="form-control" type="text" value="dey-dey" >
-            </div>
-          <div class="form-group">
-            <label class="col-lg-3 control-label">Last name:</label>
-            <div class="col-lg-8">
-              <input class="form-control" type="text" value="bootdey">
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.UserName)" >
             </div>
           </div>
+
+
           <div class="form-group">
-            <label class="col-lg-3 control-label">Company:</label>
+            <label class="col-lg-3 control-label">UserName</label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="">
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.Email)" >
             </div>
           </div>
-          <div class="form-group">
-            <label class="col-lg-3 control-label">Email:</label>
+
+         <div class="form-group">
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.FirstName)</label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="janesemail@gmail.com">
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.FirstName)" >
             </div>
           </div>
+
           <div class="form-group">
-            <label class="col-lg-3 control-label">Time Zone:</label>
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.LastName)</label>
             <div class="col-lg-8">
-              <div class="ui-select">
-                <select id="user_time_zone" class="form-control">
-                  <option value="Hawaii">(GMT-10:00) Hawaii</option>
-                  <option value="Alaska">(GMT-09:00) Alaska</option>
-                  <option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
-                  <option value="Arizona">(GMT-07:00) Arizona</option>
-                  <option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
-                  <option value="Central Time (US &amp; Canada)" selected="selected">(GMT-06:00) Central Time (US &amp; Canada)</option>
-                  <option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
-                  <option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>
-                </select>
-              </div>
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.LastName)" >
             </div>
           </div>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.Email)</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.Email)" >
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.PhoneNumber)</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.PhoneNumber)" >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.DataOfBirth)</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.DataOfBirth)" >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.Gender)</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.Gender)" >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Current Password</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="" >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label">New Password</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="" >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Confirm New Password</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" value="" >
+            </div>
+          </div>
+
+
+
         </form>
       </div>
- 
 
+       <!-- Modified Data  column -->
 
+       <!-- Data End --> 
   </div>
 <hr>
 </div>
+
+
+
+                <a href="#" class="btn btn-primary back-to-top"
+      ><i class="fa fa-angle-double-up"></i
+    ></a>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.js"></script>            
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+*@

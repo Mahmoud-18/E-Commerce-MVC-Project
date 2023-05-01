@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceMVC.Repository
 {
+   
     public class ShoppingBagItemRepository : IShoppingBagItemRepository
     {
 
@@ -35,6 +36,7 @@ namespace ECommerceMVC.Repository
 
         public void Insert(ShoppingBagItem shoppingBagItem)
         {
+
             context.ShoppingBagItem.Add(shoppingBagItem);
             context.SaveChanges();
         }

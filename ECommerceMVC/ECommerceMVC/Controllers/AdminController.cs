@@ -103,21 +103,16 @@ namespace ECommerceMVC.Controllers
             }
             // The Hell Start From Here ........
 
-            #region Product Type
-            //ProductType productType = new ProductType();
-            //productType.Name = "Clothes";
-            //productTypeRepository.Insert(productType);  
-
-            #endregion
+       
 
             #region Create Product
             Product product = new Product();
             product.Name = addProductViewModel.Name;
             product.Description = addProductViewModel.Description;
-            product.Image = "/img/" + addProductViewModel.Images[0];
+            product.Image = addProductViewModel.Images[0];
             product.CreatedAtUtc = DateTime.UtcNow;
             product.IsDeleted = false;
-            product.DiscountId = addProductViewModel.DiscountId;
+            //product.DiscountId = addProductViewModel.DiscountId;
             product.Price = (decimal)addProductViewModel.Price;
             product.BrandId = addProductViewModel.BrandId;
             product.ProductTypeId = productTypeRepository.GetAll().FirstOrDefault(p => p.Name == "Clothes")!.Id;
@@ -170,7 +165,7 @@ namespace ECommerceMVC.Controllers
                 foreach (var item in addProductViewModel.Images)
                 {
                     ProductImages productImages = new ProductImages();
-                    productImages.ImageURL = "/img/" +item;
+                    productImages.ImageURL = item;
                     productImages.ProductItemId = item_1.Id;
                     productImagesRepository.Insert(productImages);
                 }
@@ -191,11 +186,7 @@ namespace ECommerceMVC.Controllers
 
             return View("AddProductSuccess");
         }
-        public IActionResult gg()
-        {
-
-            return View("AddProductSuccess");
-        }
+      
        
 
         #region Customer(Users) Controllers

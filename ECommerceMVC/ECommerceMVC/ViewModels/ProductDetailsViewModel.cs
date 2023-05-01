@@ -12,8 +12,8 @@
         public string? BrandName { get; set; }
         //
         public int ProductCount { get; set; }
-        public int  SizeId { get; set; }
-        public int ColorId { get; set; }
+        public string  SizeId { get; set; }
+        public string ColorId { get; set; }
 
         //public int SUK { get; set; }
         //public DateTime CreatetAtUtc { get; set; }

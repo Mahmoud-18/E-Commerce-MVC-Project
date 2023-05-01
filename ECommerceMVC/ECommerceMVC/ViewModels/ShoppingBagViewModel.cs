@@ -1,7 +1,9 @@
 ﻿using ECommerceMVC.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceMVC.ViewModels
 {
+    [Keyless]
     public class ShoppingBagViewModel
     {
         public int Id { get; set; }

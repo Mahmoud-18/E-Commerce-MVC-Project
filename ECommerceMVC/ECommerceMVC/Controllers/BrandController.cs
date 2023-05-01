@@ -42,19 +42,14 @@ namespace ECommerceMVC.Controllers
             if (brand.Name != null)
 
             {
-                Brand old = _brands.GetById(id);
-                old.Name = brand.Name;
-                old.Image = brand.Image;
-                _brands.Update(id,old);
+                 brand.UpdatedOnUtc= DateTime.UtcNow;
+                _brands.Update(id,brand);
                 return RedirectToAction("Index");
             }
             else
             {
-                Brand bb = new Brand();
-                bb.Id = id;
-                bb.Name = brand.Name;
-                bb.Image = brand.Image;
-                return View(bb);
+        
+                return View(brand);
             }
         }
         public IActionResult AddBrand()
@@ -66,19 +61,15 @@ namespace ECommerceMVC.Controllers
         public async Task<IActionResult> AddBrand(Brand nbrand)
         { if (nbrand.Name != null)
             {
-                Brand newwBrand = new Brand();
-                newwBrand.Name = nbrand.Name;
-                newwBrand.Image = nbrand.Image;
-                _brands.Insert(newwBrand);
+              nbrand.CreatedOnUtc = DateTime.UtcNow;
+                _brands.Insert(nbrand);
                 return RedirectToAction("Index");
 
             }
             else
             {
-                Brand newwBrand = new Brand();
-                newwBrand.Name = nbrand.Name;
-                newwBrand.Image = nbrand.Image;
-                return View("AddBrand",newwBrand);
+               
+                return View("AddBrand",nbrand);
             }
         }
         public IActionResult Delete(int id)

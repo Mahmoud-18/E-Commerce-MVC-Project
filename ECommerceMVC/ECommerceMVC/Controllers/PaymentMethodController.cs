@@ -35,7 +35,7 @@ namespace ECommerceMVC.Controllers
             if (pm.Name != null)
 
             {
-               
+               pm.UpdatedOnUtc = DateTime.UtcNow;
                 _PaymentMethod.Update(id, pm);
                 return RedirectToAction("Index");
             }
@@ -55,7 +55,7 @@ namespace ECommerceMVC.Controllers
         {
             if (pm.Name != null)
             {
-
+                 pm.CreatedOnUtc= DateTime.UtcNow;
                 _PaymentMethod.Insert(pm);
                 return RedirectToAction("Index");
 
