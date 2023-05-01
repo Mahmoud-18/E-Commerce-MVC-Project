@@ -16,12 +16,14 @@ public class ProductController : Controller
     ICustomerRepository customerRepository;
     IShoppingBagRepository shoppingBagRepository;
     IDiscountRepository discountRepository;
+    IShoppingBagItemRepository shoppingBagItemRepository;
 
     int Id { get; set; }
     public ProductController(IProductRepository _productRepository, IProductItemRepository _productItemRepository,
         IProductImagesRepository _productImagesRepository, IAttributeValuesRepository _attributeValuesRepository,
         IProductAttributeValuesRepository _productAttributeValuesRepository, IProductAttributeRepository _productAttributeRepository,
-            ICustomerRepository _customerRepository, IShoppingBagRepository _shoppingBagRepository, IDiscountRepository _discountRepository)
+            ICustomerRepository _customerRepository, IShoppingBagRepository _shoppingBagRepository, 
+            IDiscountRepository _discountRepository, IShoppingBagItemRepository _shoppingBagItemRepository)
     {
         productRepository = _productRepository;
         productItemRepository = _productItemRepository;
@@ -32,6 +34,7 @@ public class ProductController : Controller
         customerRepository = _customerRepository;
         shoppingBagRepository = _shoppingBagRepository;
         discountRepository = _discountRepository;
+        shoppingBagItemRepository = _shoppingBagItemRepository;
     }
 
     [HttpGet]
@@ -54,19 +57,6 @@ public class ProductController : Controller
             Brand brand = productRepository.GetBrandById(id);
             List<string> productImages = productRepository.GetImageById(id);
 
-            #region MyRegion
-
-            //Discount discount = productRepository.GetDiscountById(id);
-            //if (discountRepository.IsDiscountActive(discount.Id))
-            //{
-            //    productDetailsViewModel.PriceBeforeDiscount = (1 - discount.DiscountPercentage) * (float)product.Price;
-            //}
-            //else
-            //{
-            //    productDetailsViewModel.PriceBeforeDiscount = 0;
-            //}
-            //List<ProductImages> productImages = context.ProductImages.Where(im => im.ProductItemId == productItem.Id).ToList();
-            #endregion
 
             productDetailsViewModel.Name = product.Name;
             productDetailsViewModel.price = (float)product.Price;
@@ -75,6 +65,8 @@ public class ProductController : Controller
             List<string> attributesValuesList = new List<string>();
             List<string> colorList = new List<string>();
             List<string> sizeList = new List<string>();
+            int productAttributeSizeId = productAttributeRepository.GetAll().Where(p => p.Name == "Size").FirstOrDefault()!.Id;
+            int productAttributeColorId = productAttributeRepository.GetAll().Where(p => p.Name == "Color").FirstOrDefault()!.Id;
             foreach (var item in productItemList)
             {
                 // Add Image
@@ -93,39 +85,18 @@ public class ProductController : Controller
                 foreach (var item2 in productAttributeValues)
                 {
                     string attrubuteValue = attributeValuesRepository.GetById(item2.AttributeValuesId).Value;
-                    //attributesValuesList.Add(attrubuteValue);
-                    int productAttributeSizeId = productAttributeRepository.GetAll().Where(p => p.Name == "Size").FirstOrDefault()!.Id;
-                    int productAttributeColorId = productAttributeRepository.GetAll().Where(p => p.Name == "Color").FirstOrDefault()!.Id;
+
                     AttributeValues attribute = attributeValuesRepository.GetAll().Where(at => at.Value == attrubuteValue).FirstOrDefault()!;
-                    if (attribute.ProductAttributeId== productAttributeSizeId)
+                    if (attribute.ProductAttributeId == productAttributeSizeId)
                     {
-                        sizeList.Add(attrubuteValue);
+                        sizeList.Add(attribute.Value);
                     }
                     if (attribute.ProductAttributeId == productAttributeColorId)
                     {
-                        colorList.Add(attrubuteValue);
+                        colorList.Add(attribute.Value);
                     }
-                    //int productAttrId = attribute.Id;
                 }
 
-                #region MyRegion
-
-                //AttributeValues attributeValues = attributeValuesRepository.GetById(productAttributeValues.AttributeValuesId);
-
-                //int productAttributeSizeId = productAttributeRepository.GetAll().Where(p => p.Name == "Size").FirstOrDefault()!.Id;
-                //int productAttributeColorId = productAttributeRepository.GetAll().Where(p => p.Name == "Color").FirstOrDefault()!.Id;
-                //if (attributeValues.ProductAttributeId == productAttributeSizeId)
-                //{
-                //    productDetailsViewModel.Size!.Add(attributeValues.Value);
-                //}
-                //else if (attributeValues.ProductAttributeId == productAttributeColorId)
-                //{
-                //    if (!productDetailsViewModel.Color!.Contains(attributeValues.Value))
-                //    {
-                //        productDetailsViewModel.Color!.Add(attributeValues.Value);
-                //    }
-                //}
-                #endregion
             }
             productDetailsViewModel.Color = colorList.Distinct().ToList();
             productDetailsViewModel.Size = sizeList.Distinct().ToList();
@@ -144,10 +115,28 @@ public class ProductController : Controller
         ShoppingBag bag = shoppingBagRepository.GetByCustomerId(customer.Id);
 
         shoppingBagItem.ShoppingBagId = bag.Id;
-        //shoppingBagItem.ProductItemId = 
         shoppingBagItem.Quantity = productDetailsViewModel.ProductCount;
+        // Get the Product Item Id From Size & Color
+        int color_AttributeValue_Id = attributeValuesRepository.GetAll().FirstOrDefault(at => at.Value == productDetailsViewModel.ColorId)!.Id;
+        int size_AttributeValue_Id = attributeValuesRepository.GetAll().FirstOrDefault(at => at.Value == productDetailsViewModel.SizeId)!.Id;
+        List<ProductAttributeValues> productAttributeValuesListColor = productAttributeValuesRepository.GetAll().Where(d => d.AttributeValuesId == color_AttributeValue_Id).ToList();
+        List<ProductAttributeValues> productAttributeValuesListSize = productAttributeValuesRepository.GetAll().Where(d => d.AttributeValuesId == size_AttributeValue_Id).ToList();
+        foreach (var item in productAttributeValuesListColor)
+        {
+            foreach (var item2 in productAttributeValuesListColor)
+            {
+                if (item.ProductItemId == item2.ProductItemId)
+                {
 
-        return View();
+                    shoppingBagItem.ProductItemId = item.ProductItemId;
+                }
+            }
+
+        }
+        shoppingBagItemRepository.Insert(shoppingBagItem);
+
+
+        return View("ProductDetails");
     }
 
 
