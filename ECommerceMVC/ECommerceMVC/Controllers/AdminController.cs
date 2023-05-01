@@ -186,11 +186,7 @@ namespace ECommerceMVC.Controllers
 
             return View("AddProductSuccess");
         }
-        public IActionResult gg()
-        {
-
-            return View("AddProductSuccess");
-        }
+      
        
 
         #region Customer(Users) Controllers

@@ -36,6 +36,7 @@ namespace ECommerceMVC.Repository
 
         public void Insert(ShoppingBagItem shoppingBagItem)
         {
+
             context.ShoppingBagItem.Add(shoppingBagItem);
             context.SaveChanges();
         }
