@@ -70,14 +70,14 @@
         </h5>
     </div>
     <div class="row px-xl-5">
-        @for (int i = 0; i < 26; i=i+3)
+        @for (int i = 0; i <17; i=i+2)
                 {
                     var product = Model[i];
 
                     <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
                             <div class="product-item bg-light mb-4">
-                                <div class="product-img position-relative overflow-hidden">                    
-                                    <img class="img-fluid w-100" src="@product.Image" alt="">
+                                <div class="product-img position-relative overflow-hidden">
+                        <img class="img-fluid w-100" src="/img/@product.Image" alt="">
                                     <div class="product-action">
                             <a class="btn btn-outline-dark" asp-action="ProductDetails" asp-controller="Product" asp-route-id="@product.Id"><i>Order Now!</i></a>
 
@@ -143,14 +143,14 @@
         </h5>
     </div>
         <div class="row px-xl-5">
-            @for (int i = 25; i >0; i = i - 3)
+            @for (int i =1; i <18; i = i+2)
             {
                 var product = Model[i];
 
                 <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
                     <div class="product-item bg-light mb-4">
                         <div class="product-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="@product.Image" alt="">
+                        <img class="img-fluid w-100" src="/img/@product.Image" alt="">
                             <div class="product-action">
                             <a class="btn btn-outline-dark" asp-action="ProductDetails" asp-controller="Product" asp-route-id="@product.Id"><i>Order Now!</i></a>
 

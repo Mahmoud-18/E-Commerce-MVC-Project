@@ -28,8 +28,46 @@ namespace ECommerceMVC.Services
             List<ShoppingProductsViewModel> products = new();
             var allProducts = product.GetAll();
             foreach (Product pro in allProducts)
-            {
-                products.Add(new ShoppingProductsViewModel { Id = pro.Id, Name = pro.Name, Image = pro.Image });
+            {                
+
+                decimal? PriceBeforeDisc = pro.Price;
+
+                if (pro.DiscountId != null)
+                {
+                    if (discountRepo.IsDiscountActive(pro.Discount.Id))// Safwat : change ** pro.Discount.Id ** => ** (int)pro.DiscountId **
+                    {
+                        decimal priceAfterDiscount = pro.Price - (decimal)pro.Discount.DiscountPercentage * pro.Price;
+                        products.Add(new ShoppingProductsViewModel
+                        {
+                            Id = pro.Id,
+                            Name = pro.Name,
+                            Image = pro.Image,
+                            PriceBeforeDisc = pro.Price,
+                            PriceAfterDisc = priceAfterDiscount
+                        });
+                    }
+                    else
+                    {
+                        products.Add(new ShoppingProductsViewModel
+                        {
+                            Id = pro.Id,
+                            Name = pro.Name,
+                            Image = pro.Image,
+                            PriceBeforeDisc = pro.Price,
+                        });
+                    }
+                    
+                }
+                else
+                {
+                    products.Add(new ShoppingProductsViewModel
+                    {
+                        Id = pro.Id,
+                        Name = pro.Name,
+                        Image = pro.Image,
+                        PriceBeforeDisc = pro.Price,
+                    });
+                }
             }
             return (products);
         }
@@ -45,7 +83,41 @@ namespace ECommerceMVC.Services
                 {
                     Product? pro = cProduct.Product;
 
-                    products.Add(new ShoppingProductsViewModel { Id = pro.Id, Name = pro.Name, Image = pro.Image });
+                    if (pro.DiscountId != null)
+                    {
+                        if (discountRepo.IsDiscountActive((int)pro.Discount.Id))
+                        {
+                            decimal priceAfterDiscount = pro.Price - (decimal)pro.Discount.DiscountPercentage * pro.Price;
+                            products.Add(new ShoppingProductsViewModel
+                            {
+                                Id = pro.Id,
+                                Name = pro.Name,
+                                Image = pro.Image,
+                                PriceBeforeDisc = pro.Price,
+                                PriceAfterDisc = priceAfterDiscount
+                            });
+                        }
+                        else
+                        {
+                            products.Add(new ShoppingProductsViewModel
+                            {
+                                Id = pro.Id,
+                                Name = pro.Name,
+                                Image = pro.Image,
+                                PriceBeforeDisc = pro.Price,
+                            });
+                        }
+                    }
+                    else
+                    {
+                        products.Add(new ShoppingProductsViewModel
+                        {
+                            Id = pro.Id,
+                            Name = pro.Name,
+                            Image = pro.Image,
+                            PriceBeforeDisc = pro.Price,
+                        });
+                    }
                 }
                 return (products);
             }
@@ -59,7 +131,42 @@ namespace ECommerceMVC.Services
                     {
                         Product? pro = cProduct.Product;
 
-                        products.Add(new ShoppingProductsViewModel { Id = pro.Id, Name = pro.Name, Image = pro.Image });
+
+                        if (pro.DiscountId != null)
+                        {
+                            if (discountRepo.IsDiscountActive((int)pro.Discount.Id))
+                            {
+                                decimal priceAfterDiscount = pro.Price - (decimal)pro.Discount.DiscountPercentage * pro.Price;
+                                products.Add(new ShoppingProductsViewModel
+                                {
+                                    Id = pro.Id,
+                                    Name = pro.Name,
+                                    Image = pro.Image,
+                                    PriceBeforeDisc = pro.Price,
+                                    PriceAfterDisc = priceAfterDiscount
+                                });
+                            }
+                            else
+                            {
+                                products.Add(new ShoppingProductsViewModel
+                                {
+                                    Id = pro.Id,
+                                    Name = pro.Name,
+                                    Image = pro.Image,
+                                    PriceBeforeDisc = pro.Price,
+                                });
+                            }
+                        }
+                        else
+                        {
+                            products.Add(new ShoppingProductsViewModel
+                            {
+                                Id = pro.Id,
+                                Name = pro.Name,
+                                Image = pro.Image,
+                                PriceBeforeDisc = pro.Price,
+                            });
+                        }
                     }
                 }
                 return (products);

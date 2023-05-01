@@ -37,7 +37,7 @@
                         @foreach (var item in Model.Items)
                         {
                             ProductImages image = productimage.GetByProductItemId(item.Id);
-                            <td  class="align-middle" ><img src="@image.ImageURL" alt="" style="width: 50px;"> @item.ProductItem.Name</td>
+                            <td class="align-middle"><img src="/img/@image.ImageURL" alt="" style="width: 50px;"> @item.ProductItem.Name</td>
                               <td class="align-middle">@item.ProductItem.Price$</td>
                               <td class="align-middle">
                                   <div class="input-group quantity mx-auto" style="width: 100px;">
@@ -55,7 +55,7 @@
                                   </div>
                               </td>
                             <td class="align-middle">@item.Quantity*item.ProductItem.Price $ </td>
-                        <td class="align-middle"><button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
+                            <td class="align-middle"><button asp-action="RemoveFromBag" asp-controller="ShoppingBag" asp-route-id="@item.Id" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button></td>
                         }
                     </tr>               
                 </tbody>

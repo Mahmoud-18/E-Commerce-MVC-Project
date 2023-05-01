@@ -109,7 +109,7 @@ namespace ECommerceMVC.Controllers
             Product product = new Product();
             product.Name = addProductViewModel.Name;
             product.Description = addProductViewModel.Description;
-            product.Image = "/img/" + addProductViewModel.Images[0];
+            product.Image = addProductViewModel.Images[0];
             product.CreatedAtUtc = DateTime.UtcNow;
             product.IsDeleted = false;
             //product.DiscountId = addProductViewModel.DiscountId;
@@ -165,7 +165,7 @@ namespace ECommerceMVC.Controllers
                 foreach (var item in addProductViewModel.Images)
                 {
                     ProductImages productImages = new ProductImages();
-                    productImages.ImageURL = "/img/" +item;
+                    productImages.ImageURL = item;
                     productImages.ProductItemId = item_1.Id;
                     productImagesRepository.Insert(productImages);
                 }
