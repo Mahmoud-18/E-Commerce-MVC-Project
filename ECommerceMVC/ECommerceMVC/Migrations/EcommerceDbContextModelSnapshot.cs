@@ -797,18 +797,13 @@ namespace ECommerceMVC.Migrations
 
                     b.Property<int>("ShoppingBagId")
                         .HasColumnType("int");
-
-                    b.Property<int>("ShoppingBagId1")
-                        .HasColumnType("int");
-
+                  
                     b.HasKey("Id");
 
                     b.HasIndex("ProductItemId");
 
                     b.HasIndex("ShoppingBagId");
-
-                    b.HasIndex("ShoppingBagId1");
-
+                 
                     b.ToTable("ShoppingBagItem", (string)null);
                 });
 
