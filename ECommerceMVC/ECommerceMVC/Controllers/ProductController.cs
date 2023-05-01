@@ -1,6 +1,7 @@
 ﻿using ECommerceMVC.Models;
 using ECommerceMVC.Repository;
 using ECommerceMVC.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceMVC.Controllers;
@@ -17,13 +18,14 @@ public class ProductController : Controller
     IShoppingBagRepository shoppingBagRepository;
     IDiscountRepository discountRepository;
     IShoppingBagItemRepository shoppingBagItemRepository;
-
+    UserManager<Customer> userManager;
     int Id { get; set; }
     public ProductController(IProductRepository _productRepository, IProductItemRepository _productItemRepository,
         IProductImagesRepository _productImagesRepository, IAttributeValuesRepository _attributeValuesRepository,
         IProductAttributeValuesRepository _productAttributeValuesRepository, IProductAttributeRepository _productAttributeRepository,
             ICustomerRepository _customerRepository, IShoppingBagRepository _shoppingBagRepository, 
-            IDiscountRepository _discountRepository, IShoppingBagItemRepository _shoppingBagItemRepository)
+            IDiscountRepository _discountRepository, IShoppingBagItemRepository _shoppingBagItemRepository, UserManager<Customer> _userManager
+        )
     {
         productRepository = _productRepository;
         productItemRepository = _productItemRepository;
@@ -35,6 +37,7 @@ public class ProductController : Controller
         shoppingBagRepository = _shoppingBagRepository;
         discountRepository = _discountRepository;
         shoppingBagItemRepository = _shoppingBagItemRepository;
+        userManager = _userManager;
     }
 
     [HttpGet]
@@ -107,15 +110,16 @@ public class ProductController : Controller
         }
     }
     [HttpPost]
-    public IActionResult AddToCard(ProductDetailsViewModel productDetailsViewModel)
+    public async Task<IActionResult> AddToCard(ProductDetailsViewModel productDetailsViewModel)
     {
         ShoppingBagItem shoppingBagItem = new ShoppingBagItem();
 
-        Customer customer = customerRepository.GetByUserName(User.Identity!.Name!);
+        Customer customer = await userManager.GetUserAsync(User);
         ShoppingBag bag = shoppingBagRepository.GetByCustomerId(customer.Id);
-
         shoppingBagItem.ShoppingBagId = bag.Id;
+
         shoppingBagItem.Quantity = productDetailsViewModel.ProductCount;
+
         // Get the Product Item Id From Size & Color
         int color_AttributeValue_Id = attributeValuesRepository.GetAll().FirstOrDefault(at => at.Value == productDetailsViewModel.ColorId)!.Id;
         int size_AttributeValue_Id = attributeValuesRepository.GetAll().FirstOrDefault(at => at.Value == productDetailsViewModel.SizeId)!.Id;
