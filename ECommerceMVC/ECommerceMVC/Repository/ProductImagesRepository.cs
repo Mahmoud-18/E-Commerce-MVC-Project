@@ -17,6 +17,14 @@ namespace ECommerceMVC.Repository
             context.ProductImages.Remove(productImages);
             context.SaveChanges();
         }
+        public ProductImages GetByProductItemId(int id)
+        {
+            return context.ProductImages.FirstOrDefault(x => x.ProductItemId == id);
+        }
+        public List<ProductImages> GetAllbyProductItemId(int id)
+        {
+            return context.ProductImages.Where(x => x.ProductItemId == id).ToList();
+        }
 
         public List<ProductImages> GetAll()
         {

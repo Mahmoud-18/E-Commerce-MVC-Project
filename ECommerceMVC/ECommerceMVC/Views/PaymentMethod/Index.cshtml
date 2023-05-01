@@ -1,0 +1,58 @@
+﻿@model IEnumerable<ECommerceMVC.Models.PaymentMethod>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+<h1>Index</h1>
+
+<p>
+    <a class="btn btn-btn  btn-success my-3" asp-action="AddPaymentMethod">Add New Method</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedOnUtc)
+            </th>
+    
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedOnUtc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeletedOnUtc)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+  
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOnUtc)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedOnUtc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeletedOnUtc)
+            </td>
+            <td>
+                    <a asp-action="EditPaymentMethod" asp-route-id="@item.Id" class="btn btn-warning mx-2">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>/ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

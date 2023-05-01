@@ -26,14 +26,19 @@
 
 
 <body id="page-top">
-  <header>
+  <header>       
+        <style>
+            .navbar-brand:hover {
+                transform: scale(1.1);
+            }
+        </style>
     <div class="container-fluid">
         <div class="row align-items-center  py-3 px-xl-3 d-none d-lg-flex" style="background-color:#3d464d; ">
 
             <div class="col-lg-4">
-                <a href="" class="text-decoration-none">
-                    <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
-                    <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
+                <a href="/" class="text-decoration-none" > 
+                    <span class="h1 text-uppercase text-primary bg-dark px-2">For</span>
+                    <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">You</span>
                 </a>
             </div>
             <div class="col-lg-4 col-6 text-left">
@@ -52,7 +57,7 @@
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">@User.Identity.Name</button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a asp-action="Profile" asp-controller="Account" class="dropdown-item" type="button">Profile</a>
+                            <a asp-action="MyAccount" asp-controller="Account" class="dropdown-item" type="button">Profile</a>
                             <a asp-action="SignOut" asp-controller="Account" class="dropdown-item" type="button">Sign out</a>
                         </div>
                     </div>
@@ -151,10 +156,9 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         @*<h6 class="collapse-header">Login Screens:</h6>*@
 
-                        <a class="collapse-item" asp-action="ProductIndex" asp-controller="Admin">Products</a>
+                        <a class="collapse-item" asp-action="AddProduct" asp-controller="Admin">Products</a>
                         <a class="collapse-item" asp-action="Index" asp-controller="Category">Categories</a>
                         <a class="collapse-item" asp-action="Index" asp-controller="Brand">Brands</a>
-                        <a class="collapse-item" asp-action="Index" asp-controller="Admin">Attributes</a>
                     </div>
        
            
@@ -172,7 +176,7 @@
 
             <!-- Nav Item - Orders -->
             <li class="nav-item">
-                <a class="nav-link" asp-action="Index" asp-controller="Orders">
+                <a class="nav-link" asp-action="Index" asp-controller="Order">
                     <i class="fas fa-fw fa-shopping-cart"></i>
                     <span>Orders</span>
                 </a>
@@ -193,9 +197,10 @@
                 </a>
                 <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
+
                         <a class="collapse-item" asp-action="Index" asp-controller="Country">Countries</a>
-                        <a class="collapse-item" asp-action="Index" asp-controller="Admin">Payment Methods</a>
-                        <a class="collapse-item" asp-action="Index" asp-controller="Admin">Order Status</a>
+                        <a class="collapse-item" asp-action="Index" asp-controller="PaymentMethod">Payment Methods</a>
+                        <a class="collapse-item" asp-action="Index" asp-controller="OrderStatus">Order Status</a>
                     </div>
                 </div>
             </li>

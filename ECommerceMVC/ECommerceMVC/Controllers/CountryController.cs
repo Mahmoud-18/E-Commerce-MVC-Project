@@ -1,9 +1,14 @@
 ﻿using ECommerceMVC.Models;
 using ECommerceMVC.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+
+
 
 namespace ECommerceMVC.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class CountryController : Controller
     {
         ICountryRepository _countries;
@@ -32,21 +37,14 @@ namespace ECommerceMVC.Controllers
             if (country.Code != null)
 
             {
-                Country old = _countries.GetById(id);
-                old.Name = country.Name;
-               old.Code=country.Code;
-                old.Abbreviation=country.Abbreviation;
-                _countries.Update(id, old);
+           
+                _countries.Update(id, country);
                 return RedirectToAction("Index");
             }
             else
             {
-                Country bb = new Country();
-                bb.Id = id;
-                bb.Name = country.Name;
-                bb.Code = country.Code;
-                bb.Abbreviation = country.Abbreviation;
-                return View(bb);
+     
+                return View(country);
             }
         }
         public IActionResult AddCountry()
@@ -59,18 +57,14 @@ namespace ECommerceMVC.Controllers
         {
             if (country.Code != null)
             {
-    
                 _countries.Insert(country);
                 return RedirectToAction("Index");
 
             }
             else
             {
-                Country bb = new Country();
-                bb.Name = country.Name;
-                bb.Code = country.Code;
-                bb.Abbreviation = country.Abbreviation;
-                return View("AddBrand", bb);
+
+                return View( country);
             }
         }
 

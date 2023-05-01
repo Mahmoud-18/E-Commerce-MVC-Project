@@ -1,6 +1,9 @@
 ﻿using ECommerceMVC.Models;
 using ECommerceMVC.Repository;
+using ECommerceMVC.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace ECommerceMVC.Controllers
 {
@@ -23,10 +26,24 @@ namespace ECommerceMVC.Controllers
             orderStatusRepository = _orderStatusRepository;
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             List<OrderDetails> orders = orderRepository.GetAll();
             return View(orders);
         }
+        [Authorize(Roles = "Admin")]
+        public IActionResult OrderDetails()
+        {
+            OrderDetailsViewModel order = new OrderDetailsViewModel();
+            return View(order);
+        }
+
+        [Authorize]
+        public IActionResult Checkout(ShoppingBagViewModel bagViewModel)
+        {                   
+            return View(bagViewModel);
+        }
     }
+
 }

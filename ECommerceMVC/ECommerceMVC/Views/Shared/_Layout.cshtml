@@ -2,12 +2,23 @@
 @using ECommerceMVC.Repository;
 @using System.Security.Claims;
 @using ECommerceMVC.Services;
-@{
-    ViewData["Title"] = "_Layout";
 
-}
 @inject ICategoryRepository Category;
 @inject ProductsServices products;
+@inject UserManager<Customer> userManager;
+@inject IShoppingBagRepository shoppingBagRepository;
+@inject IShoppingBagItemRepository shoppingBagItemRepository;
+
+@{
+    int bagcount = 0;
+    @if (User.Identity.IsAuthenticated == true)
+    {
+        Customer customer = await userManager.GetUserAsync(User);
+        ShoppingBag bag = shoppingBagRepository.GetByCustomerId(customer.Id);
+        bagcount = shoppingBagItemRepository.GetAllByBagId(bag.Id).Count;
+    }
+
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,10 +31,8 @@
     <link rel="stylesheet" href="~/ECommerceMVC.styles.css" asp-append-version="true" />
 
     <!-- International phone Number -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"
-    />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
 
 
     <!-- Favicon -->
@@ -41,21 +50,21 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="/css/style.css" rel="stylesheet">
-    <link href="/css2/stylesheet.css" rel="stylesheet" >
+    <link href="/css2/stylesheet.css" rel="stylesheet">
 
 
 </head>
 <body>
-    <header >
+    <header>
 
         @if (User.IsInRole("Admin") == true)
         {
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a asp-action="Index" asp-controller="Admin" class="navbar-brand d-flex justify-content-center align-items-center"  style="height: 30px; line-height: 30px; width: 100%; font-size: 18px; transition: all 0.3s;">Administration Area</a>
+                <a asp-action="Index" asp-controller="Admin" class="navbar-brand d-flex justify-content-center align-items-center" style="height: 30px; line-height: 30px; width: 100%; font-size: 18px; transition: all 0.3s;">Administration Area</a>
             </nav>
             <style>
                 .navbar-brand:hover {
-                      transform: scale(1.1);
+                    transform: scale(1.1);
                 }
             </style>
         }
@@ -64,44 +73,44 @@
 
 
 
-        <div class="col-lg-4">
-            <a href="" class="text-decoration-none">
-                <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
-                <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
-            </a>
-        </div>
-        <div class="col-lg-4 col-6 text-left" id="srch">
-            <partial model="@products.GetAllProducts()" name="_Searchpartialview"></partial>
-        </div>
-        @if (User.Identity.IsAuthenticated)
-        {
-            <div class="col-lg-4 col-6 text-right">
+                <div class="col-lg-4">
+                    <a href="" class="text-decoration-none">
+                        <span class="h1 text-uppercase text-primary bg-dark px-2">For</span>
+                        <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">You</span>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-6 text-left" id="srch">
+                    <partial model="@products.GetAllProducts()" name="_Searchpartialview"></partial>
+                </div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="col-lg-4 col-6 text-right">
                         <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">@User.Identity.Name</button>
                             <div class="dropdown-menu dropdown-menu-right">
-                                        <a style="text-decoration:none !important; color:inherit;" href="@Url.Action("MyAccount", "Account")" class="dropdown-item">My Account</a>
+                                <a style="text-decoration:none !important; color:inherit;" href="@Url.Action("MyAccount", "Account")" class="dropdown-item ">My Account</a>
                                 @*<a asp-action="Index" asp-controller="Account" class="dropdown-item" type="button" >My Account</a>*@
                                 <a asp-action="SignOut" asp-controller="Account" class="dropdown-item" type="button">Sign out</a>
 
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        }
-        else
-        {
-            <div class="col-lg-4 col-6 text-right">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a asp-action="Login" asp-controller="Account" class="dropdown-item" type="button">Sign in</a>
-                        <a asp-action="Register" asp-controller="Account" class="dropdown-item" type="button">Sign up</a>
+                }
+                else
+                {
+                    <div class="col-lg-4 col-6 text-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a asp-action="Login" asp-controller="Account" class="dropdown-item" type="button">Sign in</a>
+                                <a asp-action="Register" asp-controller="Account" class="dropdown-item" type="button">Sign up</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        }
+                }
 
-        
-        </div>
+
+            </div>
             <!--HERE ARE THE DROPDOWN CATEGORIES-->
             <div class="container-fluid bg-dark mb-30">
                 <div class="row px-xl-5">
@@ -111,7 +120,7 @@
                             <i class="fa fa-angle-down text-dark"></i>
                         </a>
                         <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
-                            <div class="navbar-nav w-100">                               
+                            <div class="navbar-nav w-100">
                                 <partial name="_CategoryNavPartial" model="@Category.GetAll()"></partial>
                             </div>
                         </nav>
@@ -127,7 +136,7 @@
                             </button>
                             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                                 <div class="navbar-nav mr-auto py-0">
-                                    <a href="/Home/index" class="nav-item nav-link active">Home</a>
+                                    <a href="/Home/Index" class="nav-item nav-link active">Home</a>
                                     <a asp-action="ShowAllProducts" asp-controller="Shop" class="nav-item nav-link">Shop</a>
 
                                     <a asp-controller="Contact" asp-action="Index"  class="nav-item nav-link">ContactUs</a>
@@ -136,7 +145,7 @@
 
                                     <a href="/ShoppingBag/index" class="btn px-0 ml-3">
                                         <i class="fas fa-shopping-cart text-primary"></i>
-                                        <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
+                                        <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">@bagcount</span>
                                     </a>
                                 </div>
                             </div>
@@ -144,10 +153,10 @@
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
     </header>
     <div class="container-fluid pb-12">
-        <main role="main" >
+        <main role="main">
             @RenderBody()
         </main>
     </div>
@@ -160,38 +169,27 @@
             <div class="row px-xl-5 pt-5">
                 <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
                     <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
-                    <p class="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum tempor no vero est magna amet no</p>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
-                    <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>ITI,6TH October , EGP</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>CEI@gmail.com</p>
+                    <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+000 000 0000</p>
                 </div>
                 <div class="col-lg-8 col-md-12">
                     <div class="row">
                         <div class="col-md-4 mb-5">
                             <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
                             <div class="d-flex flex-column justify-content-start">
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                                <a class="text-secondary" asp-controller="Contact" asp-action="Index" ><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+
+                                <a class="text-secondary mb-2" href="/Home/Index"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                                <a class="text-secondary mb-2" href="/Shop/ShowAllProducts"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
+                                <a class="text-secondary mb-2" href="/ShoppingBag/Index"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
+
+                                <a class="text-secondary" href="@Url.Action("Index", "Contact")"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+
                             </div>
                         </div>
+
                         <div class="col-md-4 mb-5">
-                            <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
-                            <div class="d-flex flex-column justify-content-start">
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                                <a class="text-secondary" asp-controller="Contact" asp-action="Index" ><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-5">
-                            <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
-                            <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
+                            <h5 class="text-secondary text-uppercase mb-4">SIGN UP NOW</h5>
                             <form action="">
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Your Email Address">
@@ -214,9 +212,8 @@
             <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
                 <div class="col-md-6 px-xl-0">
                     <p class="mb-md-0 text-center text-md-left text-secondary">
-                        &copy; <a class="text-primary" href="#">Domain</a>. All Rights Reserved. Designed
-                        by
-                        <a class="text-primary" href="https://htmlcodex.com">HTML Codex</a>
+                        &copy; <a class="text-primary" href="#">Domain</a>. All Rights Reserved.
+
                     </p>
                 </div>
                 <div class="col-md-6 px-xl-0 text-center text-md-right">
@@ -225,10 +222,10 @@
             </div>
         </div>
         <!-- Footer End -->
-        
+
     </footer>
     <!-- JavaScript Libraries -->
-    
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -245,13 +242,13 @@
 
     <!-- Template Javascript -->
     <script src="/js/main.js"></script>
-   
-     <!-- Register Javascript -->
-    <script src="/js/SignUp.js"></script>
-    
+
+    <!-- Register Javascript -->
+    @*<script src="/js/SignUp.js"></script>*@
+
     <!-- International phone Javascript -->
-     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

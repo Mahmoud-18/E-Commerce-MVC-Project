@@ -1,0 +1,77 @@
+﻿@model ECommerceMVC.Models.OrderStatus
+
+@{
+    ViewData["Title"] = "OrderStatusDetails";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>
+    <h1>
+        <!-- Breadcrumb Start -->
+        <nav class="breadcrumb bg-light mb-30 p-3">
+            <a class="breadcrumb-item text-dark" asp-action="Index" style="text-decoration:none">Admin</a>
+            <span class="breadcrumb-item active">OrderStatus / Details</span>
+        </nav>
+        <!-- Breadcrumb End -->
+    </h1>
+</h1>
+
+<div>
+    <h4>OrderStatus</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedOnUtc)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreatedOnUtc)
+        </dd>
+ 
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UpdatedOnUtc)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UpdatedOnUtc)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DeletedOnUtc)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DeletedOnUtc)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Orders)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var orders in Model.Orders)
+            {
+                <a style="border: 1px solid #ddd;
+                          margin-top: -1px;  Prevent double borders
+                          background-color: #f6f6f6;
+                          padding: 12px;
+                          text-decoration: none;
+                          font-size: 18px;
+                          color: black;
+                          display: block" href="/product/ProductDetails/@orders.Id"> @orders.OrderTotalPrice</a>
+
+            }
+
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>

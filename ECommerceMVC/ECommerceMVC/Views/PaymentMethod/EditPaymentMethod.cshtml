@@ -1,0 +1,38 @@
+﻿@model ECommerceMVC.Models.PaymentMethod
+
+@{
+    ViewData["Title"] = "EditPaymentMethod";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+<!-- Breadcrumb Start -->
+<nav class="breadcrumb bg-light mb-30 p-3">
+    <a class="breadcrumb-item text-dark" asp-action="Index" style="text-decoration:none">Admin</a>
+    <span class="breadcrumb-item active">PaymentMethod / Edit</span>
+</nav>
+<!-- Breadcrumb End -->
+
+<h4>PaymentMethod</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditPaymentMethod">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+      
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceMVC.Repository
 {
+   
     public class ShoppingBagItemRepository : IShoppingBagItemRepository
     {
 
@@ -24,7 +25,10 @@ namespace ECommerceMVC.Repository
         {
             return context.ShoppingBagItem.Include("ProductItem").ToList();
         }
-
+        public List<ShoppingBagItem> GetAllByBagId(int id)
+        {
+            return context.ShoppingBagItem.Include("ProductItem").Where(i=> i.ShoppingBagId == id).ToList();
+        }
         public ShoppingBagItem GetById(int id)
         {
             return context.ShoppingBagItem.FirstOrDefault(sh => sh.Id == id)!;
@@ -32,6 +36,7 @@ namespace ECommerceMVC.Repository
 
         public void Insert(ShoppingBagItem shoppingBagItem)
         {
+
             context.ShoppingBagItem.Add(shoppingBagItem);
             context.SaveChanges();
         }
