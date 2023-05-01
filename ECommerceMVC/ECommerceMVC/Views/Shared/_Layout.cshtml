@@ -139,7 +139,7 @@
                                     <a href="/Home/Index" class="nav-item nav-link active">Home</a>
                                     <a asp-action="ShowAllProducts" asp-controller="Shop" class="nav-item nav-link">Shop</a>
 
-                                    <a href="@Url.Action("Index", "Contact")" class="nav-item nav-link">ContactUs</a>
+                                    <a asp-controller="Contact" asp-action="Index"  class="nav-item nav-link">ContactUs</a>
                                 </div>
                                 <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
 
@@ -178,11 +178,13 @@
                         <div class="col-md-4 mb-5">
                             <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
                             <div class="d-flex flex-column justify-content-start">
+
                                 <a class="text-secondary mb-2" href="/Home/Index"><i class="fa fa-angle-right mr-2"></i>Home</a>
                                 <a class="text-secondary mb-2" href="/Shop/ShowAllProducts"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
                                 <a class="text-secondary mb-2" href="/ShoppingBag/Index"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
 
                                 <a class="text-secondary" href="@Url.Action("Index", "Contact")"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+
                             </div>
                         </div>
 
