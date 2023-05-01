@@ -84,7 +84,7 @@
                                 <i class="fa fa-minus"></i>
                             </button>
                         </div>
-                        <input type="text" class="form-control bg-secondary border-0 text-center" value="1">
+                        <input type="text" class="form-control bg-secondary border-0 text-center" value="@Model.ProductCount">
                         <div class="input-group-btn">
                             <button class="btn btn-primary btn-plus" onclick="Plus()">
                                 <i class="fa fa-plus"></i>
@@ -104,15 +104,24 @@
 @section Scripts
     {
     <script>
-        function Plus(){
-            @Model.ProductCount++;
+        var x = @Model.ProductCount;
+        function Plus() {
+            x++;
+        @{
+            Model.ProductCount = Model.ProductCount + 1;
         }
+                }
         function Min() {
-            @Model.ProductCount--;
-            if(@Model.ProductCount<0)
-            {
-                @Model.ProductCount=0;
-            }
+            x--;
+        @{
+            Model.ProductCount = Model.ProductCount - 1;
+        }
+                    if (x < 0) {
+                x = 0;
+        @{
+            Model.ProductCount = 0;
+        }
+                    }
         }
 
     </script>

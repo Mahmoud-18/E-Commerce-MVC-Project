@@ -53,7 +53,10 @@ public class ProductController : Controller
             List<ProductItem> productItemList = productRepository.GetProductItemById(id);
             Brand brand = productRepository.GetBrandById(id);
             List<string> productImages = productRepository.GetImageById(id);
-            Discount discount = productRepository.GetDiscountById(id);
+
+            #region MyRegion
+
+            //Discount discount = productRepository.GetDiscountById(id);
             //if (discountRepository.IsDiscountActive(discount.Id))
             //{
             //    productDetailsViewModel.PriceBeforeDiscount = (1 - discount.DiscountPercentage) * (float)product.Price;
@@ -63,11 +66,15 @@ public class ProductController : Controller
             //    productDetailsViewModel.PriceBeforeDiscount = 0;
             //}
             //List<ProductImages> productImages = context.ProductImages.Where(im => im.ProductItemId == productItem.Id).ToList();
+            #endregion
 
             productDetailsViewModel.Name = product.Name;
             productDetailsViewModel.price = (float)product.Price;
             productDetailsViewModel.Description = product.Description;
             int count = 0;
+            List<string> attributesValuesList = new List<string>();
+            List<string> colorList = new List<string>();
+            List<string> sizeList = new List<string>();
             foreach (var item in productItemList)
             {
                 // Add Image
@@ -82,23 +89,47 @@ public class ProductController : Controller
                 }
 
                 // Add Size And Color For the Product Item
-                ProductAttributeValues productAttributeValues = productAttributeValuesRepository.GetAll().Where(p => p.ProductItemId == item.Id).FirstOrDefault()!;
-                AttributeValues attributeValues = attributeValuesRepository.GetById(productAttributeValues.AttributeValuesId);
-
-                int productAttributeSizeId = productAttributeRepository.GetAll().Where(p => p.Name == "Size").FirstOrDefault()!.Id;
-                int productAttributeColorId = productAttributeRepository.GetAll().Where(p => p.Name == "Color").FirstOrDefault()!.Id;
-                if (attributeValues.ProductAttributeId == productAttributeSizeId)
+                List<ProductAttributeValues> productAttributeValues = productAttributeValuesRepository.GetAll().Where(p => p.ProductItemId == item.Id).ToList();
+                foreach (var item2 in productAttributeValues)
                 {
-                    productDetailsViewModel.Size!.Add(attributeValues.Value);
-                }
-                else if (attributeValues.ProductAttributeId == productAttributeColorId)
-                {
-                    if (!productDetailsViewModel.Color!.Contains(attributeValues.Value))
+                    string attrubuteValue = attributeValuesRepository.GetById(item2.AttributeValuesId).Value;
+                    //attributesValuesList.Add(attrubuteValue);
+                    int productAttributeSizeId = productAttributeRepository.GetAll().Where(p => p.Name == "Size").FirstOrDefault()!.Id;
+                    int productAttributeColorId = productAttributeRepository.GetAll().Where(p => p.Name == "Color").FirstOrDefault()!.Id;
+                    AttributeValues attribute = attributeValuesRepository.GetAll().Where(at => at.Value == attrubuteValue).FirstOrDefault()!;
+                    if (attribute.ProductAttributeId== productAttributeSizeId)
                     {
-                        productDetailsViewModel.Color!.Add(attributeValues.Value);
+                        sizeList.Add(attrubuteValue);
                     }
+                    if (attribute.ProductAttributeId == productAttributeColorId)
+                    {
+                        colorList.Add(attrubuteValue);
+                    }
+                    //int productAttrId = attribute.Id;
                 }
+
+                #region MyRegion
+
+                //AttributeValues attributeValues = attributeValuesRepository.GetById(productAttributeValues.AttributeValuesId);
+
+                //int productAttributeSizeId = productAttributeRepository.GetAll().Where(p => p.Name == "Size").FirstOrDefault()!.Id;
+                //int productAttributeColorId = productAttributeRepository.GetAll().Where(p => p.Name == "Color").FirstOrDefault()!.Id;
+                //if (attributeValues.ProductAttributeId == productAttributeSizeId)
+                //{
+                //    productDetailsViewModel.Size!.Add(attributeValues.Value);
+                //}
+                //else if (attributeValues.ProductAttributeId == productAttributeColorId)
+                //{
+                //    if (!productDetailsViewModel.Color!.Contains(attributeValues.Value))
+                //    {
+                //        productDetailsViewModel.Color!.Add(attributeValues.Value);
+                //    }
+                //}
+                #endregion
             }
+            productDetailsViewModel.Color = colorList.Distinct().ToList();
+            productDetailsViewModel.Size = sizeList.Distinct().ToList();
+
             productDetailsViewModel.BrandName = brand.Name;
 
             return View("ProductDetails", productDetailsViewModel);
