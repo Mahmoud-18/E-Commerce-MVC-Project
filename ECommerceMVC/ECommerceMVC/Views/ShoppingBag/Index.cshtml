@@ -3,11 +3,8 @@
 
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Shopping Bag";
 }
-
-@inject IProductImagesRepository productimage;
-
 <!-- Breadcrumb Start -->
 <div class="container-fluid">
     <div class="row px-xl-5">
@@ -39,7 +36,7 @@
                    
                         @foreach (var item in Model.Items)
                         {
-                             ProductImages image = productimage.GetByProductItemId(item.Id);
+                             ProductImages image = item.ProductItem.ProductImages.FirstOrDefault();
                         <tr>                            
                             <td class="align-middle"><img src="/img/@image.ImageURL" alt="" style="width: 50px;"> @item.ProductItem.Name</td>
                               <td class="align-middle">@item.ProductItem.Price$</td>

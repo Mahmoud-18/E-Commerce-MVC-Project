@@ -1,9 +1,5 @@
 ﻿@model ProductDetailsViewModel
 
-@{
-    SelectList colorList = new SelectList(Model.Color);
-    SelectList SizeList = new SelectList(Model.Size);
-}
 <!-- Breadcrumb Start -->
 <div class="container-fluid">
     <div class="row px-xl-5">
@@ -17,7 +13,7 @@
     </div>
 </div>
 <!-- Breadcrumb End -->
-<form asp-action ="AddToCard" asp-controller="Product">
+<form asp-action ="AddToCard" asp-controller="Product" asp-route-id="@Model.Id">
 
 
 <div class="container-fluid pb-5">
@@ -27,7 +23,7 @@
                 <div class="carousel-inner bg-light">
                     <!-- Product Image -->
                     <div class="carousel-item active">
-                        <img class="w-100 h-100" src="~/img/@Model.Image[0]" alt="Product Image">
+                        <img class="w-100 h-100" src="~/img/@Model.Product.Image" alt="Product Image">
                     </div>
                     @for (int i = 1; i < Model.Image.Count; i++)
                     {
@@ -68,22 +64,53 @@
                 <p class="mb-4">
                     @Model.Description <!-- Product Description -->
                 </p>
-                <div class="d-flex mb-3">
-                    <strong class="text-dark mr-3">Sizes:</strong>
-                    <select asp-for="SizeId" asp-items="SizeList" class="form-control"></select>
+                
+                    @{
+                    
+                        int var = 0;
+                    }
 
-                </div>
-                <div class="d-flex mb-4">
-                    <strong class="text-dark mr-3">Colors:</strong>
-                    <select asp-for="ColorId" asp-items="colorList" class="form-control"></select>
+                    @if (!string.IsNullOrEmpty(ViewBag.Message))
+                    {
+                        <div class="alert alert-info">@ViewBag.Message</div>
+                    }
+               
+                    @foreach (ProductAttribute variation in Model.variationswithoptions)
+                    {
+                        int y = 0;
+                        Model.AttributeValuesIds.Add(y);
+                        int i = 0;
+                        
+                        <div class="d-flex flex-row my-4">
 
-                </div>
+                            <strong class="text-dark mr-3" for="VariationOption">@variation.Name :</strong>@*VariationName*@
+                        
+                                <div class="custom-control custom-radio d-flex align-items-center">
 
+                                    @foreach (AttributeValues x in variation.AttributeValues)
+                                    {
+                                        if (i == 0)
+                                        {
+                                        <input class="ms-3 me-1" type="radio" asp-for="@Model.AttributeValuesIds[var]"  checked value="@x.Id">
 
-                <div class="d-flex align-items-center mb-4 pt-2">
-                    <div class="d-flex mb-3">
-                        <strong class="text-dark mr-3">Count:</strong>
-                        <input id="count_p" class="form-control  value=" 1" bg-secondary border-0 text-center" asp-for="ProductCount">
+                                        }
+                                        else
+                                        {
+                                        <input class="ms-5 me-1" type="radio" asp-for="@Model.AttributeValuesIds[var]" value="@x.Id">
+                                        }
+                                        <label class="form-check-label">@x.Value</label>
+                                        i++;
+                                    }
+                                
+                                </div>                            
+                        </div>
+                        var++;
+                    }
+              
+                <div class="d-flex flex-row align-items-center mb-4 pt-2">
+                        <div class="d-flex flex-row ">
+                        <strong class="text-dark mr-3">Quantity:</strong>
+                            <input id="count_p" min="1" type="number" value="1" class="form-control bg-secondary border-0 text-center" asp-for="ProductCount">
                     </div>
                 </div>
                     <button class="btn btn-primary px-3" type="submit" >
@@ -99,3 +126,4 @@
 </div>
 
 </form>
+
