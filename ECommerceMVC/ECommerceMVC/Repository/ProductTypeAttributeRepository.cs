@@ -1,5 +1,6 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceMVC.Repository
 {
@@ -30,7 +31,7 @@ namespace ECommerceMVC.Repository
         }
         public List<ProductTypeAttribute> GetByProductTypeId(int id)
         {
-            return context.ProductTypeAttribute.Where(sh => sh.ProductTypeId == id).ToList();
+            return context.ProductTypeAttribute.Include("ProductAttribute").Where(sh => sh.ProductTypeId == id).ToList();
         }
 
         public void Insert(ProductTypeAttribute productTypeAttribute)

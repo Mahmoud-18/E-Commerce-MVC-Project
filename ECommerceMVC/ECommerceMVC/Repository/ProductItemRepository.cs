@@ -1,5 +1,7 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 
 namespace ECommerceMVC.Repository
 {
@@ -21,6 +23,10 @@ namespace ECommerceMVC.Repository
         public List<ProductItem> GetAll()
         {
             return context.ProductItem.ToList();
+        }
+        public List<ProductItem> GetByProductId(int id)
+        {
+            return context.ProductItem.Include(x=> x.ProductAttributeValues).ThenInclude(x => x.AttributeValues).Where(x => x.ProductId == id).ToList();
         }
 
         public ProductItem GetById(int id)
