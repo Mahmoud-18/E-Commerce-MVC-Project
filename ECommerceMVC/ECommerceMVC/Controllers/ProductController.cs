@@ -64,8 +64,8 @@ public class ProductController : Controller
                       
             List<ProductTypeAttribute> producttypeAttributes = productTypeAttributeRepository.GetByProductTypeId((int)product.ProductTypeId);
 
-<<<<<<< HEAD
-            Product product = productRepository.GetProductById(id);
+
+            Product prod = productRepository.GetById(id);
             List<ProductItem> productItemList = productRepository.GetProductItemById(id);
             //Brand brand = productRepository.GetBrandById(id);
             List<string> productImages = productRepository.GetImageById(id);
@@ -86,7 +86,6 @@ public class ProductController : Controller
                 productDetailsViewModel.PriceBeforeDiscount = 0;
             }
             //List<ProductImages> productImages = context.ProductImages.Where(im => im.ProductItemId == productItem.Id).ToList();
-=======
             List<ProductAttribute> variationswithoptions = new List<ProductAttribute>();
 
             int i = 0;
@@ -108,7 +107,7 @@ public class ProductController : Controller
                 }
                 i++;
             }
->>>>>>> b9f11a1a56b68510c75c7aaa005dc8baf3476f41
+
 
             productDetailsViewModel.Id=product.Id;
             productDetailsViewModel.Name = product.Name;
@@ -136,18 +135,15 @@ public class ProductController : Controller
             //    foreach (var item2 in productAttributeValues)
             //    {
             //        string attrubuteValue = attributeValuesRepository.GetById(item2.AttributeValuesId).Value;
-
-<<<<<<< HEAD
             }
 
-            //productDetailsViewModel.BrandName = brand.Name;
+        //productDetailsViewModel.BrandName = brand.Name;
 
-            productDetailsViewModel.Color = colorList.Distinct().ToList();
+            productDetailsViewMode.Color = colorList.Distinct().ToList();
             productDetailsViewModel.Size = sizeList.Distinct().ToList();
 
             //productDetailsViewModel.BrandName = brand.Name;
 
-=======
             //        AttributeValues attribute = attributeValuesRepository.GetAll().Where(at => at.Value == attrubuteValue).FirstOrDefault()!;
             //        if (attribute.ProductAttributeId == productAttributeSizeId)
             //        {
@@ -162,7 +158,7 @@ public class ProductController : Controller
             //}
             //productDetailsViewModel.Color = colorList.Distinct().ToList();
             //productDetailsViewModel.Size = sizeList.Distinct().ToList();
->>>>>>> b9f11a1a56b68510c75c7aaa005dc8baf3476f41
+
 
             return View("ProductDetails", productDetailsViewModel);
         }
@@ -192,6 +188,4 @@ public class ProductController : Controller
             return View(productDetailsViewModel);
         }                           
     }
-
-
 }

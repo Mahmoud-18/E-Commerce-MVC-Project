@@ -29,7 +29,5 @@ namespace ECommerceMVC.ViewModels
         public List<ProductAttribute>? variationswithoptions { get; set; }
         public Product? Product { get; set; }
         public List<int> AttributeValuesIds { get; set; } = new();
-
-
     }
 }
