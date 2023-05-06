@@ -69,11 +69,7 @@
                     
                         int var = 0;
                     }
-
-                    @if (!string.IsNullOrEmpty(ViewBag.Message))
-                    {
-                        <div class="alert alert-info">@ViewBag.Message</div>
-                    }
+                   
                
                     @foreach (ProductAttribute variation in Model.variationswithoptions)
                     {
@@ -112,11 +108,18 @@
                         <strong class="text-dark mr-3">Quantity:</strong>
                             <input id="count_p" min="1" type="number" value="1" class="form-control bg-secondary border-0 text-center" asp-for="ProductCount">
                     </div>
-                </div>
-                    <button class="btn btn-primary px-3" type="submit" >
-                        <i class="fa fa-shopping-cart mr-1"></i> Add To
+                </div>                
+                    <button class="btn btn-primary px-3 mb-4" type="submit">
+                        <i class="fa fa-shopping-cart mr-1 "></i> Add To
                         Cart
                     </button>
+
+                    @if (!string.IsNullOrEmpty(ViewBag.Message))
+                    {
+                        <div class="alert alert-danger">@ViewBag.Message</div>
+                    }
+
+
                  @*   <button class="btn btn-primary px-3" type="submit">
                         <i class="fa fa-buy-n-large mr-1"></i> Buy Now
                     </button>*@

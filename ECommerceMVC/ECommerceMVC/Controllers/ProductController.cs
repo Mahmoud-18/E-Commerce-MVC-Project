@@ -94,40 +94,7 @@ public class ProductController : Controller
             productDetailsViewModel.Image = productRepository.GetImageById(id);
             productDetailsViewModel.variationswithoptions = variationswithoptions;          
             productDetailsViewModel.Product = productRepository.GetById(id);
-
-            //Product product = productRepository.GetById(id);
-            //List<ProductItem> productItemList = productRepository.GetProductItemById(id);
-            //Brand brand = productRepository.GetBrandById(id);
-            //productDetailsViewModel.Image = productRepository.GetImageById(id);
-
-            //List<string> attributesValuesList = new List<string>();
-            //List<string> colorList = new List<string>();
-            //List<string> sizeList = new List<string>();
-            //int productAttributeSizeId = productAttributeRepository.GetAll().Where(p => p.Name == "Size").FirstOrDefault()!.Id;
-            //int productAttributeColorId = productAttributeRepository.GetAll().Where(p => p.Name == "Color").FirstOrDefault()!.Id;
-            //foreach (var item in product.Items)
-            //{              
-            //    // Add Size And Color For the Product Item
-            //    List<ProductAttributeValues> productAttributeValues = productAttributeValuesRepository.GetAll().Where(p => p.ProductItemId == item.Id).ToList();
-            //    foreach (var item2 in productAttributeValues)
-            //    {
-            //        string attrubuteValue = attributeValuesRepository.GetById(item2.AttributeValuesId).Value;
-
-            //        AttributeValues attribute = attributeValuesRepository.GetAll().Where(at => at.Value == attrubuteValue).FirstOrDefault()!;
-            //        if (attribute.ProductAttributeId == productAttributeSizeId)
-            //        {
-            //            sizeList.Add(attribute.Value);
-            //        }
-            //        if (attribute.ProductAttributeId == productAttributeColorId)
-            //        {
-            //            colorList.Add(attribute.Value);
-            //        }
-            //    }
-
-            //}
-            //productDetailsViewModel.Color = colorList.Distinct().ToList();
-            //productDetailsViewModel.Size = sizeList.Distinct().ToList();
-
+           
             return View("ProductDetails", productDetailsViewModel);
         }
     }
@@ -152,10 +119,47 @@ public class ProductController : Controller
         }
         else
         {
-            ViewBag.Message = "No Stock!";
-            return View(productDetailsViewModel);
+            ProductDetailsViewModel productDetailsView = new ProductDetailsViewModel();
+            ViewBag.Message = "No Enough Stock!";
+            
+            Product product = productRepository.GetByIdInclude(id);
+
+            List<ProductTypeAttribute> producttypeAttributes = productTypeAttributeRepository.GetByProductTypeId((int)product.ProductTypeId);
+
+            List<ProductAttribute> variationswithoptions = new List<ProductAttribute>();
+
+            int i = 0;
+            foreach (var producttypeattribute in producttypeAttributes)
+            {
+                variationswithoptions.Add(productAttributeRepository.GetById(producttypeattribute.ProductAttributeId));
+                foreach (var item in product.Items)
+                {
+                    foreach (var attribute in item.ProductAttributeValues)
+                    {
+                        if (attribute.AttributeValues.ProductAttributeId == variationswithoptions[i].Id)
+                        {
+                            if ((variationswithoptions[i].AttributeValues.Contains(attribute.AttributeValues)) == false)
+                            {
+                                variationswithoptions[i].AttributeValues.Add(attribute.AttributeValues);
+                            }
+                        }
+                    }
+                }
+                i++;
+            }
+
+            productDetailsViewModel.Id = product.Id;
+            productDetailsViewModel.Name = product.Name;
+            productDetailsViewModel.price = (float)product.Price;
+            productDetailsViewModel.Description = product.Description;
+            productDetailsViewModel.BrandName = product.Brand.Name;
+            productDetailsViewModel.Image = productRepository.GetImageById(id);
+            productDetailsViewModel.variationswithoptions = variationswithoptions;
+            productDetailsViewModel.Product = productRepository.GetById(id);
+
+            return View("ProductDetails", productDetailsViewModel);
+                 
         }                           
     }
-
 
 }

@@ -58,8 +58,10 @@ namespace ECommerceMVC.Controllers
             var orders = order.GetAllByCustomerId(customer.Id);
             return View(orders);
         }
-        public IActionResult YourAddresses()
+        [Authorize]
+        public async Task<IActionResult> MyAddresses()
         {
+            Customer customer = await userManager.GetUserAsync(User);
             return View();
         }
 

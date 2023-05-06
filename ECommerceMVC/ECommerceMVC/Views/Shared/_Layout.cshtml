@@ -87,9 +87,10 @@
                     <div class="col-lg-4 col-6 text-right">
                         <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">@User.Identity.Name</button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a style="text-decoration:none !important; color:inherit;" href="@Url.Action("MyAccount", "Account")" class="dropdown-item ">My Account</a>
-                                @*<a asp-action="Index" asp-controller="Account" class="dropdown-item" type="button" >My Account</a>*@
+                            <div class="dropdown-menu dropdown-menu-right">                               
+                                <a style="text-decoration:none !important; color:inherit;" asp-action="MyAccount" asp-controller="Account" class="dropdown-item ">My Account</a>
+                                <a style="text-decoration:none !important; color:inherit;" asp-action="MyAddresses" asp-controller="Account" class="dropdown-item ">My Addresses</a>
+                                <a style="text-decoration:none !important; color:inherit;" asp-action="MyOrders" asp-controller="Account" class="dropdown-item ">My Orders</a>
                                 <a asp-action="SignOut" asp-controller="Account" class="dropdown-item" type="button">Sign out</a>
 
                             </div>

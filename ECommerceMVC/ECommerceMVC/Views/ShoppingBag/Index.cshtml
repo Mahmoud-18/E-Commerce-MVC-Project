@@ -88,7 +88,11 @@
                     <div class="d-flex justify-content-between mt-2">
                         <h5>Total</h5>
                         <h5>@Model.TotalPrice EGP</h5>
-                    </div>              
+                    </div>
+                    @if (!string.IsNullOrEmpty(ViewBag.Message))
+                    {
+                        <div class="alert alert-danger">@ViewBag.Message</div>
+                    }
                         <a asp-action="Checkout" asp-controller="Order" class="btn btn-block btn-danger font-weight-bold my-3 py-3">Proceed To Checkout</a>
                     <a asp-action="ShowAllProducts" asp-controller="Shop" class="btn btn-block btn-warning font-weight-bold my-3 py-3">Continue Shopping</a>
                 </div>               

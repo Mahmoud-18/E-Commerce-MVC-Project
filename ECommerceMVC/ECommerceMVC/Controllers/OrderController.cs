@@ -39,12 +39,14 @@ namespace ECommerceMVC.Controllers
             discountRepository = _discountRepository;
         }
 
+
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             List<OrderDetails> orders = orderRepository.GetAll();
             return View(orders);
         }
+
         [Authorize(Roles = "Admin")]
         public IActionResult OrderDetails()
         {
@@ -70,40 +72,47 @@ namespace ECommerceMVC.Controllers
             }
             
             checkOutViewModel.Items = shoppingBagItemRepository.GetAllByBagId(bag.Id);
-            decimal sumafterdisc = 0;
-            decimal sumbeforedisc = 0;
-            foreach (var item in checkOutViewModel.Items)
+            if (checkOutViewModel.Items.Count > 0)
             {
-                sumbeforedisc += (item.Quantity * item.ProductItem.Price);
+                decimal sumafterdisc = 0;
+                decimal sumbeforedisc = 0;
+                foreach (var item in checkOutViewModel.Items)
+                {
+                    sumbeforedisc += (item.Quantity * item.ProductItem.Price);
 
-                var discount = productRepository.GetDiscountById(item.ProductItem.ProductId);
-                if (discount == null)
-                {
-                    sumafterdisc += (item.Quantity * item.ProductItem.Price);
-                }
-                else
-                {
-                    if (discountRepository.IsDiscountActive(discount.Id))
-                    {
-                        sumafterdisc += (item.Quantity * item.ProductItem.Price) - ((decimal)discount.DiscountPercentage * item.Quantity * item.ProductItem.Price);
-                    }
-                    else
+                    var discount = productRepository.GetDiscountById(item.ProductItem.ProductId);
+                    if (discount == null)
                     {
                         sumafterdisc += (item.Quantity * item.ProductItem.Price);
                     }
+                    else
+                    {
+                        if (discountRepository.IsDiscountActive(discount.Id))
+                        {
+                            sumafterdisc += (item.Quantity * item.ProductItem.Price) - ((decimal)discount.DiscountPercentage * item.Quantity * item.ProductItem.Price);
+                        }
+                        else
+                        {
+                            sumafterdisc += (item.Quantity * item.ProductItem.Price);
+                        }
 
+                    }
                 }
+                checkOutViewModel.TotalPriceBeforeDiscount = sumbeforedisc;
+                checkOutViewModel.TotalPriceAfterDiscount = sumafterdisc;
+                checkOutViewModel.TotalDiscount = sumbeforedisc - sumafterdisc;
+                checkOutViewModel.ShippingPrice = 40;
+                checkOutViewModel.OrderTotalPrice = checkOutViewModel.TotalPriceAfterDiscount + checkOutViewModel.ShippingPrice;
+                checkOutViewModel.PaymentMethod = paymentMethodRepository.GetAll();
+                return View(checkOutViewModel);
             }
-            checkOutViewModel.TotalPriceBeforeDiscount = sumbeforedisc;
-            checkOutViewModel.TotalPriceAfterDiscount = sumafterdisc;
-            checkOutViewModel.TotalDiscount = sumbeforedisc - sumafterdisc;
-            checkOutViewModel.ShippingPrice = 40;
-            checkOutViewModel.OrderTotalPrice = checkOutViewModel.TotalPriceAfterDiscount + checkOutViewModel.ShippingPrice;
-            checkOutViewModel.PaymentMethod = paymentMethodRepository.GetAll();
-            return View(checkOutViewModel);
+            else
+            {
+                ViewBag.Message = "add a product first";
+                return RedirectToAction("Index","ShoppingBag");
+            }
+            
         }
-
-
 
         [Authorize]        
         public async Task<IActionResult> PlaceOrder(CheckOutViewModel checkOutViewModel)
@@ -178,18 +187,14 @@ namespace ECommerceMVC.Controllers
                     productItems.Add(productItem);                    
                     shoppingBagItemRepository.Delete(item.Id);                    
                 }
-                orderItemRepository.InsertRange(orderItems);              
+                orderItemRepository.InsertRange(orderItems);
                 #endregion
 
-                return RedirectToAction("Index", "Home");
+                return View("AddOrderSuccess");
             }
-            foreach (var item in items)
-            {
 
-            }
-            
-                                     
-            return View("CheckOut");
+                                                         
+            return View("Checkout");
         }
 
     }
