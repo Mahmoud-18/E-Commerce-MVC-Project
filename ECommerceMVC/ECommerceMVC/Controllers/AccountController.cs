@@ -19,11 +19,12 @@ namespace ECommerceMVC.Controllers
         IShoppingBagRepository shopBagRepository;
         ICountryRepository country;
         ICustomerRepository customer;
+        IOrderRepository order;
         public AccountController
            (UserManager<Customer> _userManager, SignInManager<Customer> _signInManager,
            IAddressRepository _addressRepository, IShoppingBagRepository shopBagRepository,
            ICountryRepository countryRepository, RoleManager<IdentityRole<int>> _roleManager,
-           ICustomerRepository _customer)
+           ICustomerRepository _customer,IOrderRepository _order)
         {
             userManager = _userManager;
             signInManager = _signInManager;
@@ -32,6 +33,7 @@ namespace ECommerceMVC.Controllers
             country = countryRepository;
             roleManager = _roleManager;
             this.customer = _customer;
+            order = _order;
         }
 
 
@@ -48,10 +50,13 @@ namespace ECommerceMVC.Controllers
         {
             return View();
         }
-        public IActionResult YourOrders()
+        [Authorize]
+        public async Task<IActionResult>  MyOrders()
         {
-
-            return View();
+            
+            Customer customer = await userManager.GetUserAsync(User);
+            var orders = order.GetAllByCustomerId(customer.Id);
+            return View(orders);
         }
         public IActionResult YourAddresses()
         {
