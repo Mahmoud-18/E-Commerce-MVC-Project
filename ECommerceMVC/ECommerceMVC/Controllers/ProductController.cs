@@ -135,12 +135,12 @@ public class ProductController : Controller
             //    foreach (var item2 in productAttributeValues)
             //    {
             //        string attrubuteValue = attributeValuesRepository.GetById(item2.AttributeValuesId).Value;
-            }
+            
 
         //productDetailsViewModel.BrandName = brand.Name;
 
-            productDetailsViewMode.Color = colorList.Distinct().ToList();
-            productDetailsViewModel.Size = sizeList.Distinct().ToList();
+            //productDetailsViewModel.Color = colorList.Distinct().ToList();
+            //productDetailsViewModel.Size = sizeList.Distinct().ToList();
 
             //productDetailsViewModel.BrandName = brand.Name;
 
