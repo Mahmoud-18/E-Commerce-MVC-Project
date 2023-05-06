@@ -39,7 +39,7 @@
                              ProductImages image = item.ProductItem.ProductImages.FirstOrDefault();
                         <tr>                            
                             <td class="align-middle"><img src="/img/@image.ImageURL" alt="" style="width: 50px;"> @item.ProductItem.Name</td>
-                              <td class="align-middle">@item.ProductItem.Price$</td>
+                              <td class="align-middle">@item.ProductItem.Price</td>
                               <td class="align-middle">
                                   <div class="input-group quantity mx-auto" style="width: 100px;">
                                       <div class="input-group-btn">
@@ -55,7 +55,7 @@
                                       </div>
                                   </div>
                               </td>
-                            <td class="align-middle">@(item.Quantity * item.ProductItem.Price)$ </td>
+                            <td class="align-middle">@(item.Quantity * item.ProductItem.Price) EGP </td>
                             <td class="align-middle"><a asp-action="RemoveFromBag" asp-controller="ShoppingBag"  asp-route-id="@item.Id" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a></td>
                         </tr>
             }

@@ -1,0 +1,72 @@
+﻿@model IEnumerable<ECommerceMVC.Models.OrderDetails>
+
+@{
+    ViewData["Title"] = "MyOrders";
+}
+
+
+ <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="@Url.Action("MyAccount", "Account")">MyAccount</a>
+                    <span class="breadcrumb-item active">My Orders</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+
+<table class="table" id="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderTotalPrice)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentMethod)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderStatus)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderTotalPrice)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentMethod.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderStatus.Status)
+            </td>
+            <td>
+
+                    <a asp-action="OrderStatusDetails" asp-route-id="@item.Id" class="btn btn-info mx-2">Details</a>
+
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Cancel</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
