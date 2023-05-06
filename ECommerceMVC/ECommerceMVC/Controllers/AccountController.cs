@@ -128,9 +128,9 @@ namespace ECommerceMVC.Controllers
                 if (result.Succeeded)
                 {
                     shoppingBag.CustomerId = userModel.Id;
-                    address.CustomerId = userModel.Id;
-                    userModel.ShippingAddressId = address.Id;
+                    address.CustomerId = userModel.Id;                    
                     addressRepo.Insert(address);
+                    userModel.ShippingAddressId = address.Id;
                     shopBagRepository.Insert(shoppingBag);
 
                     // add Claims

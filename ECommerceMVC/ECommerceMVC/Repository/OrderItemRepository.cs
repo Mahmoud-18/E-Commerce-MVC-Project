@@ -40,6 +40,12 @@ namespace ECommerceMVC.Repository
             context.SaveChanges();
         }
 
+        public void InsertRange(List<OrderItems> newOrderItems)
+        {
+            context.OrderItems.AddRange(newOrderItems);
+            context.SaveChanges();
+        }
+
         public void Update(int id, OrderItems orderItem)
         {
             context.Update(orderItem);

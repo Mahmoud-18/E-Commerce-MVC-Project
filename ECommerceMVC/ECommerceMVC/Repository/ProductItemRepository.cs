@@ -45,5 +45,17 @@ namespace ECommerceMVC.Repository
             context.Update(productItem);
             context.SaveChanges();
         }
+
+        public void InsertRange(List<ProductItem> productItems)
+        {
+            context.ProductItem.AddRange(productItems);
+            context.SaveChanges();
+        }
+
+        public void UpdateRange(List<ProductItem> productItems)
+        {
+            context.ProductItem.UpdateRange(productItems);
+            context.SaveChanges();
+        }
     }
 }
