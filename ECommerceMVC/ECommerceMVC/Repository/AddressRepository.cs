@@ -1,5 +1,6 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceMVC.Repository
 {
@@ -25,13 +26,13 @@ namespace ECommerceMVC.Repository
 
         public List<Address> GetAllByCustomerId(int id)
         {
-            return context.Address.Where(i => i.CustomerId == id).ToList();
+            return context.Address.Include(i => i.Country).Where(i => i.CustomerId == id).ToList();
         }
 
         public Address GetById(int id)
         {
 
-            return context.Address.FirstOrDefault(i => i.Id == id);
+            return context.Address.Include(i=> i.Country).FirstOrDefault(i => i.Id == id);
         }
 
         public void Insert(Address newaddress)
