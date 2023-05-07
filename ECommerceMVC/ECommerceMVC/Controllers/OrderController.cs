@@ -126,6 +126,7 @@ namespace ECommerceMVC.Controllers
             {
                 #region create order
                 order.OrderDate = DateTime.Now;
+                order.CreatedOnUtc = DateTime.UtcNow;
                 OrderStatus orderStatus = orderStatusRepository.GetAll().FirstOrDefault(o => o.Status == "pending");               
                 //order.OrderStatusId = 1;
                 order.OrderStatusId = orderStatus.Id;
