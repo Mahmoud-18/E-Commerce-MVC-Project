@@ -31,6 +31,7 @@ namespace ECommerceMVC.Controllers
             discountRepository = _discountRepository;
             userManager = _userManager;
         }
+
         [Authorize]
         public async Task<IActionResult> Index()
         {

@@ -4,7 +4,12 @@
     ViewBag.Genders = new SelectList(Enum.GetValues(typeof(Gender)));
 }
 
+@*in order to show a customer model and on the other side show an EditProfileviewmodel we will
+unify the type of model used here
 
+therfore all must be Editprofileviewmodel , thus we will create 2 actions
+one to send the preview data while the second will send the data to the action to modify it
+*@
 
 
 
@@ -26,7 +31,7 @@
     <hr>
     <div class="row">
 
-       <!-- Current Data column -->
+      <!-- Current Data column -->
        <div class="col-md-6 personal-info">
         <h3>Current Account Information</h3>
 
@@ -90,61 +95,66 @@
  <div class="col-md-6 personal-info">
         <h3>Current Account Information</h3>
 
-        <form class="form-horizontal" role="form">
+        <form asp-controller="Account" asp-action="SubmitProfileModifications"  class="form-horizontal" >
 
 
           <div class="form-group">
-            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.UserName)</label>
+            <label asp-for="UserName" class="col-lg-3 control-label"></label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.UserName)" >
+              <input asp-for="UserName" class="form-control" type="text" value="@Html.DisplayFor(model => model.UserName)" >
             </div>
+            <span asp-validation-for="UserName" class="text-danger"></span>
           </div>
 
 
           <div class="form-group">
-            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.Email)</label>
+            <label asp-for="Email" class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.Email)</label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.Email)" >
+              <input asp-for="Email" class="form-control" type="text" value="@Html.DisplayFor(model => model.Email)" >
             </div>
+            <span asp-validation-for="Email" class="text-danger"></span>
           </div>
 
          <div class="form-group">
-            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.FirstName)</label>
+            <label asp-for="FirstName" class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.FirstName)</label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.FirstName)" >
+              <input asp-for="FirstName" class="form-control" type="text" value="@Html.DisplayFor(model => model.FirstName)" >
             </div>
+            <span asp-validation-for="FirstName" class="text-danger"></span>
           </div>
 
           <div class="form-group">
-            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.LastName)</label>
+            <label asp-for="LastName" class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.LastName)</label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.LastName)" >
+              <input asp-for="LastName" class="form-control" type="text" value="@Html.DisplayFor(model => model.LastName)" >
             </div>
+            <span asp-validation-for="LastName" class="text-danger"></span>
           </div>
 
 
           <div class="form-group">
-            <label class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.PhoneNumber)</label>
+            <label asp-for="PhoneNumber" class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.PhoneNumber)</label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="@Html.DisplayFor(model => model.PhoneNumber)" >
+              <input asp-for="PhoneNumber" class="form-control" type="text" value="@Html.DisplayFor(model => model.PhoneNumber)" >
             </div>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
           </div>
 
-          
+
 
           <div class="form-group">
-          <label asp-for="DataOfBirth" class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.DataOfBirth)</label>
-          <div class="col-lg-8">
-          <input asp-for="DataOfBirth" class="form-control"/>
-          </div>
-          <span asp-validation-for="DataOfBirth" class="text-danger"></span>                       
+             <label asp-for="DataOfBirth" class="col-lg-3 control-label">@Html.DisplayNameFor(model => model.DataOfBirth)</label>
+                 <div class="col-lg-8">
+                     <input asp-for="DataOfBirth" class="form-control"/>
+                </div>
+             <span asp-validation-for="DataOfBirth" class="text-danger"></span>                       
           </div>
 
 
           <div class="form-group">
                 <label asp-for="Gender" class="col-lg-3 control-label"></label>
                 <div class="col-lg-8">
-                <select class="form-control" asp-for="Gender" asp-items="ViewBag.Genders">
+                <select asp-for="Gender" class="form-control"  asp-items="ViewBag.Genders">
                     <!--List<Gender>-->
                 </select>
                 </div>
@@ -154,25 +164,34 @@
 
 
           <div class="form-group">
-            <label class="col-lg-3 control-label">Current Password</label>
+            <label asp-for="OldPassword" class="col-lg-3 control-label"></label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="" >
+              <input asp-for="OldPassword" class="form-control" type="text"  >
             </div>
+            <span asp-validation-for="OldPassword" class="text-danger"></span>
           </div>
 
           <div class="form-group">
-            <label class="col-lg-3 control-label">New Password</label>
+            <label asp-for="NewPassword" class="col-lg-3 control-label"></label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="" >
+              <input asp-for="NewPassword" class="form-control" type="text"  >
             </div>
+            <span asp-validation-for="NewPassword" class="text-danger"></span>
           </div>
 
           <div class="form-group">
-            <label class="col-lg-3 control-label">Confirm New Password</label>
+            <label asp-for="ConfirmNewPassword" class="col-lg-3 control-label"></label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" value="" >
+              <input asp-for="ConfirmNewPassword" class="form-control" type="text"  >
             </div>
+            <span asp-validation-for="ConfirmNewPassword" class="text-danger"></span>
           </div>
+
+
+
+          <div class="form-group">
+                        <input type="submit" value="Sign Up" class="btn btn-block btn-primary font-weight-bold py-3" />
+                 </div>
 
 
 
@@ -182,10 +201,10 @@
 
 
        <!-- Modified Data  column -->
-       
+
        <!-- Data End --> 
-  </div>
-<hr>
+         </div>
+    <hr>
 </div>
 
 
