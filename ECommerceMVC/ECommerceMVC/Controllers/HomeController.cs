@@ -10,6 +10,7 @@ namespace ECommerceMVC.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+
         ProductsServices ProductsServices;
 
         public HomeController(ProductsServices productsServices)
@@ -19,6 +20,7 @@ namespace ECommerceMVC.Controllers
         public IActionResult Index()
         {
             var products = ProductsServices.GetAllProducts();
+
             return View(products);
         }
      
