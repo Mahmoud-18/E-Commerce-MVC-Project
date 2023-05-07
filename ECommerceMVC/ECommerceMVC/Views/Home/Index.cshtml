@@ -1,17 +1,13 @@
-﻿
-@model List<ShoppingProductsViewModel>
+﻿@model List<ShoppingProductsViewModel>
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <!-- Carousel Start -->
 <div class=" row justify-content-md-center">
-    
-    <div class="col-md-6"  text-center">
 
-
-
-</div>
+    <div class="col-md-6" text-center">
+    </div>
     <div class="row px-xl-5">
         <div class="col-lg-12">
 
@@ -59,49 +55,50 @@
     </div>
 </div>
 <!-- Carousel End -->
-
 <!-- Featured-->
 <div class="container-fluid pt-5 pb-3">
     <div class="hd">
-        <h1>FEATURED PRODUCTS<h1>
-        <h5 style=" color:rgb(175, 174, 174) ;
+        <h1>
+            FEATURED PRODUCTS<h1>
+                <h5 style=" color:rgb(175, 174, 174) ;
             margin: 10px 0 30px 0;">
-            Winter collection new modern designs
-        </h5>
+                    Winter collection new modern designs
+                </h5>
     </div>
     <div class="row px-xl-5">
-        @for (int i = 0; i <17; i=i+2)
-                {
-                    var product = Model[i];
+        @for (int i = 0; i < 17; i = i + 2)
+        {
+            var product = Model[i];
 
-                    <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
-                            <div class="product-item bg-light mb-4">
-                                <div class="product-img position-relative overflow-hidden">
+            <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                <div class="product-item bg-light mb-4">
+                    <div class="product-img position-relative overflow-hidden">
                         <img class="img-fluid w-100" src="/img/@product.Image" alt="">
-                                    <div class="product-action">
+                        <div class="product-action">
                             <a class="btn btn-outline-dark" asp-action="ProductDetails" asp-controller="Product" asp-route-id="@product.Id"><i>Order Now!</i></a>
 
-                                    </div>
-                                </div>
-                                <div class="text-center py-4">
-                                
-                                    <a class="h6 text-decoration-none text-truncate" href="">@product.Name</a>
-                                    <div class="d-flex align-items-center justify-content-center mt-2">
-                                        <h5>@product.PriceBeforeDisc</h5>
-                                    </div>
-                                    @*<div class="d-flex align-items-center justify-content-center mb-1">
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small>(99)</small>
-                                    </div>*@
-                                </div>
-                            </div>
+                        </div>
                     </div>
-                    
-                }
+                    <div class="text-center py-4">
+
+                        <a class="h6 text-decoration-none text-truncate" href="">@product.Name</a>
+                        <div class="d-flex align-items-center justify-content-center mt-2">
+                            <h5>@product.PriceBeforeDisc</h5>
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-center mb-1">
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small>(99)</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
 
     </div>
 </div>
@@ -133,7 +130,7 @@
 <!-- Offer End -->
 
 
-    <div class="container-fluid pt-5 pb-3">
+<div class="container-fluid pt-5 pb-3">
 
     <div class="hd">
         <h1>NEW ARRIVALS</h1>
@@ -142,39 +139,40 @@
             Winter collection new modern designs
         </h5>
     </div>
-        <div class="row px-xl-5">
-            @for (int i =1; i <18; i = i+2)
-            {
-                var product = Model[i];
+    <div class="row px-xl-5">
+        @for (int i = 1; i < 18; i = i + 2)
+        {
+            var product = Model[i];
 
-                <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
-                    <div class="product-item bg-light mb-4">
-                        <div class="product-img position-relative overflow-hidden">
+            <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                <div class="product-item bg-light mb-4">
+                    <div class="product-img position-relative overflow-hidden">
                         <img class="img-fluid w-100" src="/img/@product.Image" alt="">
-                            <div class="product-action">
+                        <div class="product-action">
                             <a class="btn btn-outline-dark" asp-action="ProductDetails" asp-controller="Product" asp-route-id="@product.Id"><i>Order Now!</i></a>
 
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-
-                            <a class="h6 text-decoration-none text-truncate" href="">@product.Name</a>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5>@product.PriceBeforeDisc</h5>
-                            </div>
-                            @*<div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small>(99)</small>
-                            </div>*@
                         </div>
                     </div>
+                    <div class="text-center py-4">
+
+                        <a class="h6 text-decoration-none text-truncate" href="">@product.Name</a>
+                        <div class="d-flex align-items-center justify-content-center mt-2">
+                            <h5>@product.PriceBeforeDisc</h5>
+                        </div>
+
+                        @* <div class="d-flex align-items-center justify-content-center mb-1">
+                    <small class="fa fa-star text-primary mr-1"></small>
+                    <small class="fa fa-star text-primary mr-1"></small>
+                    <small class="fa fa-star text-primary mr-1"></small>
+                    <small class="fa fa-star text-primary mr-1"></small>
+                    <small class="fa fa-star text-primary mr-1"></small>
+                    <small>(99)</small>
+                    </div>*@
+                    </div>
                 </div>
+            </div>
 
-            }
+        }
 
-        </div>
     </div>
+</div>
