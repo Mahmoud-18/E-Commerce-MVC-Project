@@ -43,7 +43,7 @@ namespace ECommerceMVC.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
-            List<OrderDetails> orders = orderRepository.GetAll();
+            List<OrderDetails> orders = orderRepository.GetAllInclude();
             return View(orders);
         }
 

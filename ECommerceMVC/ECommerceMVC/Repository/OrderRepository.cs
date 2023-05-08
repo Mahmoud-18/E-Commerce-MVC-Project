@@ -24,6 +24,10 @@ namespace ECommerceMVC.Repository
         {
             return context.OrderDetails.ToList();
         }
+        public List<OrderDetails> GetAllInclude()
+        {
+            return context.OrderDetails.Include(x => x.OrderStatus).Include(x => x.PaymentMethod).Include(o => o.Customer).Include(o => o.OrderItems).OrderByDescending(e => e.OrderDate).ToList();
+        }
 
         public List<OrderDetails> GetAllByCustomerId(int userid)
         {
@@ -34,6 +38,8 @@ namespace ECommerceMVC.Repository
         {
             return context.OrderDetails.Where(i => i.OrderStatusId == statusid).ToList();
         }
+
+       
 
         public OrderDetails GetById(int id)
         {

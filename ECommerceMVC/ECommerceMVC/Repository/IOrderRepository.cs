@@ -5,6 +5,8 @@ namespace ECommerceMVC.Repository
     public interface IOrderRepository
     {
         List<OrderDetails> GetAll();
+
+        List<OrderDetails> GetAllInclude();
         List<OrderDetails> GetAllByCustomerId(int userid);
         List<OrderDetails> GetAllByOrderStatusId(int statusid);
         OrderDetails GetById(int id);
