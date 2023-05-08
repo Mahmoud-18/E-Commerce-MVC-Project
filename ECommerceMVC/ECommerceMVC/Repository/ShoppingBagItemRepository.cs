@@ -27,7 +27,7 @@ namespace ECommerceMVC.Repository
         }
         public List<ShoppingBagItem> GetAllByBagId(int id)
         {
-            return context.ShoppingBagItem.Include("ProductItem").Where(i=> i.ShoppingBagId == id).ToList();
+            return context.ShoppingBagItem.Include(i => i.ProductItem).ThenInclude(item => item.ProductImages).Where(i=> i.ShoppingBagId == id).ToList();
         }
         public ShoppingBagItem GetById(int id)
         {

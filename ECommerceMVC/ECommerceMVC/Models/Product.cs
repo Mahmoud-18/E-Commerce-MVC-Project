@@ -29,4 +29,5 @@ public class Product
     public ProductType? ProductType { get; set; }
     public ICollection<ProductItem>? Items { get; set; } = new List<ProductItem>();
     public ICollection<ProductCategory>? ProductCategories { get; set; } = new List<ProductCategory>();
+    public ICollection<ProductReview>? ProductReviews { get; set; } = new List<ProductReview>();
 }

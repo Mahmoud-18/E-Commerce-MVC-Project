@@ -20,6 +20,7 @@ namespace ECommerceMVC.Controllers
     public class AdminController : Controller
     {
         //
+        
         ICategoryRepository categoryRepository;
         IBrandRepository brandRepository;
         IDiscountRepository discountRepository;
@@ -60,8 +61,7 @@ namespace ECommerceMVC.Controllers
             this.shopBagRepository = shopBagRepository;
             country = countryRepository;
             roleManager = _roleManager;
-            this.customer = _customer;
-            //
+            this.customer = _customer;           
             categoryRepository = _categoryRepository;
             brandRepository = _brandRepository;
             discountRepository = _discountRepository;
@@ -79,7 +79,7 @@ namespace ECommerceMVC.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View();           
         }
         public IActionResult AddProduct()
         {
@@ -240,9 +240,9 @@ namespace ECommerceMVC.Controllers
                 if (result.Succeeded)
                 {
                     shoppingBag.CustomerId = userModel.Id;
-                    address.CustomerId = userModel.Id;
-                    userModel.ShippingAddressId = address.Id;
+                    address.CustomerId = userModel.Id;                   
                     addressRepo.Insert(address);
+                    userModel.ShippingAddressId = address.Id;
                     shopBagRepository.Insert(shoppingBag);
 
                     // add Claims

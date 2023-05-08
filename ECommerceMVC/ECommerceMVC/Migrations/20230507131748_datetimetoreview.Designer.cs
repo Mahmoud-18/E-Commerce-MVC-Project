@@ -4,6 +4,7 @@ using ECommerceMVC.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerceMVC.Migrations
 {
     [DbContext(typeof(EcommerceDbContext))]
-    partial class EcommerceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230507131748_datetimetoreview")]
+    partial class datetimetoreview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -739,7 +742,7 @@ namespace ECommerceMVC.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductReviews");
+                    b.ToTable("ProductReview");
                 });
 
             modelBuilder.Entity("ECommerceMVC.Models.ProductType", b =>

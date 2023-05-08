@@ -1,5 +1,6 @@
 ﻿using ECommerceMVC.Context;
 using ECommerceMVC.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Metrics;
 
 namespace ECommerceMVC.Repository
@@ -26,7 +27,7 @@ namespace ECommerceMVC.Repository
 
         public List<OrderDetails> GetAllByCustomerId(int userid)
         {
-            return context.OrderDetails.Where(i => i.CustomerId == userid).ToList();
+            return context.OrderDetails.Include(x=>x.OrderStatus).Include(x=>x.PaymentMethod).Include(o => o.OrderItems).Where(i => i.CustomerId == userid).ToList();
         }
 
         public List<OrderDetails> GetAllByOrderStatusId(int statusid)
@@ -47,7 +48,7 @@ namespace ECommerceMVC.Repository
 
         public void Update(int id, OrderDetails order)
         {
-            context.Update(order);
+            context.Update(order);           
             context.SaveChanges();
         }
     }

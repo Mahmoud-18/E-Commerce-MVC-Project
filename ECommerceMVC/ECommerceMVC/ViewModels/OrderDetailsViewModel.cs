@@ -1,9 +1,11 @@
 ﻿using ECommerceMVC.Models;
 using Microsoft.Build.ObjectModelRemoting;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECommerceMVC.ViewModels
 {
+    [Keyless]
     public class OrderDetailsViewModel
     {
         public int Id { get; set; }
