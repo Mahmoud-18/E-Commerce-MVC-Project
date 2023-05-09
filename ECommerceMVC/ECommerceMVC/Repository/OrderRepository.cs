@@ -32,7 +32,7 @@ namespace ECommerceMVC.Repository
 
         public List<OrderDetails> GetAllByCustomerId(int userid)
         {
-            return context.OrderDetails.Include(x=>x.OrderStatus).Include(x=>x.PaymentMethod).Include(o => o.OrderItems).Where(i => i.CustomerId == userid && i.IsDeleted == false).ToList();
+            return context.OrderDetails.Include(x=>x.OrderStatus).Include(x=>x.PaymentMethod).Include(o => o.OrderItems).Where(i => i.CustomerId == userid && i.IsDeleted == false && i.IsCanceled == false).OrderByDescending(e => e.OrderDate).ToList();
         }
 
         public List<OrderDetails> GetAllByOrderStatusId(int statusid)

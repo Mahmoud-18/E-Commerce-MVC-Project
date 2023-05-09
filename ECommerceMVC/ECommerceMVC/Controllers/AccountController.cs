@@ -19,12 +19,13 @@ namespace ECommerceMVC.Controllers
         IShoppingBagRepository shopBagRepository;
         ICountryRepository country;
         ICustomerRepository customer;
-        IOrderRepository order;
+        IOrderRepository orderRepository;
+        IProductItemRepository productItemRepository;
         public AccountController
            (UserManager<Customer> _userManager, SignInManager<Customer> _signInManager,
            IAddressRepository _addressRepository, IShoppingBagRepository shopBagRepository,
            ICountryRepository countryRepository, RoleManager<IdentityRole<int>> _roleManager,
-           ICustomerRepository _customer,IOrderRepository _order)
+           ICustomerRepository _customer,IOrderRepository _order, IProductItemRepository productItemRepository)
         {
             userManager = _userManager;
             signInManager = _signInManager;
@@ -33,7 +34,8 @@ namespace ECommerceMVC.Controllers
             country = countryRepository;
             roleManager = _roleManager;
             this.customer = _customer;
-            order = _order;
+            orderRepository = _order;
+            this.productItemRepository = productItemRepository;
         }
 
 
@@ -55,9 +57,49 @@ namespace ECommerceMVC.Controllers
         {
             
             Customer customer = await userManager.GetUserAsync(User);
-            var orders = order.GetAllByCustomerId(customer.Id);
+            var orders = orderRepository.GetAllByCustomerId(customer.Id);
             return View(orders);
         }
+        [Authorize]
+        public IActionResult OrderDetails(int id)
+        {
+            OrderDetails order = orderRepository.GetById(id);
+
+            OrderDetailsViewModel orderViewModel = new OrderDetailsViewModel();
+
+            orderViewModel.Customer = order.Customer;
+            orderViewModel.OrderDate = order.OrderDate;
+            orderViewModel.ShippingPrice = order.ShippingPrice;
+            orderViewModel.OrderTotalPrice = order.OrderTotalPrice;
+            orderViewModel.Id = order.Id;
+            orderViewModel.PaymentMethod = order.PaymentMethod.Name;
+            orderViewModel.OrderStatus = order.OrderStatus.Status;
+            orderViewModel.ShippingAddress = order.Address;
+            orderViewModel.IsCanceled = order.IsCanceled;
+            orderViewModel.OrderItems = order.OrderItems.ToList();
+
+            return View(orderViewModel);
+        }
+        [Authorize]
+        public IActionResult CancelOrder(int id)
+        {
+            OrderDetails order = orderRepository.GetById(id);
+    
+            order.IsCanceled = true;
+            orderRepository.SaveChanges();
+            List<ProductItem> productItems = new List<ProductItem>();   
+            foreach (var item in order.OrderItems)
+            {
+                ProductItem productItem = item.ProductItem;
+                productItem.StockQuantity += item.Quantity;
+                productItems.Add(productItem);
+            }
+            productItemRepository.UpdateRange(productItems);
+
+            return RedirectToAction("MyOrders", "Account");
+        }
+
+
         [Authorize]
         public async Task<IActionResult> MyAddresses()
         {

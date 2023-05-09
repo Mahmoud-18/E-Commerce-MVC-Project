@@ -1,0 +1,123 @@
+﻿@model ECommerceMVC.ViewModels.OrderDetailsViewModel
+
+@{
+    ViewData["Title"] = "OrderDetails";
+}
+
+<nav class="breadcrumb bg-light mb-30 p-3">
+    <a class="breadcrumb-item text-dark" style="text-decoration:none !important; color:inherit;" asp-action="Index" asp-controller="Admin">Admin</a>
+    <span class="breadcrumb-item active">Orders / Order Details</span>
+</nav>
+
+
+<div class="container-fluid">
+    <div class="row px-xl-5">
+
+        <div class="col-lg-6">
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Order Information</span></h5>
+            <div class="bg-light p-30 mb-5">
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label>Order Number : @Model.Id</label>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Order Date : @Model.OrderDate</label>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>User Name : @Model.Customer.UserName </label>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Full Name : @(Model.Customer.FirstName + " " + Model.Customer.LastName) </label>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Phone Number : @Model.Customer.PhoneNumber</label>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Email : @Model.Customer.Email</label>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Order Status : @Model.OrderStatus</label>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Payment Method : @Model.PaymentMethod</label>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-5">
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Order Shipping Address</span></h5>
+                <div class="bg-light p-30 mb-5">
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label>Address : @Model.ShippingAddress.Address1</label>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Country : @Model.ShippingAddress.Country.Name </label>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>City : @Model.ShippingAddress.City </label>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>State : @Model.ShippingAddress.State</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Order Items</span></h5>
+            <div class="bg-light p-30 mb-5">
+                <div class="border-bottom">
+                    <table class="table table-light table-borderless  text-center mb-0">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Products</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="align-middle">
+
+                            @foreach (var item in Model.OrderItems)
+                            {
+
+                                <tr>
+                                    <td class="align-middle">@item.ProductItem.Name</td>
+                                    <td class="align-middle">@item.ProductItem.Price</td>
+                                    <td class="align-middle">@item.Quantity</td>
+                                    <td class="align-middle">@(item.Quantity * item.ProductItem.Price) EGP </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="border-bottom pt-3 pb-2">
+                    <div class="d-flex justify-content-between mb-3">
+                        <h6>Subtotal</h6>
+                        <h6>@(Model.OrderTotalPrice - Model.ShippingPrice) EGP</h6>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <h6 class="font-weight-medium">Shipping</h6>
+                        <h6 class="font-weight-medium">@Model.ShippingPrice EGP</h6>
+                    </div>
+                </div>
+                <div class="pt-2">
+                    <div class="d-flex justify-content-between mt-2">
+                        <h5>Total</h5>
+                        <h5>@Model.OrderTotalPrice EGP</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    @if (Model.OrderStatus.ToLower() == "pending")
+    {
+        <a asp-action="CancelOrder" asp-controller="Account" asp-route-id="@Model.Id" class="btn btn-danger" onclick="return confirm('Are you sure you want to Cancel this order?' )">Cancel</a>
+    }
+    <a class="btn btn-danger" asp-controller="Account" asp-action="MyOrders">Back</a>
+</div>
