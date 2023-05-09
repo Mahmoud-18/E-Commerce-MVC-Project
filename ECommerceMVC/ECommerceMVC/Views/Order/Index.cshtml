@@ -62,7 +62,19 @@
             <td>
                 @Html.DisplayFor(modelItem => item.IsCanceled)
             </td>
-            <td>                
+            <td> 
+                @{
+                if(item.IsCanceled==false && item.OrderStatus.Status.ToLower() == "pending")
+                {
+                    <a asp-action="ShipOrder" asp-route-id="@item.Id" class="btn btn-primary">Shipped</a>
+                }
+                else if (item.OrderStatus.Status.ToLower() == "shipped")
+                {
+                    <a asp-action="CompleteOrder" asp-route-id="@item.Id" class="btn btn-success">Completed</a>
+                }
+
+                }
+
                 <a asp-action="OrderDetails" asp-route-id="@item.Id" class="btn btn-info mx-2">Details</a>
                 <a asp-action="DeleteOrder" asp-route-id="@item.Id" onclick="return confirm('Are you sure you want to delete this order? \nNote:This order will be deleted from the app but it will still be available in the Database.' )" class="btn btn-danger">Delete</a>
             </td>

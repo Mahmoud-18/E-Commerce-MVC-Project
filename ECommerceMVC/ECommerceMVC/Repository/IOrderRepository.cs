@@ -13,5 +13,6 @@ namespace ECommerceMVC.Repository
         void Insert(OrderDetails newOrder);
         void Update(int id, OrderDetails order);
         void Delete(int id);
+        public void SaveChanges();
     }
 }
