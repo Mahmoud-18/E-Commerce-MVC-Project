@@ -49,7 +49,7 @@ public class ProductRepository : IProductRepository
     }
     public List<Product> GetAll()
     {
-        return context.Product.Include("Discount").ToList();
+        return context.Product.Include(x=>x.ProductReviews).Include("Discount").ToList();
     }
 
     public List<Product> GetAllInclude()

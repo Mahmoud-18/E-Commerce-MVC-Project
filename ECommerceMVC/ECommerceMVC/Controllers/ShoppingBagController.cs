@@ -35,7 +35,7 @@ namespace ECommerceMVC.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            Customer customer = await userManager.GetUserAsync(User);          
+            Customer customer = await userManager.GetUserAsync(User);           
             ShoppingBag bag = shoppingBagRepository.GetByCustomerId(customer.Id);
             ShoppingBagViewModel bagViewModel = new ShoppingBagViewModel();
             bagViewModel.CustomerId = customer.Id;

@@ -100,13 +100,79 @@ public class ProductController : Controller
             productDetailsViewModel.Product = productRepository.GetById(id);
 
             ViewData.Add("Review", productReviewRepository.GetById(id));
-
+           
             return View("ProductDetails", productDetailsViewModel);
         }
     }
-    [HttpPost]
+   
     [Authorize]
     public async Task<IActionResult> AddToCard(int id, ProductDetailsViewModel productDetailsViewModel)
+    {
+        ShoppingBagItem shoppingBagItem = new ShoppingBagItem();
+
+        Customer customer = await userManager.GetUserAsync(User);
+        ShoppingBag bag = shoppingBagRepository.GetByCustomerId(customer.Id);
+        shoppingBagItem.ShoppingBagId = bag.Id;
+
+        shoppingBagItem.Quantity = productDetailsViewModel.ProductCount;
+        ProductItem productitem = productItemRepository.GetByProductId(id).Where(i => i.ProductAttributeValues.All(pa => productDetailsViewModel.AttributeValuesIds.Contains(pa.AttributeValuesId))).FirstOrDefault();
+        shoppingBagItem.ProductItemId = productitem.Id;
+        shoppingBagItem.ProductItem = productitem;
+        if (shoppingBagItem.Quantity <= shoppingBagItem.ProductItem.StockQuantity)
+        {
+            shoppingBagItemRepository.Insert(shoppingBagItem);
+            ViewBag.Message = "Item has been added to cart";            
+        }
+        else
+        {
+            ViewBag.Message = "No Enough Stock!";
+        }
+
+        ProductDetailsViewModel productDetailsViewModell = new();
+
+        Product product = productRepository.GetByIdInclude(id);
+
+        List<ProductTypeAttribute> producttypeAttributes = productTypeAttributeRepository.GetByProductTypeId((int)product.ProductTypeId);
+
+        List<ProductAttribute> variationswithoptions = new List<ProductAttribute>();
+
+        int i = 0;
+        foreach (var producttypeattribute in producttypeAttributes)
+        {
+            variationswithoptions.Add(productAttributeRepository.GetById(producttypeattribute.ProductAttributeId));
+            foreach (var item in product.Items)
+            {
+                foreach (var attribute in item.ProductAttributeValues)
+                {
+                    if (attribute.AttributeValues.ProductAttributeId == variationswithoptions[i].Id)
+                    {
+                        if ((variationswithoptions[i].AttributeValues.Contains(attribute.AttributeValues)) == false)
+                        {
+                            variationswithoptions[i].AttributeValues.Add(attribute.AttributeValues);
+                        }
+                    }
+                }
+            }
+            i++;
+        }
+
+        productDetailsViewModell.Id = product.Id;
+        productDetailsViewModell.Name = product.Name;
+        productDetailsViewModell.price = (float)product.Price;
+        productDetailsViewModell.Description = product.Description;
+        productDetailsViewModell.BrandName = product.Brand.Name;
+        productDetailsViewModell.Image = productRepository.GetImageById(id);
+        productDetailsViewModell.variationswithoptions = variationswithoptions;
+        productDetailsViewModell.Product = productRepository.GetById(id);
+
+        ViewData.Add("Review", productReviewRepository.GetById(id));
+
+        return View("ProductDetails", productDetailsViewModell);
+
+    }
+
+    [Authorize]
+    public async Task<IActionResult> BuyNow(int id, ProductDetailsViewModel productDetailsViewModel)
     {
         ShoppingBagItem shoppingBagItem = new ShoppingBagItem();
 
@@ -125,8 +191,9 @@ public class ProductController : Controller
         }
         else
         {
-            ProductDetailsViewModel productDetailsView = new ProductDetailsViewModel();
             ViewBag.Message = "No Enough Stock!";
+
+            ProductDetailsViewModel productDetailsViewModell = new();
 
             Product product = productRepository.GetByIdInclude(id);
 
@@ -154,23 +221,21 @@ public class ProductController : Controller
                 i++;
             }
 
-            //shoppingBagItemRepository.Insert(shoppingBagItem);
+            productDetailsViewModell.Id = product.Id;
+            productDetailsViewModell.Name = product.Name;
+            productDetailsViewModell.price = (float)product.Price;
+            productDetailsViewModell.Description = product.Description;
+            productDetailsViewModell.BrandName = product.Brand.Name;
+            productDetailsViewModell.Image = productRepository.GetImageById(id);
+            productDetailsViewModell.variationswithoptions = variationswithoptions;
+            productDetailsViewModell.Product = productRepository.GetById(id);
 
-            //return RedirectToAction("Index", "ShoppingBag");
-            productDetailsViewModel.Id = product.Id;
-            productDetailsViewModel.Name = product.Name;
-            productDetailsViewModel.price = (float)product.Price;
-            productDetailsViewModel.Description = product.Description;
-            productDetailsViewModel.BrandName = product.Brand.Name;
-            productDetailsViewModel.Image = productRepository.GetImageById(id);
-            productDetailsViewModel.variationswithoptions = variationswithoptions;
-            productDetailsViewModel.Product = productRepository.GetById(id);
+            ViewData.Add("Review", productReviewRepository.GetById(id));
 
-            return View("ProductDetails", productDetailsViewModel);
+            return View("ProductDetails", productDetailsViewModell);
 
         }
     }
-
 
     public IActionResult Review(ReviewViewModel reviewViewModel)
     {
