@@ -108,7 +108,7 @@ namespace ECommerceMVC.Controllers
             }
             else
             {
-                ViewBag.Message = "add a product first";
+                
                 return RedirectToAction("Index","ShoppingBag");
             }
             
@@ -194,8 +194,8 @@ namespace ECommerceMVC.Controllers
                 return View("AddOrderSuccess");
             }
 
-                                                         
-            return View("Checkout");
+
+            return RedirectToAction("Checkout");
         }
 
     }

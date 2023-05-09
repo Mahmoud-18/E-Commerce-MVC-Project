@@ -70,7 +70,11 @@ namespace ECommerceMVC.Controllers
             bagViewModel.TotalDiscount = sumbeforedisc-sumafterdisc;              
             bagViewModel.ShippingPrice = 40;
             bagViewModel.TotalPrice = bagViewModel.TotalPriceAfterDiscount + bagViewModel.ShippingPrice;
-
+            if (bagViewModel.Items.Count == 0)
+            {
+                ViewBag.Message = "add a product first";
+            }
+           
             return View(bagViewModel);
         }
         public ActionResult RemoveFromBag(int id)
