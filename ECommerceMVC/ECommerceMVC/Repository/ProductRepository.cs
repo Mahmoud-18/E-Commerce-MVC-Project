@@ -54,7 +54,7 @@ public class ProductRepository : IProductRepository
 
     public List<Product> GetAllInclude()
     {
-        return context.Product.Include("Discount").Include("Items").Include("Brand").Include("ProductType").Include("ProductCategories").ToList();
+        return context.Product.Include("Discount").Include(i=>i.Items).ThenInclude(u=>u.OrderItems).Include("Brand").Include("ProductType").Include("ProductCategories").ToList();
     }
 
     public Product GetById(int id)
