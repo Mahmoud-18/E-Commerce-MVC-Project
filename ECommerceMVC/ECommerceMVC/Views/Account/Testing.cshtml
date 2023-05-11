@@ -1,15 +1,13 @@
-﻿@model ECommerceMVC.ViewModels.EditProfileViewModel
-@{
-    ViewData["Title"] = "EditProfile";
-    ViewBag.Genders = new SelectList(Enum.GetValues(typeof(Gender)));
-}
+﻿@*
 
-@*in order to show a customer model and on the other side show an EditProfileviewmodel we will
+<!--  in order to show a customer model and on the other side show an EditProfileviewmodel we will
 unify the type of model used here
 
 therfore all must be Editprofileviewmodel , thus we will create 2 actions
-one to send the preview data while the second will send the data to the action to modify it
-*@
+one to send the preview data while the second will send the data to the action to modify it -->
+
+
+
 
 
 
@@ -217,9 +215,4 @@ one to send the preview data while the second will send the data to the action t
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.js"></script>            
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
-
+*@

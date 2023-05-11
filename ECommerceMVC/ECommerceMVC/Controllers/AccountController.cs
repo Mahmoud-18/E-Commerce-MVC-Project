@@ -121,25 +121,25 @@ namespace ECommerceMVC.Controllers
         // this method was only made so we can display the data but in a EditProfileViewModel
         [Authorize]
         //[HttpPost]
-        public async Task<IActionResult> EditProfile()
-        {
-            var Current_user = await userManager.GetUserAsync(User);
+        //public async Task<IActionResult> EditProfile()
+        //{
+        //    var Current_user = await userManager.GetUserAsync(User);
 
-            EditProfileViewModel editUser = new EditProfileViewModel();
+        //    EditPasswordViewModel editUser = new EditPasswordViewModel();
 
-            editUser.UserName = Current_user.UserName;
-            editUser.Email = Current_user.Email;
+        //    editUser.UserName = Current_user.UserName;
+        //    editUser.Email = Current_user.Email;
 
-            editUser.FirstName = Current_user.FirstName;
-            editUser.LastName = Current_user.LastName;
+        //    editUser.FirstName = Current_user.FirstName;
+        //    editUser.LastName = Current_user.LastName;
 
-            editUser.PhoneNumber = Current_user.PhoneNumber;
+        //    editUser.PhoneNumber = Current_user.PhoneNumber;
 
-            editUser.DataOfBirth = Current_user.DataOfBirth;
-            editUser.Gender = Current_user.Gender;
+        //    editUser.DataOfBirth = Current_user.DataOfBirth;
+        //    editUser.Gender = Current_user.Gender;
 
-            return View(editUser);
-        }
+        //    return View(editUser);
+        //}
 
                 
 
@@ -272,53 +272,53 @@ namespace ECommerceMVC.Controllers
         /////////////////////////////////////////////////////////////////////////////////////
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SubmitProfileModifications (EditProfileViewModel EPVM)
-        {
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> SubmitProfileModifications (EditPasswordViewModel EPVM)
+        //{
 
-            Customer userModel = await userManager.GetUserAsync(User);
+        //    Customer userModel = await userManager.GetUserAsync(User);
 
 
-            // Change Password only
-            if (ModelState.IsValid)
-            {
+        //    // Change Password only
+        //    if (ModelState.IsValid)
+        //    {
                 
-                if (userModel != null)
-                {
-                    bool found = await userManager.CheckPasswordAsync(userModel, EPVM.OldPassword);
-                    if (found)
-                    {
-                        if (ModelState.IsValid)
-                        {
-                            userModel.PasswordHash = EPVM.NewPassword;
-                        }
-                    }
+        //        if (userModel != null)
+        //        {
+        //            bool found = await userManager.CheckPasswordAsync(userModel, EPVM.OldPassword);
+        //            if (found)
+        //            {
+        //                if (ModelState.IsValid)
+        //                {
+        //                    userModel.PasswordHash = EPVM.NewPassword;
+        //                }
+        //            }
 
-                    ModelState.AddModelError("", "incorrect  password");
+        //            ModelState.AddModelError("", "incorrect  password");
 
-                }
-
-
-                userModel.UserName = EPVM.UserName;
-                userModel.Email = EPVM.Email;
+        //        }
 
 
-                userModel.FirstName = EPVM.FirstName;
-                userModel.LastName = EPVM.LastName;
+        //        userModel.UserName = EPVM.UserName;
+        //        userModel.Email = EPVM.Email;
 
 
-                userModel.PhoneNumber = EPVM.PhoneNumber;
-                userModel.DataOfBirth = EPVM.DataOfBirth;
-                userModel.Gender = EPVM.Gender;
+        //        userModel.FirstName = EPVM.FirstName;
+        //        userModel.LastName = EPVM.LastName;
 
 
-                await userManager.UpdateAsync(userModel);
-            }
+        //        userModel.PhoneNumber = EPVM.PhoneNumber;
+        //        userModel.DataOfBirth = EPVM.DataOfBirth;
+        //        userModel.Gender = EPVM.Gender;
 
 
-            return RedirectToAction("MyAccount");
-        }
+        //        await userManager.UpdateAsync(userModel);
+        //    }
+
+
+        //    return RedirectToAction("MyAccount");
+        //}
 
 
         public async Task<IActionResult> Privew(int id)

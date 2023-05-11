@@ -10,6 +10,14 @@
 @inject IShoppingBagItemRepository shoppingBagItemRepository;
 
 @{
+    string temp = null;
+    @if (User.Identity.IsAuthenticated == true)
+    {
+    var user = await userManager.GetUserAsync(User);
+    temp = user.UserName;
+    }
+}
+@{
     int bagcount = 0;
     @if (User.Identity.IsAuthenticated == true)
     {
@@ -86,7 +94,7 @@
                 {
                     <div class="col-lg-4 col-6 text-right">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">@User.Identity.Name</button>
+                                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">@temp</button>
                             <div class="dropdown-menu dropdown-menu-right">                               
                                 <a style="text-decoration:none !important; color:inherit;" asp-action="MyAccount" asp-controller="Account" class="dropdown-item ">My Account</a>
                                 <a style="text-decoration:none !important; color:inherit;" asp-action="MyAddresses" asp-controller="Account" class="dropdown-item ">My Addresses</a>

@@ -2,7 +2,9 @@
 using ECommerceMVC.Models;
 using ECommerceMVC.Repository;
 using ECommerceMVC.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 
 namespace ECommerceMVC.Controllers
@@ -15,15 +17,15 @@ namespace ECommerceMVC.Controllers
 
         public HomeController(ProductsServices productsServices)
         {
-            ProductsServices = productsServices;
-        }
+                       ProductsServices = productsServices;
+                    }
         public IActionResult Index()
         {
-            var products = ProductsServices.GetAllProducts();
+          var products = ProductsServices.GetAllProducts();
 
-            return View(products);
+          return View(products);
         }
-     
+
         public IActionResult Privacy()
         {
             return View();
