@@ -81,6 +81,7 @@ namespace ECommerceMVC.Controllers
 
         public IActionResult Index()
         {
+
             ViewBag.TotalOrders = orderRepository.GetAll().Count;
             ViewBag.TotalMoney = orderRepository.GetAll().Sum(i => i.OrderTotalPrice);
             ViewBag.TotalProducts = productRepository.GetAll().Count;
@@ -95,6 +96,7 @@ namespace ECommerceMVC.Controllers
             ViewBag.HighestRatedProducts =productswithrating.OrderByDescending(i => i.ProductReviews.Average(i => i.Rate)).Take(6).ToList();
             
             return View();           
+
         }
 
         #region Product

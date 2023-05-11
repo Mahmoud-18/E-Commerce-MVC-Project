@@ -17,5 +17,6 @@ namespace ECommerceMVC.Repository
         public List<Product> GetAllInclude();
         public void Insert(Product product);
         public void Update(int id, Product product);
+        public List<ProductIndexViewModel> GetAllViewModelProduct();
     }
 }
