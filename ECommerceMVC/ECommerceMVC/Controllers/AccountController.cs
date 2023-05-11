@@ -6,6 +6,7 @@ using ECommerceMVC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Claims;
 
 namespace ECommerceMVC.Controllers
@@ -18,13 +19,14 @@ namespace ECommerceMVC.Controllers
         IAddressRepository addressRepo;
         IShoppingBagRepository shopBagRepository;
         ICountryRepository country;
-        ICustomerRepository customer;
-        IOrderRepository order;
+        ICustomerRepository customerRepo;
+        IOrderRepository orderRepository;
+        IProductItemRepository productItemRepository;
         public AccountController
            (UserManager<Customer> _userManager, SignInManager<Customer> _signInManager,
            IAddressRepository _addressRepository, IShoppingBagRepository shopBagRepository,
            ICountryRepository countryRepository, RoleManager<IdentityRole<int>> _roleManager,
-           ICustomerRepository _customer,IOrderRepository _order)
+           ICustomerRepository _customer,IOrderRepository _order, IProductItemRepository productItemRepository)
         {
             userManager = _userManager;
             signInManager = _signInManager;
@@ -32,8 +34,9 @@ namespace ECommerceMVC.Controllers
             this.shopBagRepository = shopBagRepository;
             country = countryRepository;
             roleManager = _roleManager;
-            this.customer = _customer;
-            order = _order;
+            this.customerRepo = _customer;
+            orderRepository = _order;
+            this.productItemRepository = productItemRepository;
         }
 
 
@@ -55,12 +58,117 @@ namespace ECommerceMVC.Controllers
         {
             
             Customer customer = await userManager.GetUserAsync(User);
-            var orders = order.GetAllByCustomerId(customer.Id);
+            var orders = orderRepository.GetAllByCustomerId(customer.Id);
             return View(orders);
         }
-        public IActionResult YourAddresses()
+        [Authorize]
+        public IActionResult OrderDetails(int id)
         {
-            return View();
+            OrderDetails order = orderRepository.GetById(id);
+
+            OrderDetailsViewModel orderViewModel = new OrderDetailsViewModel();
+
+            orderViewModel.Customer = order.Customer;
+            orderViewModel.OrderDate = order.OrderDate;
+            orderViewModel.ShippingPrice = order.ShippingPrice;
+            orderViewModel.OrderTotalPrice = order.OrderTotalPrice;
+            orderViewModel.Id = order.Id;
+            orderViewModel.PaymentMethod = order.PaymentMethod.Name;
+            orderViewModel.OrderStatus = order.OrderStatus.Status;
+            orderViewModel.ShippingAddress = order.Address;
+            orderViewModel.IsCanceled = order.IsCanceled;
+            orderViewModel.OrderItems = order.OrderItems.ToList();
+
+            return View(orderViewModel);
+        }
+        [Authorize]
+        public IActionResult CancelOrder(int id)
+        {
+            OrderDetails order = orderRepository.GetById(id);
+    
+            order.IsCanceled = true;
+            orderRepository.SaveChanges();
+            List<ProductItem> productItems = new List<ProductItem>();   
+            foreach (var item in order.OrderItems)
+            {
+                ProductItem productItem = item.ProductItem;
+                productItem.StockQuantity += item.Quantity;
+                productItems.Add(productItem);
+            }
+            productItemRepository.UpdateRange(productItems);
+
+            return RedirectToAction("MyOrders", "Account");
+        }
+
+
+        [Authorize]
+        public async Task<IActionResult> MyAddresses()
+        {
+            Address address = new();
+            ViewBag.Countries = country.GetAll().ToList();
+            return View(address);
+        }
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAddress(Address sentfromview)
+        {
+            if (ModelState.IsValid)
+            {
+                Customer customer = await userManager.GetUserAsync(User);
+                Address newaddress = new Address();
+
+               
+                newaddress.State = sentfromview.State;
+                newaddress.City = sentfromview.City;
+                newaddress.Address1 = sentfromview.Address1;
+                newaddress.CountryId = sentfromview.CountryId;
+
+                newaddress.CustomerId = customer.Id;
+                newaddress.CreatedOnUtc = DateTime.Now;
+
+
+                // save the address to the database using your data access layer             
+                addressRepo.Insert(newaddress);
+
+                // redirect the user to a confirmation page or back to the previous page
+                return RedirectToAction("MyAddresses", "Account");
+            }
+
+            return NoContent();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditAddress([FromRoute]int id , Address address)
+        {
+            address.UpdatedOnUtc = DateTime.UtcNow;
+            return NoContent();
+            //addressRepo.Update(id, address);
+            //return RedirectToAction("MyAddresses");
+        }
+        public async Task<IActionResult> DeleteAddress(int id)
+        {
+            Customer customer = await userManager.GetUserAsync(User);
+
+            if (customer.ShippingAddressId != id)
+            {
+                addressRepo.Delete(id);
+            }
+                      
+            return RedirectToAction("MyAddresses");
+        }
+        public async Task<IActionResult> SetAsDefault(int id)
+        {
+            Customer customer = await userManager.GetUserAsync(User);
+
+            if (customer.ShippingAddressId != id)
+            {
+                customer.ShippingAddressId = id;
+                customerRepo.SaveChanges();
+            }
+
+            return RedirectToAction("MyAddresses");
         }
 
 
@@ -75,29 +183,29 @@ namespace ECommerceMVC.Controllers
 
         // here httpost wouldnt work bcs you are not writing on the database any thing
         // this method was only made so we can display the data but in a EditProfileViewModel
-        [Authorize]
+        //[Authorize]
         //[HttpPost]
-        public async Task<IActionResult> EditProfile()
-        {
-            var Current_user = await userManager.GetUserAsync(User);
+        //public async Task<IActionResult> EditProfile()
+        //{
+        //    var Current_user = await userManager.GetUserAsync(User);
 
-            EditProfileViewModel editUser = new EditProfileViewModel();
+        //    EditPasswordViewModel editUser = new EditPasswordViewModel();
 
-            editUser.UserName = Current_user.UserName;
-            editUser.Email = Current_user.Email;
+        //    editUser.UserName = Current_user.UserName;
+        //    editUser.Email = Current_user.Email;
 
-            editUser.FirstName = Current_user.FirstName;
-            editUser.LastName = Current_user.LastName;
+        //    editUser.FirstName = Current_user.FirstName;
+        //    editUser.LastName = Current_user.LastName;
 
-            editUser.PhoneNumber = Current_user.PhoneNumber;
+        //    editUser.PhoneNumber = Current_user.PhoneNumber;
 
-            editUser.DataOfBirth = Current_user.DataOfBirth;
-            editUser.Gender = Current_user.Gender;
+        //    editUser.DataOfBirth = Current_user.DataOfBirth;
+        //    editUser.Gender = Current_user.Gender;
 
-            return View(editUser);
-        }
+        //    return View(editUser);
+        //}
 
-                
+
 
 
         [HttpPost]
@@ -228,58 +336,58 @@ namespace ECommerceMVC.Controllers
         /////////////////////////////////////////////////////////////////////////////////////
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SubmitProfileModifications (EditProfileViewModel EPVM)
-        {
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> SubmitProfileModifications (EditPasswordViewModel EPVM)
+        //{
 
-            Customer userModel = await userManager.GetUserAsync(User);
+        //    Customer userModel = await userManager.GetUserAsync(User);
 
 
-            // Change Password only
-            if (ModelState.IsValid)
-            {
+        //    // Change Password only
+        //    if (ModelState.IsValid)
+        //    {
                 
-                if (userModel != null)
-                {
-                    bool found = await userManager.CheckPasswordAsync(userModel, EPVM.OldPassword);
-                    if (found)
-                    {
-                        if (ModelState.IsValid)
-                        {
-                            userModel.PasswordHash = EPVM.NewPassword;
-                        }
-                    }
+        //        if (userModel != null)
+        //        {
+        //            bool found = await userManager.CheckPasswordAsync(userModel, EPVM.OldPassword);
+        //            if (found)
+        //            {
+        //                if (ModelState.IsValid)
+        //                {
+        //                    userModel.PasswordHash = EPVM.NewPassword;
+        //                }
+        //            }
 
-                    ModelState.AddModelError("", "incorrect  password");
+        //            ModelState.AddModelError("", "incorrect  password");
 
-                }
-
-
-                userModel.UserName = EPVM.UserName;
-                userModel.Email = EPVM.Email;
+        //        }
 
 
-                userModel.FirstName = EPVM.FirstName;
-                userModel.LastName = EPVM.LastName;
+        //        userModel.UserName = EPVM.UserName;
+        //        userModel.Email = EPVM.Email;
 
 
-                userModel.PhoneNumber = EPVM.PhoneNumber;
-                userModel.DataOfBirth = EPVM.DataOfBirth;
-                userModel.Gender = EPVM.Gender;
+        //        userModel.FirstName = EPVM.FirstName;
+        //        userModel.LastName = EPVM.LastName;
 
 
-                await userManager.UpdateAsync(userModel);
-            }
+        //        userModel.PhoneNumber = EPVM.PhoneNumber;
+        //        userModel.DataOfBirth = EPVM.DataOfBirth;
+        //        userModel.Gender = EPVM.Gender;
 
 
-            return RedirectToAction("MyAccount");
-        }
+        //        await userManager.UpdateAsync(userModel);
+        //    }
+
+
+        //    return RedirectToAction("MyAccount");
+        //}
 
 
         public async Task<IActionResult> Privew(int id)
         {
-            var user = customer.GetById(id);
+            var user = customerRepo.GetById(id);
             EditUserViewModel editUser = new EditUserViewModel();
             editUser.UserId = id;
             editUser.PhoneNumber = user.PhoneNumber;

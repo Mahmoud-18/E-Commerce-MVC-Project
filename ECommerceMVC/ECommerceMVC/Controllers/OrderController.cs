@@ -39,18 +39,65 @@ namespace ECommerceMVC.Controllers
             discountRepository = _discountRepository;
         }
 
+
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
-            List<OrderDetails> orders = orderRepository.GetAll();
+            List<OrderDetails> orders = orderRepository.GetAllInclude();
             return View(orders);
         }
+
         [Authorize(Roles = "Admin")]
-        public IActionResult OrderDetails()
+        public IActionResult OrderDetails(int id)
         {
-            OrderDetailsViewModel order = new OrderDetailsViewModel();
-            return View(order);
+            OrderDetails order = orderRepository.GetById(id);
+
+            OrderDetailsViewModel orderViewModel = new OrderDetailsViewModel();
+
+            orderViewModel.Customer = order.Customer;
+            orderViewModel.OrderDate= order.OrderDate;
+            orderViewModel.ShippingPrice= order.ShippingPrice;
+            orderViewModel.OrderTotalPrice= order.OrderTotalPrice;  
+            orderViewModel.Id= order.Id;
+            orderViewModel.PaymentMethod = order.PaymentMethod.Name;
+            orderViewModel.OrderStatus = order.OrderStatus.Status;
+            orderViewModel.ShippingAddress = order.Address;
+            orderViewModel.IsCanceled = order.IsCanceled;
+            orderViewModel.OrderItems = order.OrderItems.ToList();  
+
+            return View(orderViewModel);
         }
+
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult DeleteOrder(int id)
+        {
+            orderRepository.Delete(id);
+            return RedirectToAction("Index", "Order");
+        }
+        [Authorize(Roles = "Admin")]
+        public IActionResult ShipOrder(int id)
+        {
+            OrderDetails order = orderRepository.GetById(id);
+            OrderStatus status = orderStatusRepository.GetAll().Where(x=> x.Status.ToLower()== "shipped").FirstOrDefault();
+            
+            order.OrderStatusId = status.Id;
+            orderRepository.SaveChanges();
+
+            return RedirectToAction("Index", "Order");
+        }
+        [Authorize(Roles = "Admin")]
+        public IActionResult CompleteOrder(int id)
+        {
+            OrderDetails order = orderRepository.GetById(id);
+            OrderStatus status = orderStatusRepository.GetAll().Where(x => x.Status.ToLower() == "completed").FirstOrDefault();
+
+            order.OrderStatusId = status.Id;
+            orderRepository.SaveChanges();
+
+            return RedirectToAction("Index", "Order");
+        }
+
 
         [Authorize]
         public async Task<IActionResult> Checkout()
@@ -70,40 +117,47 @@ namespace ECommerceMVC.Controllers
             }
             
             checkOutViewModel.Items = shoppingBagItemRepository.GetAllByBagId(bag.Id);
-            decimal sumafterdisc = 0;
-            decimal sumbeforedisc = 0;
-            foreach (var item in checkOutViewModel.Items)
+            if (checkOutViewModel.Items.Count > 0)
             {
-                sumbeforedisc += (item.Quantity * item.ProductItem.Price);
+                decimal sumafterdisc = 0;
+                decimal sumbeforedisc = 0;
+                foreach (var item in checkOutViewModel.Items)
+                {
+                    sumbeforedisc += (item.Quantity * item.ProductItem.Price);
 
-                var discount = productRepository.GetDiscountById(item.ProductItem.ProductId);
-                if (discount == null)
-                {
-                    sumafterdisc += (item.Quantity * item.ProductItem.Price);
-                }
-                else
-                {
-                    if (discountRepository.IsDiscountActive(discount.Id))
-                    {
-                        sumafterdisc += (item.Quantity * item.ProductItem.Price) - ((decimal)discount.DiscountPercentage * item.Quantity * item.ProductItem.Price);
-                    }
-                    else
+                    var discount = productRepository.GetDiscountById(item.ProductItem.ProductId);
+                    if (discount == null)
                     {
                         sumafterdisc += (item.Quantity * item.ProductItem.Price);
                     }
+                    else
+                    {
+                        if (discountRepository.IsDiscountActive(discount.Id))
+                        {
+                            sumafterdisc += (item.Quantity * item.ProductItem.Price) - ((decimal)discount.DiscountPercentage * item.Quantity * item.ProductItem.Price);
+                        }
+                        else
+                        {
+                            sumafterdisc += (item.Quantity * item.ProductItem.Price);
+                        }
 
+                    }
                 }
+                checkOutViewModel.TotalPriceBeforeDiscount = sumbeforedisc;
+                checkOutViewModel.TotalPriceAfterDiscount = sumafterdisc;
+                checkOutViewModel.TotalDiscount = sumbeforedisc - sumafterdisc;
+                checkOutViewModel.ShippingPrice = 40;
+                checkOutViewModel.OrderTotalPrice = checkOutViewModel.TotalPriceAfterDiscount + checkOutViewModel.ShippingPrice;
+                checkOutViewModel.PaymentMethod = paymentMethodRepository.GetAll();
+                return View(checkOutViewModel);
             }
-            checkOutViewModel.TotalPriceBeforeDiscount = sumbeforedisc;
-            checkOutViewModel.TotalPriceAfterDiscount = sumafterdisc;
-            checkOutViewModel.TotalDiscount = sumbeforedisc - sumafterdisc;
-            checkOutViewModel.ShippingPrice = 40;
-            checkOutViewModel.OrderTotalPrice = checkOutViewModel.TotalPriceAfterDiscount + checkOutViewModel.ShippingPrice;
-            checkOutViewModel.PaymentMethod = paymentMethodRepository.GetAll();
-            return View(checkOutViewModel);
+            else
+            {
+                
+                return RedirectToAction("Index","ShoppingBag");
+            }
+            
         }
-
-
 
         [Authorize]        
         public async Task<IActionResult> PlaceOrder(CheckOutViewModel checkOutViewModel)
@@ -117,8 +171,8 @@ namespace ECommerceMVC.Controllers
             {
                 #region create order
                 order.OrderDate = DateTime.Now;
-                OrderStatus orderStatus = orderStatusRepository.GetAll().FirstOrDefault(o => o.Status == "pending");               
-                //order.OrderStatusId = 1;
+                order.CreatedOnUtc = DateTime.UtcNow;
+                OrderStatus orderStatus = orderStatusRepository.GetAll().FirstOrDefault(o => o.Status.ToLower() == "pending");               
                 order.OrderStatusId = orderStatus.Id;
                 if (customer.ShippingAddressId > 0)
                 {
@@ -178,18 +232,14 @@ namespace ECommerceMVC.Controllers
                     productItems.Add(productItem);                    
                     shoppingBagItemRepository.Delete(item.Id);                    
                 }
-                orderItemRepository.InsertRange(orderItems);              
+                orderItemRepository.InsertRange(orderItems);
                 #endregion
 
-                return RedirectToAction("Index", "Home");
+                return View("AddOrderSuccess");
             }
-            foreach (var item in items)
-            {
 
-            }
-            
-                                     
-            return View("CheckOut");
+
+            return RedirectToAction("Checkout");
         }
 
     }

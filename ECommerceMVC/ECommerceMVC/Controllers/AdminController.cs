@@ -12,6 +12,8 @@ using System.Security.Claims;
 using Microsoft.Build.Evaluation;
 using System;
 
+
+
 namespace ECommerceMVC.Controllers
 {
     [Authorize(Roles = "Admin")]
@@ -31,7 +33,7 @@ namespace ECommerceMVC.Controllers
         IProductCategoryRepository productCategoryRepository;
         IProductTypeAttributeRepository productTypeAttributeRepository;
         IProductAttributeValuesRepository productAttributeValuesRepository;
-
+        IComplaintRepository complaintRepository;
         //
         private readonly UserManager<Customer> userManager;
         private readonly SignInManager<Customer> signInManager;
@@ -40,6 +42,7 @@ namespace ECommerceMVC.Controllers
         IShoppingBagRepository shopBagRepository;
         ICountryRepository country;
         ICustomerRepository customer;
+        IOrderRepository orderRepository;
 
         public AdminController
             (UserManager<Customer> _userManager, SignInManager<Customer> _signInManager,
@@ -50,7 +53,8 @@ namespace ECommerceMVC.Controllers
             IAttributeValuesRepository _AttributeValuesRepository, IProductRepository _productRepository,
             IProductItemRepository _productItemRepository, IProductTypeRepository _productTypeRepository,
             IProductImagesRepository _productImagesRepository, IProductCategoryRepository _productCategoryRepository,
-            IProductTypeAttributeRepository _productTypeAttributeRepository, IProductAttributeValuesRepository _productAttributeValuesRepository)
+            IProductTypeAttributeRepository _productTypeAttributeRepository, IProductAttributeValuesRepository _productAttributeValuesRepository, 
+            IComplaintRepository _complaintRepository, IOrderRepository orderRepository)
         {
             userManager = _userManager;
             signInManager = _signInManager;
@@ -71,11 +75,41 @@ namespace ECommerceMVC.Controllers
             productCategoryRepository = _productCategoryRepository;
             productTypeAttributeRepository = _productTypeAttributeRepository;
             productAttributeValuesRepository = _productAttributeValuesRepository;
+            complaintRepository = _complaintRepository;
+            this.orderRepository = orderRepository;
         }
 
         public IActionResult Index()
         {
+
+            ViewBag.TotalOrders = orderRepository.GetAll().Count;
+            ViewBag.TotalMoney = orderRepository.GetAll().Sum(i => i.OrderTotalPrice);
+            ViewBag.TotalProducts = productRepository.GetAll().Count;
+            ViewBag.TotalUsers = customer.GetAll().Count;
+
+            ViewBag.UsersWithMostOrders = orderRepository.GetAll().GroupBy(I => I.CustomerId).OrderByDescending(I=>I.Count()).ThenByDescending(i=>i.Sum(o=>o.OrderTotalPrice)).Take(6).ToList();
+            ViewBag.RecentOrders = orderRepository.GetAll().OrderByDescending(o=>o.OrderDate).Take(6).ToList();
+
+            ViewBag.MostSoldProducts = productRepository.GetAllInclude().OrderByDescending(i => i.Items.Sum(o => o.OrderItems.Sum(i => i.Quantity))).Take(6).ToList();
+            ViewBag.MostRecentProducts = productRepository.GetAll().OrderByDescending(i=>i.CreatedAtUtc).Take(6).ToList();
+            List<Product> productswithrating = productRepository.GetAll().Where(i=>i.ProductReviews.Count>0).ToList();
+            ViewBag.HighestRatedProducts =productswithrating.OrderByDescending(i => i.ProductReviews.Average(i => i.Rate)).Take(6).ToList();
+            
             return View();           
+
+        }
+
+        #region Product
+
+        public IActionResult ProductIndex()
+        {
+            List<ProductIndexViewModel> products = productRepository.GetAllViewModelProduct();
+            return View(products);
+        }
+        public IActionResult DeleteProduct(int id)
+        {
+            productRepository.Delete(id);
+            return RedirectToAction("ProductIndex");
         }
         public IActionResult AddProduct()
         {
@@ -103,7 +137,7 @@ namespace ECommerceMVC.Controllers
             }
             // The Hell Start From Here ........
 
-       
+
 
             #region Create Product
             Product product = new Product();
@@ -122,11 +156,11 @@ namespace ECommerceMVC.Controllers
             #endregion
 
             #region Create Product Item
-            int productId = product.Id ;
+            int productId = product.Id;
             foreach (var item in addProductViewModel.ProductAttribute)
             {
                 ProductItem productItem = new ProductItem();
-                
+
                 productItem.Name = $"{product.Name}-{item.SizeAttributeValueID}-{item.ColorAttributeValueID}";
                 // Create a random number form 0 to 1M
                 int num;
@@ -136,7 +170,7 @@ namespace ECommerceMVC.Controllers
                     num = random.Next(1000000, 10000000);
                 }
                 while (!(productItemRepository.GetAll().Where(i => i.SKU == num).Count() == 0));
-    
+
 
                 productItem.SKU = num;
                 productItem.StockQuantity = item.CountAttributeValue;
@@ -144,8 +178,8 @@ namespace ECommerceMVC.Controllers
                 productItem.Price = product.Price;
                 productItem.CreatedAtUtc = DateTime.UtcNow;
                 productItem.IsDeleted = false;
-                productItemRepository.Insert(productItem); 
-                
+                productItemRepository.Insert(productItem);
+
                 var attributevalues = AttributeValuesRepository.GetAll().Where(i => i.Value == item.SizeAttributeValueID || i.Value == item.ColorAttributeValueID);
                 foreach (var attribute in attributevalues)
                 {
@@ -186,8 +220,8 @@ namespace ECommerceMVC.Controllers
 
             return View("AddProductSuccess");
         }
-      
-       
+
+        #endregion
 
         #region Customer(Users) Controllers
         public IActionResult UsersIndex()
@@ -274,7 +308,7 @@ namespace ECommerceMVC.Controllers
 
         public IActionResult UserDetails(int id)
         {
-            
+
             var user = customer.GetById(id);
             return View(user);
         }
@@ -361,7 +395,7 @@ namespace ECommerceMVC.Controllers
         {
             var user = customer.GetById(id);
             user.IsDeleted = true;
-            user.DeleteDate = DateTime.UtcNow;
+            user.DeleteDate = DateTime.Now;
             customer.Update(id, user);
 
             return RedirectToAction("UsersIndex");
@@ -385,7 +419,7 @@ namespace ECommerceMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddRole(IdentityRole<int> newrole)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 await roleManager.CreateAsync(newrole);
                 return RedirectToAction("RolesIndex");
@@ -394,18 +428,18 @@ namespace ECommerceMVC.Controllers
         }
         public async Task<IActionResult> EditRole(int id)
         {
-            IdentityRole<int> role =await roleManager.FindByIdAsync(id.ToString());
+            IdentityRole<int> role = await roleManager.FindByIdAsync(id.ToString());
             return View(role);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditRole([FromRoute] int id ,IdentityRole<int> role)
+        public async Task<IActionResult> EditRole([FromRoute] int id, IdentityRole<int> role)
         {
             if (ModelState.IsValid)
             {
                 IdentityRole<int> updaterole = new();
                 updaterole.Id = id;
-                updaterole.Name=role.Name;
+                updaterole.Name = role.Name;
                 updaterole.ConcurrencyStamp = role.ConcurrencyStamp;
                 updaterole.NormalizedName = role.NormalizedName;
                 customer.SaveChanges();
@@ -422,7 +456,7 @@ namespace ECommerceMVC.Controllers
                 for (int i = 0; i < users.Count; i++)
                 {
                     userManager.RemoveFromRoleAsync(users[i], role.Name);
-                }           
+                }
             }
             roleManager.DeleteAsync(role);
             return RedirectToAction("RolesIndex");
@@ -430,11 +464,7 @@ namespace ECommerceMVC.Controllers
 
         #endregion
 
-        
-
-
 
 
     }
 }
-

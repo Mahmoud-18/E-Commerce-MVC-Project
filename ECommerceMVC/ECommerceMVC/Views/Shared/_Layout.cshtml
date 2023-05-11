@@ -10,6 +10,14 @@
 @inject IShoppingBagItemRepository shoppingBagItemRepository;
 
 @{
+    string temp = null;
+    @if (User.Identity.IsAuthenticated == true)
+    {
+    var user = await userManager.GetUserAsync(User);
+    temp = user.UserName;
+    }
+}
+@{
     int bagcount = 0;
     @if (User.Identity.IsAuthenticated == true)
     {
@@ -86,10 +94,11 @@
                 {
                     <div class="col-lg-4 col-6 text-right">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">@User.Identity.Name</button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a style="text-decoration:none !important; color:inherit;" href="@Url.Action("MyAccount", "Account")" class="dropdown-item ">My Account</a>
-                                @*<a asp-action="Index" asp-controller="Account" class="dropdown-item" type="button" >My Account</a>*@
+                                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">@temp</button>
+                            <div class="dropdown-menu dropdown-menu-right">                               
+                                <a style="text-decoration:none !important; color:inherit;" asp-action="MyAccount" asp-controller="Account" class="dropdown-item ">My Account</a>
+                                <a style="text-decoration:none !important; color:inherit;" asp-action="MyAddresses" asp-controller="Account" class="dropdown-item ">My Addresses</a>
+                                <a style="text-decoration:none !important; color:inherit;" asp-action="MyOrders" asp-controller="Account" class="dropdown-item ">My Orders</a>
                                 <a asp-action="SignOut" asp-controller="Account" class="dropdown-item" type="button">Sign out</a>
 
                             </div>
@@ -136,7 +145,7 @@
                             </button>
                             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                                 <div class="navbar-nav mr-auto py-0">
-                                    <a href="/Home/Index" class="nav-item nav-link active">Home</a>
+                                    <a href="/Home/Index" class="nav-item nav-link ">Home</a>
                                     <a asp-action="ShowAllProducts" asp-controller="Shop" class="nav-item nav-link">Shop</a>
 
                                     <a asp-controller="Contact" asp-action="Index"  class="nav-item nav-link">ContactUs</a>
@@ -155,7 +164,7 @@
             </div>
         </div>
     </header>
-    <div class="container-fluid pb-12">
+    <div class="container-fluid pb-8">
         <main role="main">
             @RenderBody()
         </main>
@@ -169,7 +178,7 @@
             <div class="row px-xl-5 pt-5">
                 <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
                     <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>ITI,6TH October , EGP</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i> ITI , 6TH October , Egypt</p>
                     <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>CEI@gmail.com</p>
                     <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+000 000 0000</p>
                 </div>
@@ -244,7 +253,7 @@
     <script src="/js/main.js"></script>
 
     <!-- Register Javascript -->
-    @*<script src="/js/SignUp.js"></script>*@
+    <script src="/js/SignUp.js"></script>
 
     <!-- International phone Javascript -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

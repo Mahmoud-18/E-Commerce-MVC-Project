@@ -86,7 +86,7 @@
                         <label>State : @Model.ShippingAddress.State</label>                      
                     </div>                               
                     <div class="col-md-6 form-group align-content-center text-center">
-                        <button asp-action="YourAddress" asp-controller="Account" class="btn btn-primary font-weight-bold py-3">Change Address</button>                      
+                        <a asp-action="MyAddresses" asp-controller="Account" class="btn btn-primary font-weight-bold py-3">Change Address</a>                      
                     </div>
                 </div>
             </div>
@@ -94,18 +94,20 @@
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Payment</span></h5>
                 <div class="bg-light p-30">
                     <form>
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
                         @foreach (var payment in Model.PaymentMethod)
-                        {
-                            <div class="form-group">
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" asp-for="@Model.PaymentMethodId" value="@payment.Id">
-                                    <label class="custom-control-label" asp-for="@Model.PaymentMethodId">@payment.Name</label>
-                                </div>
-                            </div>
+                        {                           
+                                <input type="radio" asp-for="@Model.PaymentMethodId" value="@payment.Id">
+                                <label asp-for="@Model.PaymentMethodId">@payment.Name</label>
+                                <br/>
                         }
+                            </div>
+                        </div>
+                       
                         <button type="submit" asp-action="PlaceOrder" asp-controller="Order" class="btn btn-block btn-primary font-weight-bold my-3 py-3">Place Order</button>
                     </form>
-                    <button asp-action="" asp-controller="" class="btn btn-block btn-danger font-weight-bold py-3">Cancel</button>
+                    <button asp-action="Index" asp-controller="ShoppingBag" class="btn btn-block btn-danger font-weight-bold py-3">Cancel</button>
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-﻿// Password visibility toggle for Password cell
+﻿    // Password visibility toggle for Password cell
 $(document).ready(function () {
     $('.password-toggle-btn').click(function () {
         var passwordInput = $('#password');

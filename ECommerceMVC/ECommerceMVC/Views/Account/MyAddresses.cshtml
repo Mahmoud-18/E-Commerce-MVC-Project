@@ -1,0 +1,191 @@
+﻿@using ECommerceMVC.Repository;
+@using Microsoft.AspNetCore.Identity;
+
+@model ECommerceMVC.Models.Address
+@inject IAddressRepository addressRepo;
+@inject UserManager<Customer> userManager;
+
+@{
+    ViewData["Title"] = "MyAddresses";
+    SelectList CountriesOptions = new SelectList(ViewBag.Countries, "Id", "Name");
+    List<Country> countries = ViewBag.Countries;
+
+}
+
+@{
+    List<Address> addresses = null;
+    @if (User.Identity.IsAuthenticated == true)
+    {
+        Customer customer = await userManager.GetUserAsync(User);
+        addresses = addressRepo.GetAllByCustomerId(customer.Id);
+    }
+}
+
+ <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="@Url.Action("MyAccount", "Account")">MyAccount</a>
+                    <span class="breadcrumb-item active">My Addresses</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+<div class="d-flex justify-content-center">
+    <div class="w-50">
+
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-success mx-auto my-3" onclick="toggleAddAddress()">Add New Address</a>
+        </div>
+
+        <div id="add-address-form" class="card my-3" style="display:none;">
+            <div class="card-header text-center">
+                New Address
+            </div>
+            <div class="card-body">
+                <form method="post" asp-action="AddAddress" asp-controller="Account">    
+                    
+                    <div class="form-group">
+
+                        <label asp-for="CountryId" class="control-label"></label>
+                        <select class="form-control custom-select" asp-for="CountryId" asp-items="CountriesOptions">
+                            <!--List<Country>-->
+                        </select>
+                        <span asp-validation-for="CountryId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="State" class="control-label"></label>
+                        <input asp-for="State" class="form-control" placeholder="Dakahlia" required />
+                        <span asp-validation-for="State" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="City" class="control-label"></label>
+                        <input asp-for="City" class="form-control" placeholder="Mansoura" required />
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address1" class="control-label"></label>
+                        <input asp-for="Address1" class="form-control" placeholder="9-Street block Ab floor no. 5 apartment 56" required />
+                        <span asp-validation-for="Address1" class="text-danger"></span>
+                    </div>
+                    
+                    <button asp-action="AddAddress" asp-controller="Account" type="submit" class="btn btn-primary mx-auto">Submit</button>
+                </form>
+            </div>
+        </div>
+
+        @{
+            int i = 0;
+        }
+        @foreach (var item in addresses)
+        {
+            <div class="card my-3">
+                <div class="card-header ">
+                    @{
+                        i++;
+                        
+                         }
+                        @* @i*@
+                          @if (item.Id != item.Customer.ShippingAddressId)
+                          {
+                             <a  class="btn btn-warning float-right" asp-controller="Account" asp-action="SetAsDefault" asp-route-id="@item.Id">Set as Default</a>
+                           }
+                           else
+                           {
+                                 <span class="float-right badge badge-success ml-2">Default Address</span>
+                           }
+
+                </div>
+                <div class="card-body">
+                    <form id="form-@item.Id" asp-action="EditAddress" asp-controller="Account" asp-route-id="@item.Id" disabled>
+                        <div class="form-group">
+
+                            <label asp-for="CountryId" class="control-label"></label>
+                            <select class="form-control custom-select" asp-for="CountryId" asp-items="CountriesOptions" disabled>
+                                 @foreach (Country country in countries)
+                            {
+                                    if (item.CountryId == country.Id)
+                                    {
+                                       <option value="@country.Id" selected>@country.Name</option> 
+                                    }
+                                    else
+                                    {
+                                       <option value="@country.Id">@country.Name</option>
+                                    }                                                     
+                            }
+                            </select>
+                            <span asp-validation-for="@item.CountryId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label value="@item.State" class="control-label"></label>
+                            <input type="text" id="@Model.State" name="@Model.State" value="@item.State" class="form-control" required disabled />
+                            <span asp-validation-for="@Model.State" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label value="@item.City" class="control-label"></label>
+                            <input type="text" id="@Model.City" name="@Model.City" value="@item.City" class="form-control" required disabled />
+                            <span asp-validation-for="@Model.City" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label value="@item.Address1" class="control-label"></label>
+                            <input type="text" id="@Model.Address1" name="@Model.Address1" value="@item.Address1" class="form-control" placeholder="9-Street block Ab floor no. 5 apartment 56" required disabled />
+                            <span asp-validation-for="@Model.Address1" class="text-danger"></span>
+                        </div>
+                        <button type="button" id="edit-button-@item.Id" onclick="enableForm(@item.Id)" class="btn btn-primary">Edit</button>
+                        <button type="button" id="save-button-@item.Id" onclick="saveForm(@item.Id)"  class="btn btn-success d-none">Save</button>
+                    
+                    @if (item.Id != item.Customer.ShippingAddressId)
+                        {
+                            <button id="delete-button-@item.Id" asp-controller="Account" asp-action="DeleteAddress" asp-route-id="@item.Id" class="btn btn-danger">Delete</button>
+                        }
+                    </form>
+                </div>                
+            </div>
+        }
+
+    </div>
+</div>
+
+<script>
+    function toggleAddAddress() {
+        var form = document.getElementById("add-address-form");
+        form.style.display = (form.style.display == "none") ? "block" : "none";
+    }
+
+    function enableForm(id) {
+        const form = document.getElementById(`form-${id}`);
+        const editBtn = document.getElementById(`edit-button-${id}`);
+        const saveBtn = document.getElementById(`save-button-${id}`);
+
+        editBtn.classList.add('d-none');
+        saveBtn.classList.remove('d-none');
+        form.classList.remove('disabled');
+        Array.from(form.elements).forEach((element) => {
+            element.removeAttribute('disabled');
+        });
+    }
+
+    function saveForm(id) {
+        const form = document.getElementById(`form-${id}`);
+        const editBtn = document.getElementById(`edit-button-${id}`);
+        const saveBtn = document.getElementById(`save-button-${id}`);
+        const deleteBtn = document.getElementById(`delete-button-${id}`);
+
+        editBtn.classList.remove('d-none');
+        saveBtn.classList.add('d-none');
+        form.classList.add('disabled');
+        Array.from(form.elements).forEach((element) => {
+            element.setAttribute('disabled', 'disabled');
+        });
+        editBtn.removeAttribute('disabled')
+        deleteBtn.removeAttribute('disabled')
+        form.submit();
+    }
+
+
+</script>

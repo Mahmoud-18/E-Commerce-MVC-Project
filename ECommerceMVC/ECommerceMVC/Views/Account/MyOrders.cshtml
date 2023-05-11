@@ -18,55 +18,24 @@
     </div>
     <!-- Breadcrumb End -->
 
-
-<table class="table" id="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderTotalPrice)
-            </th>
-
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentMethod)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderStatus)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderTotalPrice)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentMethod.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderStatus.Status)
-            </td>
-            <td>
-
-                    <a asp-action="OrderStatusDetails" asp-route-id="@item.Id" class="btn btn-info mx-2">Details</a>
-
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Cancel</a>
-            </td>
-        </tr>
+@foreach (var item in Model)
+{
+    <div class="card my-3">
+        <div class="card-header">
+            Order ID: @item.Id
+        </div>
+        <div class="card-body">
+            <p class="card-text">Order Date: @item.OrderDate</p>
+            <p class="card-text">Total Price: @item.OrderTotalPrice EGP</p>
+            <p class="card-text">Payment Method: @item.PaymentMethod.Name</p>
+            <p class="card-text">Order Status: <span class="badge @((item.OrderStatus.Status.ToLower() == "completed") ? "bg-success" : (item.OrderStatus.Status.ToLower() == "shipped") ? "bg-warning" : "bg-danger")">@item.OrderStatus.Status</span></p>
+            <div class="btn-group">
+                <a asp-action="OrderDetails" asp-controller="Account" asp-route-id="@item.Id" class="btn btn-info mx-2">Details</a>
+                @if (item.OrderStatus.Status.ToLower() == "pending")
+                {
+                    <a asp-action="CancelOrder" asp-controller="Account" asp-route-id="@item.Id" class="btn btn-danger" onclick="return confirm('Are you sure you want to Cancel this order?' )">Cancel</a>
+                }
+            </div>
+        </div>
+    </div>
 }
-    </tbody>
-</table>

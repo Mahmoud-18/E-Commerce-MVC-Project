@@ -1,0 +1,95 @@
+﻿@model List<Complaint>
+@{
+    ViewData["Title"] = "Contact Manager";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<!-- Breadcrumb Start -->
+<nav class="breadcrumb bg-light mb-30 p-3">
+    <a class="breadcrumb-item text-dark" style="text-decoration:none !important; color:inherit;" asp-action="Index">Admin</a>
+    <span class="breadcrumb-item active">Contact Manager</span>
+</nav>
+<!-- Breadcrumb End -->
+
+<div class="container-fluid">  
+    
+<div class="row">
+        @foreach (Complaint complaint in Model.Where(c => !c.IsDeleted))
+        {
+            <div class="col-md-8">
+                <div class="card g-mb-15 mt-3">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <span class="font-weight-bold">Name:</span> @complaint.Name
+                            <br />
+                            <span class="font-weight-bold">Email:</span> @complaint.Email
+                        </p>
+                        <h5 class="card-title">@complaint.Subject</h5>
+                        <p class="card-text">@complaint.Message</p>
+                        <p class="card-text">
+                            <p class="card-text">@{
+                                    DateTime date1 = complaint.CreatedOnUtc;
+                                    DateTime date2 = DateTime.Now;
+
+                                    TimeSpan timeSince = date2.Subtract(date1);
+                                    string timepassed;
+
+                                    if (timeSince.TotalDays >= 365)
+                                    {
+                                        int years = (int)(timeSince.TotalDays / 365);
+                                        timepassed = $"{years} year{(years > 1 ? "s" : "")} ago";
+                                                                        <span>@timepassed</span>
+
+                                    }
+                                    else if (timeSince.TotalDays >= 30)
+                                    {
+                                        int months = (int)(timeSince.TotalDays / 30);
+                                        timepassed = $"{months} month{(months > 1 ? "s" : "")} ago";
+                                                                        <span>@timepassed</span>
+                                    }
+                                    else if (timeSince.TotalDays >= 1)
+                                    {
+                                        int days = (int)timeSince.TotalDays;
+                                        timepassed = $"{days} day{(days > 1 ? "s" : "")} ago";
+                                                                        <span>@timepassed</span>
+                                    }
+                                    else if (timeSince.TotalHours >= 1)
+                                    {
+                                        int hours = (int)timeSince.TotalHours;
+                                        timepassed = $"{hours}  hour{(hours > 1 ? "s" : "")} ago";
+                                                                        <span>@timepassed</span>
+                                    }
+                                    else if (timeSince.TotalMinutes >= 1)
+                                    {
+                                        int minutes = (int)timeSince.TotalMinutes;
+                                        timepassed = $"{minutes} minute{(minutes > 1 ? "s" : "")} ago";
+                                                                        <span>@timepassed</span>
+                                    }
+                                    else
+                                    {
+                                                                        <span>Just now</span>
+                                    }
+                                }</p>
+                            <span class="font-weight-bold">Created on:</span> @complaint.CreatedOnUtc
+                            <br />
+                        </p>
+                        <form method="post" asp-action="DeleteComplaint" asp-Controller= "ContactManager">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@complaint.Id" />
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+</div></div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
