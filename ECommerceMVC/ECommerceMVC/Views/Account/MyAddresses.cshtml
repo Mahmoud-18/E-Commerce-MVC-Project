@@ -1,10 +1,23 @@
-﻿@model IEnumerable<ECommerceMVC.Models.Address>
+﻿@using ECommerceMVC.Repository;
+@using Microsoft.AspNetCore.Identity;
+
+@model ECommerceMVC.Models.Address
+@inject IAddressRepository addressRepo;
+@inject UserManager<Customer> userManager;
 
 @{
     ViewData["Title"] = "MyAddresses";
     SelectList CountriesOptions = new SelectList(ViewBag.Countries, "Id", "Name");
 }
 
+@{
+    List<Address> addresses = null;
+    @if (User.Identity.IsAuthenticated == true)
+    {
+        Customer customer = await userManager.GetUserAsync(User);
+        addresses = addressRepo.GetAllByCustomerId(customer.Id);
+    }
+}
 
  <!-- Breadcrumb Start -->
     <div class="container-fluid">
@@ -19,11 +32,6 @@
     </div>
     <!-- Breadcrumb End -->
 
-@{
-    Address address = new Address();
-}
-
-
 <div class="d-flex justify-content-center">
     <div class="w-50">
 
@@ -36,33 +44,34 @@
                 New Address
             </div>
             <div class="card-body">
-                <form method="post" action="@Url.Action("AddAddress", "Account")">    
+                <form method="post" asp-action="AddAddress" asp-controller="Account">    
                     
                     <div class="form-group">
 
-                        <label asp-for="@address.CountryId" class="control-label"></label>
-                        <select class="form-control custom-select" asp-for="@address.CountryId" asp-items="CountriesOptions">
+                        <label asp-for="CountryId" class="control-label"></label>
+                        <select class="form-control custom-select" asp-for="CountryId" asp-items="CountriesOptions">
                             <!--List<Country>-->
                         </select>
-                        <span asp-validation-for="@address.CountryId" class="text-danger"></span>
+                        <span asp-validation-for="CountryId" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@address.State" class="control-label"></label>
-                        <input asp-for="@address.State" class="form-control" placeholder="Dakahlia" required />
-                        <span asp-validation-for="@address.State" class="text-danger"></span>
+                        <label asp-for="State" class="control-label"></label>
+                        <input asp-for="State" class="form-control" placeholder="Dakahlia" required />
+                        <span asp-validation-for="State" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="@address.City" class="control-label"></label>
-                        <input asp-for="@address.City" class="form-control" placeholder="Mansoura" required />
-                        <span asp-validation-for="@address.City" class="text-danger"></span>
+                        <label asp-for="City" class="control-label"></label>
+                        <input asp-for="City" class="form-control" placeholder="Mansoura" required />
+                        <span asp-validation-for="City" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@address.Address1" class="control-label"></label>
-                        <input asp-for="@address.Address1" class="form-control" placeholder="9-Street block Ab floor no. 5 apartment 56" required />
-                        <span asp-validation-for="@address.Address1" class="text-danger"></span>
-                    </div>                                        
-                    <button type="submit" class="btn btn-primary mx-auto">Submit</button>
+                        <label asp-for="Address1" class="control-label"></label>
+                        <input asp-for="Address1" class="form-control" placeholder="9-Street block Ab floor no. 5 apartment 56" required />
+                        <span asp-validation-for="Address1" class="text-danger"></span>
+                    </div>
+                    
+                    <button asp-action="AddAddress" asp-controller="Account" type="submit" class="btn btn-primary mx-auto">Submit</button>
                 </form>
             </div>
         </div>
@@ -70,7 +79,7 @@
         @{
             int i = 0;
         }
-        @foreach (var item in Model)
+        @foreach (var item in addresses)
         {
             <div class="card my-3">
                 <div class="card-header text-center">
@@ -79,9 +88,18 @@
                         
                          }
                          @i
+                          @if (item.Id != item.Customer.ShippingAddressId)
+                          {
+                             <a  class="btn btn-warning float-right" asp-controller="Account" asp-action="SetAsDefault" asp-route-id="@item.Id">Set as Default</a>
+                           }
+                           else
+                           {
+                                 <span class="float-right badge badge-success ml-2">Default Address</span>
+                           }
+
                 </div>
                 <div class="card-body">
-                    <form id="form-@item.Id" class="" action="@Url.Action("EditAddress", "Account")" disabled>
+                    <form id="form-@item.Id" asp-action="EditAddress" asp-controller="Account" asp-route-id="@item.Id" disabled>
                         <div class="form-group">
 
                             <label asp-for="@item.CountryId" class="control-label"></label>
@@ -92,13 +110,13 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="@item.State" class="control-label"></label>
-                            <input asp-for="@item.State" class="form-control" placeholder="Dakahlia" required disabled />
+                            <input asp-for="@item.State" class="form-control" required disabled />
                             <span asp-validation-for="@item.State" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">
                             <label asp-for="@item.City" class="control-label"></label>
-                            <input asp-for="@item.City" class="form-control" placeholder="Mansoura" required disabled />
+                            <input asp-for="@item.City" class="form-control" required disabled />
                             <span asp-validation-for="@item.City" class="text-danger"></span>
                         </div>
                         <div class="form-group">
@@ -108,6 +126,10 @@
                         </div>
                         <button type="button" id="edit-button-@item.Id" onclick="enableForm(@item.Id)" class="btn btn-primary">Edit</button>
                         <button type="button" id="save-button-@item.Id" onclick="saveForm(@item.Id)"  class="btn btn-success d-none">Save</button>
+                        @if (item.Id != item.Customer.ShippingAddressId)
+                        {
+                            <button asp-controller="Account" asp-action="DeleteAddress" asp-route-id="@item.Id" class="btn btn-danger">Delete</button>
+                        }                     
                     </form>
                 </div>                
             </div>

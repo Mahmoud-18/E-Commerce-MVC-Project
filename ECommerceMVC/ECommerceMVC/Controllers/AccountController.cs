@@ -19,7 +19,7 @@ namespace ECommerceMVC.Controllers
         IAddressRepository addressRepo;
         IShoppingBagRepository shopBagRepository;
         ICountryRepository country;
-        ICustomerRepository customer;
+        ICustomerRepository customerRepo;
         IOrderRepository orderRepository;
         IProductItemRepository productItemRepository;
         public AccountController
@@ -34,7 +34,7 @@ namespace ECommerceMVC.Controllers
             this.shopBagRepository = shopBagRepository;
             country = countryRepository;
             roleManager = _roleManager;
-            this.customer = _customer;
+            this.customerRepo = _customer;
             orderRepository = _order;
             this.productItemRepository = productItemRepository;
         }
@@ -103,11 +103,70 @@ namespace ECommerceMVC.Controllers
 
         [Authorize]
         public async Task<IActionResult> MyAddresses()
+        {                       
+            ViewBag.Countries = country.GetAll();
+            return View();
+        }
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAddress(Address sentfromview)
+        {
+            if (ModelState.IsValid)
+            {
+                Customer customer = await userManager.GetUserAsync(User);
+                Address newaddress = new Address();
+
+               
+                newaddress.State = sentfromview.State;
+                newaddress.City = sentfromview.City;
+                newaddress.Address1 = sentfromview.Address1;
+                newaddress.CountryId = sentfromview.CountryId;
+
+                newaddress.CustomerId = customer.Id;
+                newaddress.CreatedOnUtc = DateTime.Now;
+
+
+                // save the address to the database using your data access layer             
+                addressRepo.Insert(newaddress);
+
+                // redirect the user to a confirmation page or back to the previous page
+                return RedirectToAction("MyAddresses", "Account");
+            }
+
+            return NoContent();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditAddress([FromRoute]int id , Address address)
+        {
+            address.UpdatedOnUtc = DateTime.UtcNow;
+            addressRepo.Update(id, address);
+            return RedirectToAction("MyAddresses");
+        }
+        public async Task<IActionResult> DeleteAddress(int id)
         {
             Customer customer = await userManager.GetUserAsync(User);
-            List<Address> addresses = addressRepo.GetAllByCustomerId(customer.Id);
-            ViewBag.Countries = country.GetAll();
-            return View(addresses);
+
+            if (customer.ShippingAddressId != id)
+            {
+                addressRepo.Delete(id);
+            }
+                      
+            return RedirectToAction("MyAddresses");
+        }
+        public async Task<IActionResult> SetAsDefault(int id)
+        {
+            Customer customer = await userManager.GetUserAsync(User);
+
+            if (customer.ShippingAddressId != id)
+            {
+                customer.ShippingAddressId = id;
+                customerRepo.SaveChanges();
+            }
+
+            return RedirectToAction("MyAddresses");
         }
 
 
@@ -144,7 +203,7 @@ namespace ECommerceMVC.Controllers
         //    return View(editUser);
         //}
 
-                
+
 
 
         [HttpPost]
@@ -326,7 +385,7 @@ namespace ECommerceMVC.Controllers
 
         public async Task<IActionResult> Privew(int id)
         {
-            var user = customer.GetById(id);
+            var user = customerRepo.GetById(id);
             EditUserViewModel editUser = new EditUserViewModel();
             editUser.UserId = id;
             editUser.PhoneNumber = user.PhoneNumber;
