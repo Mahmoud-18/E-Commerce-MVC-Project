@@ -1,8 +1,9 @@
 ﻿@{
-    ViewData["Title"] = "AddProductSuccess";   
+    ViewData["Title"] = "Success";   
 }
-<div class="align-content-center align-self-center justify-content-center">
+<div class="d-flex flex-column align-items-center justify-content-center">
 <h1 class="text-center text-success">Your Order Has been Placed Successfully!</h1>
-@*<img src="~/img/Add files-cuate.png" align="middle" width="45%" />*@
-<button asp-action="ShowAllProducts" asp-controller="Shop" class="btn btn-primary font-weight-bold my-3 py-3">Continue Shopping</button>
+    <img src="~/img/image_processing20210911-29431-gio3xb.gif" align="middle" width="20%" />
+    <br/>
+<a asp-action="ShowAllProducts" asp-controller="Shop" class="btn btn-primary mx-auto mb-5">Continue Shopping</a>
 </div>

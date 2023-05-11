@@ -43,16 +43,61 @@ namespace ECommerceMVC.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
-            List<OrderDetails> orders = orderRepository.GetAll();
+            List<OrderDetails> orders = orderRepository.GetAllInclude();
             return View(orders);
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult OrderDetails()
+        public IActionResult OrderDetails(int id)
         {
-            OrderDetailsViewModel order = new OrderDetailsViewModel();
-            return View(order);
+            OrderDetails order = orderRepository.GetById(id);
+
+            OrderDetailsViewModel orderViewModel = new OrderDetailsViewModel();
+
+            orderViewModel.Customer = order.Customer;
+            orderViewModel.OrderDate= order.OrderDate;
+            orderViewModel.ShippingPrice= order.ShippingPrice;
+            orderViewModel.OrderTotalPrice= order.OrderTotalPrice;  
+            orderViewModel.Id= order.Id;
+            orderViewModel.PaymentMethod = order.PaymentMethod.Name;
+            orderViewModel.OrderStatus = order.OrderStatus.Status;
+            orderViewModel.ShippingAddress = order.Address;
+            orderViewModel.IsCanceled = order.IsCanceled;
+            orderViewModel.OrderItems = order.OrderItems.ToList();  
+
+            return View(orderViewModel);
         }
+
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult DeleteOrder(int id)
+        {
+            orderRepository.Delete(id);
+            return RedirectToAction("Index", "Order");
+        }
+        [Authorize(Roles = "Admin")]
+        public IActionResult ShipOrder(int id)
+        {
+            OrderDetails order = orderRepository.GetById(id);
+            OrderStatus status = orderStatusRepository.GetAll().Where(x=> x.Status.ToLower()== "shipped").FirstOrDefault();
+            
+            order.OrderStatusId = status.Id;
+            orderRepository.SaveChanges();
+
+            return RedirectToAction("Index", "Order");
+        }
+        [Authorize(Roles = "Admin")]
+        public IActionResult CompleteOrder(int id)
+        {
+            OrderDetails order = orderRepository.GetById(id);
+            OrderStatus status = orderStatusRepository.GetAll().Where(x => x.Status.ToLower() == "completed").FirstOrDefault();
+
+            order.OrderStatusId = status.Id;
+            orderRepository.SaveChanges();
+
+            return RedirectToAction("Index", "Order");
+        }
+
 
         [Authorize]
         public async Task<IActionResult> Checkout()
@@ -108,7 +153,7 @@ namespace ECommerceMVC.Controllers
             }
             else
             {
-                ViewBag.Message = "add a product first";
+                
                 return RedirectToAction("Index","ShoppingBag");
             }
             
@@ -127,8 +172,7 @@ namespace ECommerceMVC.Controllers
                 #region create order
                 order.OrderDate = DateTime.Now;
                 order.CreatedOnUtc = DateTime.UtcNow;
-                OrderStatus orderStatus = orderStatusRepository.GetAll().FirstOrDefault(o => o.Status == "pending");               
-                //order.OrderStatusId = 1;
+                OrderStatus orderStatus = orderStatusRepository.GetAll().FirstOrDefault(o => o.Status.ToLower() == "pending");               
                 order.OrderStatusId = orderStatus.Id;
                 if (customer.ShippingAddressId > 0)
                 {
@@ -194,8 +238,8 @@ namespace ECommerceMVC.Controllers
                 return View("AddOrderSuccess");
             }
 
-                                                         
-            return View("Checkout");
+
+            return RedirectToAction("Checkout");
         }
 
     }

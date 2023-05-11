@@ -6,7 +6,6 @@ namespace ECommerceMVC.Models
     public class ProductReview
     {
         public int Id { get; set; }
-
         public string Name { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
         public string? Description { get; set; }
@@ -16,7 +15,6 @@ namespace ECommerceMVC.Models
       
         [ForeignKey(nameof(Product))]
         public int ProductId { get; set; }
-
 
         //Navigation Properties
         public Product? Product { get; set; }

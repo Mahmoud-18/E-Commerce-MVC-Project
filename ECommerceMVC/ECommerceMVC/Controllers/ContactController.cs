@@ -48,7 +48,7 @@ namespace ECommerceMVC.Controllers
             CustomerComplaint.Email = model.Email;
             CustomerComplaint.Subject = model.Subject;
             CustomerComplaint.Message = model.Message;
-
+            CustomerComplaint.CreatedOnUtc= DateTime.Now;
 
             var user = await userManager.GetUserAsync(User);
             

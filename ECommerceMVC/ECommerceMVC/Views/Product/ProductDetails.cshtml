@@ -16,7 +16,7 @@
     </div>
 </div>
 <!-- Breadcrumb End -->
-<form asp-action="AddToCard" asp-controller="Product" asp-route-id="@Model.Id">
+<form >
 
 
     <div class="container-fluid pb-5">
@@ -50,11 +50,15 @@
                     <h3>@Model.Name</h3> <!-- Product Name -->
                     @{
                         int avg_rev = 0;
-                        foreach (var item in reviewViewModel)
+                        if (reviewViewModel.Count != 0)
                         {
-                            avg_rev = item.Rate + avg_rev;
+                            foreach (var item in reviewViewModel)
+                            {
+                                avg_rev = item.Rate + avg_rev;
+                            }
+                            avg_rev = avg_rev / reviewViewModel.Count;
                         }
-                        avg_rev = avg_rev / reviewViewModel.Count;
+                       
                         int o;
                     }
                     <div class="d-flex mb-3">
@@ -147,14 +151,24 @@
                             <input id="count_p" min="1" type="number" value="1" class="form-control bg-secondary border-0 text-center" asp-for="ProductCount">
                         </div>
                     </div>
-                    <button class="btn btn-primary px-3 mb-4" type="submit">
+                    <button class="btn btn-primary px-3 mb-4" asp-action="AddToCard" asp-controller="Product" asp-route-id="@Model.Id" type="submit">
                         <i class="fa fa-shopping-cart mr-1 "></i> Add To
                         Cart
+                    </button>
+                    <button class="btn btn-danger px-3 mb-4" asp-action="BuyNow" asp-controller="Product" asp-route-id="@Model.Id">
+                        <i class="fa fa-shopping-cart mr-1 "></i> Buy Now
                     </button>
 
                     @if (!string.IsNullOrEmpty(ViewBag.Message))
                     {
-                        <div class="alert alert-danger">@ViewBag.Message</div>
+                        if (ViewBag.Message == "No Enough Stock!")
+                        {
+                            <div class="alert alert-danger">@ViewBag.Message</div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-success">@ViewBag.Message</div>
+                        }
                     }
 
 
@@ -266,11 +280,11 @@
                                 <div class="d-flex my-3">
                                     <p class="mb-0 mr-2">Your Rating * :</p>
                                     <ul id="rating">
-                                        <li class="fas fa-star" id="rating-item" data-rate="1"></li>
-                                        <li class="fas fa-star" id="rating-item" data-rate="2"></li>
-                                        <li class="fas fa-star" id="rating-item" data-rate="3"></li>
-                                        <li class="fas fa-star" id="rating-item" data-rate="4"></li>
-                                        <li class="far fa-star" id="rating-item" data-rate="5"></li>
+                                        <li class="far fa-star mr-1 text-primary" id="rating-item" data-rate="1"></li>
+                                        <li class="far fa-star mr-1 text-primary" id="rating-item" data-rate="2"></li>
+                                        <li class="far fa-star mr-1 text-primary" id="rating-item" data-rate="3"></li>
+                                        <li class="far fa-star mr-1 text-primary" id="rating-item" data-rate="4"></li>
+                                        <li class="far fa-star mr-1 text-primary" id="rating-item" data-rate="5"></li>
                                     </ul>
                                     <input name="rateBox" type="text" id="rateBox" disabled style="border:none;width:50px;margin-left:20px;display:block" />
                                 </div>

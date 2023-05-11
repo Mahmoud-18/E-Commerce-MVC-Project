@@ -6,12 +6,15 @@
 
 }
 
-<h1>Index</h1>
+<nav class="breadcrumb bg-light mb-30 p-3">
+    <a class="breadcrumb-item text-dark" style="text-decoration:none !important; color:inherit;" asp-action="Index" asp-controller="Admin">Admin</a>
+    <span class="breadcrumb-item active">Order Status</span>
+</nav>
 
 <p>
     <a class="btn btn-btn  btn-success my-3" asp-action="AddOrderStatus">Add New OrderStatus</a>
 </p>
-<table class="table">
+<table id="table" class="table table-striped table-bordered">
     <thead>
         <tr>
 
@@ -28,7 +31,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.DeletedOnUtc)
             </th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>

@@ -32,6 +32,18 @@ namespace ECommerceMVC.Services
 
                 decimal? PriceBeforeDisc = pro.Price;
 
+                float avg_rev = 0;
+                if (pro.ProductReviews.Count != 0)
+                {
+                    foreach (var item in pro.ProductReviews)
+                    {
+                        avg_rev = item.Rate + avg_rev;
+                    }
+                    avg_rev = avg_rev / pro.ProductReviews.Count;
+                }
+
+
+
                 if (pro.DiscountId != null)
                 {
                     if (discountRepo.IsDiscountActive(pro.Discount.Id))// Safwat : change ** pro.Discount.Id ** => ** (int)pro.DiscountId **
@@ -43,7 +55,10 @@ namespace ECommerceMVC.Services
                             Name = pro.Name,
                             Image = pro.Image,
                             PriceBeforeDisc = pro.Price,
-                            PriceAfterDisc = priceAfterDiscount
+                            PriceAfterDisc = priceAfterDiscount,
+                            ReviewCount = pro.ProductReviews.Count,
+                            AverageRating=avg_rev
+                            
                         });
                     }
                     else
@@ -54,6 +69,8 @@ namespace ECommerceMVC.Services
                             Name = pro.Name,
                             Image = pro.Image,
                             PriceBeforeDisc = pro.Price,
+                            ReviewCount = pro.ProductReviews.Count,
+                            AverageRating = avg_rev
                         });
                     }
                     
@@ -66,6 +83,8 @@ namespace ECommerceMVC.Services
                         Name = pro.Name,
                         Image = pro.Image,
                         PriceBeforeDisc = pro.Price,
+                        ReviewCount = pro.ProductReviews.Count,
+                        AverageRating = avg_rev
                     });
                 }
             }
@@ -83,6 +102,16 @@ namespace ECommerceMVC.Services
                 {
                     Product? pro = cProduct.Product;
 
+                    float avg_rev = 0;
+                    if (pro.ProductReviews.Count != 0)
+                    {
+                        foreach (var item in pro.ProductReviews)
+                        {
+                            avg_rev = item.Rate + avg_rev;
+                        }
+                        avg_rev = avg_rev / pro.ProductReviews.Count;
+                    }
+
                     if (pro.DiscountId != null)
                     {
                         if (discountRepo.IsDiscountActive((int)pro.Discount.Id))
@@ -94,7 +123,9 @@ namespace ECommerceMVC.Services
                                 Name = pro.Name,
                                 Image = pro.Image,
                                 PriceBeforeDisc = pro.Price,
-                                PriceAfterDisc = priceAfterDiscount
+                                PriceAfterDisc = priceAfterDiscount,
+                                ReviewCount = pro.ProductReviews.Count,
+                                AverageRating = avg_rev
                             });
                         }
                         else
@@ -105,6 +136,8 @@ namespace ECommerceMVC.Services
                                 Name = pro.Name,
                                 Image = pro.Image,
                                 PriceBeforeDisc = pro.Price,
+                                ReviewCount = pro.ProductReviews.Count,
+                                AverageRating = avg_rev
                             });
                         }
                     }
@@ -116,6 +149,8 @@ namespace ECommerceMVC.Services
                             Name = pro.Name,
                             Image = pro.Image,
                             PriceBeforeDisc = pro.Price,
+                            ReviewCount = pro.ProductReviews.Count,
+                            AverageRating = avg_rev
                         });
                     }
                 }
@@ -131,6 +166,15 @@ namespace ECommerceMVC.Services
                     {
                         Product? pro = cProduct.Product;
 
+                        float avg_rev = 0;
+                        if (pro.ProductReviews.Count != 0)
+                        {
+                            foreach (var item in pro.ProductReviews)
+                            {
+                                avg_rev = item.Rate + avg_rev;
+                            }
+                            avg_rev = avg_rev / pro.ProductReviews.Count;
+                        }
                         if (pro.DiscountId != null)
                         {
                             if (discountRepo.IsDiscountActive((int)pro.Discount.Id))
@@ -142,7 +186,9 @@ namespace ECommerceMVC.Services
                                     Name = pro.Name,
                                     Image = pro.Image,
                                     PriceBeforeDisc = pro.Price,
-                                    PriceAfterDisc = priceAfterDiscount
+                                    PriceAfterDisc = priceAfterDiscount,
+                                    ReviewCount = pro.ProductReviews.Count,
+                                    AverageRating = avg_rev
                                 });
                             }
                             else
@@ -153,6 +199,8 @@ namespace ECommerceMVC.Services
                                     Name = pro.Name,
                                     Image = pro.Image,
                                     PriceBeforeDisc = pro.Price,
+                                    ReviewCount = pro.ProductReviews.Count,
+                                    AverageRating = avg_rev
                                 });
                             }
                         }
@@ -164,6 +212,8 @@ namespace ECommerceMVC.Services
                                 Name = pro.Name,
                                 Image = pro.Image,
                                 PriceBeforeDisc = pro.Price,
+                                ReviewCount = pro.ProductReviews.Count,
+                                AverageRating = avg_rev
                             });
                         }
                     }

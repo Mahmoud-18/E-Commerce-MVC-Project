@@ -240,12 +240,25 @@
                                     }
                                 </div>
                                 <div class="d-flex align-items-center justify-content-center mb-1">
-                                    @* <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small>(99)</small>*@
+                                    
+                                    @{
+                                        int o;
+                                    }
+                                    @for(o = 0; o < product.AverageRating; o++)
+                                    {
+                                        <small class="fas fa-star mr-1 text-primary"></small>
+                                    }
+                                    @if (o < 5)
+                                    {
+                                        for (int m = o; m < 5; m++)
+                                        {
+                                            <small class="far fa-star mr-1 text-primary"></small>
+                                        }
+
+                                    }
+
+                                <small>(@product.ReviewCount)</small>
+
                                 </div>
                             </div>
                         </div>

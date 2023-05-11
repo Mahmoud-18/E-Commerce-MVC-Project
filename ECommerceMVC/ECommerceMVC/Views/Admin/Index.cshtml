@@ -1,7 +1,19 @@
 ﻿@model List<ProductIndexViewModel>
 @{
-    //ViewData["Title"] = "Index";
+    ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    int TotalOrders = ViewBag.TotalOrders;
+    int TotalUsers = ViewBag.TotalUsers;
+    int TotalProducts = ViewBag.TotalProducts;
+    decimal TotalMoney = ViewBag.TotalMoney;
+
+    List<IGrouping<int, OrderDetails>> UsersWithMostOrders = ViewBag.UsersWithMostOrders;
+    List<OrderDetails> RecentOrders = ViewBag.RecentOrders;
+
+    List<Product> MostSoldProducts = ViewBag.MostSoldProducts;
+    List<Product> NewProducts = ViewBag.MostRecentProducts;
+    List<Product> HighestRatedProducts = ViewBag.HighestRatedProducts;
 }
 <a href="/admin/addproduct" class="btn btn-primary" style=" width:150px; ">Add Product</a>
 <br />
@@ -39,5 +51,317 @@
     </tbody>
 </table>
 
+<style>
+.card-body {
+  padding: 1rem;
+}
 
+  .card-body {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
 
+  .card-body h4 {
+    flex-basis: 100%;
+    margin: 0;
+  }
+
+  .card-body h4:first-child {
+    margin-right: 0.5rem;
+  }
+
+</style>
+<nav class="breadcrumb bg-light mb-30 p-3">
+    <a class="breadcrumb-item text-dark" style="text-decoration:none !important; color:inherit;" asp-action="Index" asp-controller="Admin">Admin</a>
+    <span class="breadcrumb-item active">Dashboard</span>
+</nav>
+
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="row">
+        <div class="col-lg-12 my-4 order-0">
+            <div class="row">                
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">                       
+                          <div class="card-body">
+                              <div class=" d-flex align-items-center justify-content-center">
+                                <h4 class="text-center mb-0">Total Orders</h4>
+                                <h4 class="text-center font-weight-bold">@TotalOrders</h4>
+                              </div>
+                          </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">                       
+                          <div class="card-body">
+                              <div class=" d-flex align-items-center justify-content-center">
+                                <h4 class="text-center mb-0">Total Revenue</h4>
+                                <h4 class="text-center font-weight-bold">@TotalMoney EGP</h4>
+                              </div>
+                          </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class=" d-flex align-items-center justify-content-center">                              
+                                <h4 class="text-center mb-0">Total Products</h4>
+                                <h4 class="text-center font-weight-bold">@TotalProducts</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class=" d-flex align-items-center justify-content-center">
+                                <h4 class="text-center mb-0">Total Users</h4>
+                                <h4 class="text-center font-weight-bold">@TotalUsers</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+        <div class="col-lg-6 my-4 order-1">
+            <div class="card rounded-2">
+                <div class="d-flex align-items-end row">
+                    <div class="card-body">
+                        <h4 class="text-center mb-3 ">Most Recent Orders</h4>
+                        <table class="table ">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        OrderNumber
+                                    </th>
+                                    <th>
+                                        Order Date
+                                    </th>
+                                    <th>
+                                        UserName
+                                    </th>
+                                    <th>
+                                        Total Price
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var order in RecentOrders)
+                                {
+                                    <tr>
+                                        <td>
+                                            @order.Id
+                                        </td>
+                                        <td>
+                                            @order.OrderDate
+                                        </td>
+                                        <td>
+                                            @order.Customer.UserName
+                                        </td>
+                                        <td>
+                                            @order.OrderTotalPrice
+                                        </td>
+                                    </tr>
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 my-4 order-2">
+            <div class="card rounded-2">
+                <div class="d-flex align-items-end row">
+                    <div class="card-body">                   
+                            <h4 class="text-center mb-3 ">Users with Most Orders</h4>                          
+                         <table  class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            #
+                        </th>
+                        <th>
+                           UserName
+                        </th>
+                        <th>
+                           Total Number Of Orders
+                        </th>
+                        <th>
+                            Total Money Paid
+                        </th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i =1;
+                     }
+                    @foreach (var User in UsersWithMostOrders)
+                    {
+                            <tr>
+                             <td>                        
+                                @i
+                               @{
+                                   i++;
+                               }
+                            </td>
+                            <td>
+                               @User.First().Customer.UserName
+                            </td>
+                            <td>
+                               @User.Count()
+                            </td>
+                            <td>
+                                @User.Sum(i=>i.OrderTotalPrice)
+                            </td>
+                           
+                        </tr>
+                    
+                    }
+                </tbody>
+            </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 my-4 order-3">
+            <div class="card rounded-2">
+                <div class="d-flex align-items-end row">
+                    <div class="card-body">
+                        <h4 class="text-center mb-3 ">Most Sold Products</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Product
+                                    </th>
+                                    <th>
+                                        Price
+                                    </th>
+                                    <th>                                      
+                                        Sold Units
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var product in MostSoldProducts)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="/img/@product.Image" alt="" style="width: 50px;">@product.Name
+                                        </td>
+                                                                              
+                                        <td>
+                                            @product.Price
+                                        </td>
+                                        <td>
+                                            @product.Items.Sum(i=>i.OrderItems.Sum(i=>i.Quantity))
+                                        </td>
+                                    </tr>
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 my-4 order-4">
+            <div class="card rounded-2">
+                <div class="d-flex align-items-end row">
+                    <div class="card-body">
+                        <h4 class="text-center mb-3 ">Highest Rated Products</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Product
+                                    </th>
+                                    <th>
+                                        Rating
+                                    </th>
+                                    <th>
+                                        Rating Count
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var product in HighestRatedProducts)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="/img/@product.Image" alt="" style="width: 50px;">@product.Name
+                                        </td>
+                                        <td>
+                                            @product.ProductReviews.Average(i=>i.Rate)
+                                        </td>
+                                        <td>
+                                            @product.ProductReviews.Count
+                                        </td>                                      
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 my-4 order-5">
+            <div class="card rounded-2">
+                <div class="d-flex align-items-end row">
+                    <div class="card-body">
+                        <h4 class="text-center mb-3 ">Recently Added Products</h4>
+                        <table class="table ">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Product
+                                    </th>
+                                    <th>
+                                        Creation Date
+                                    </th>
+                                    <th>
+                                        Brand
+                                    </th>
+                                    <th>
+                                        Price
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var product in NewProducts)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="/img/@product.Image" alt="" style="width: 50px;">@product.Name
+                                        </td>
+                                        <td>
+                                            @product.CreatedAtUtc
+                                        </td>
+                                        <td>
+                                            @product.Brand.Name
+                                        </td>
+                                        <td>
+                                            @product.Price
+                                        </td>
+                                    </tr>
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>

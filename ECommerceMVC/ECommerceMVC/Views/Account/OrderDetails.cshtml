@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "OrderDetails";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <nav class="breadcrumb bg-light mb-30 p-3">
@@ -15,7 +14,7 @@
     <div class="row px-xl-5">
 
         <div class="col-lg-6">
-            <h5 class="section-title position-relative text-uppercase mb-3"><span class=" pr-3">Order Information</span></h5>
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Order Information</span></h5>
             <div class="bg-light p-30 mb-5">
                 <div class="row">
                     <div class="col-md-6 form-group">
@@ -42,13 +41,10 @@
                     <div class="col-md-6 form-group">
                         <label>Payment Method : @Model.PaymentMethod</label>
                     </div>
-                    <div class="col-md-6 form-group">
-                        <label>Is Canceled : @Model.IsCanceled</label>
-                    </div>
                 </div>
             </div>
             <div class="mb-5">
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class=" pr-3">Order Shipping Address</span></h5>
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Order Shipping Address</span></h5>
                 <div class="bg-light p-30 mb-5">
                     <div class="row">
                         <div class="col-md-12 form-group">
@@ -68,7 +64,7 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <h5 class="section-title position-relative text-uppercase mb-3"><span class=" pr-3">Order Items</span></h5>
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Order Items</span></h5>
             <div class="bg-light p-30 mb-5">
                 <div class="border-bottom">
                     <table class="table table-light table-borderless  text-center mb-0">
@@ -84,7 +80,7 @@
 
                             @foreach (var item in Model.OrderItems)
                             {
-                                
+
                                 <tr>
                                     <td class="align-middle">@item.ProductItem.Name</td>
                                     <td class="align-middle">@item.ProductItem.Price</td>
@@ -99,7 +95,7 @@
                 <div class="border-bottom pt-3 pb-2">
                     <div class="d-flex justify-content-between mb-3">
                         <h6>Subtotal</h6>
-                        <h6>@(Model.OrderTotalPrice-Model.ShippingPrice) EGP</h6>
+                        <h6>@(Model.OrderTotalPrice - Model.ShippingPrice) EGP</h6>
                     </div>
                     <div class="d-flex justify-content-between">
                         <h6 class="font-weight-medium">Shipping</h6>
@@ -113,22 +109,15 @@
                     </div>
                 </div>
             </div>
-        </div>       
+        </div>
     </div>
 </div>
 
 
 <div>
-    @{
-        if (Model.IsCanceled == false && (Model.OrderStatus.ToUpper() == "PENDING"))
-        {
-            <a asp-action="ShipOrder" asp-route-id="@Model.Id" class="btn btn-primary mx-2">Shipped</a>
-        }
-        else if (Model.OrderStatus.ToLower() == "shipped")
-        {
-            <a asp-action="CompleteOrder" asp-route-id="@Model.Id" class="btn btn-success mx-2">Completed</a>
-        }
-
+    @if (Model.OrderStatus.ToLower() == "pending")
+    {
+        <a asp-action="CancelOrder" asp-controller="Account" asp-route-id="@Model.Id" class="btn btn-danger" onclick="return confirm('Are you sure you want to Cancel this order?' )">Cancel</a>
     }
-    <a class="btn btn-danger" asp-controller="Order" asp-action="Index">Back to List</a>
+    <a class="btn btn-danger" asp-controller="Account" asp-action="MyOrders">Back</a>
 </div>

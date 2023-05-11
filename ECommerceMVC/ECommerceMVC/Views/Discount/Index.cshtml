@@ -6,12 +6,16 @@
 
 }
 
-<h1>Index</h1>
+<nav class="breadcrumb bg-light mb-30 p-3">
+    <a class="breadcrumb-item text-dark" style="text-decoration:none !important; color:inherit;" asp-action="Index" asp-controller="Admin">Admin</a>
+    <span class="breadcrumb-item active">Discounts</span>
+</nav>
+
 
 <p>
     <a class="btn btn-btn btn-success my-3" asp-action="AddDiscount">Add New Discount</a>
 </p>
-<table id="table" class="table table-striped" style="width:100%">
+<table id="table" class="table table-striped table-bordered" style="width:100%">
     <thead>
         <tr>
             <td>
