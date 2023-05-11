@@ -100,6 +100,12 @@ namespace ECommerceMVC.Controllers
         }
 
         #region Product
+
+        public IActionResult ProductIndex()
+        {
+            List<ProductIndexViewModel> products = productRepository.GetAllViewModelProduct();
+            return View(products);
+        }
         public IActionResult AddProduct()
         {
             ViewData["CategoryList"] = categoryRepository.GetAll();

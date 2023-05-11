@@ -3,7 +3,10 @@
     ViewData["Title"] = "AddProductSuccess";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
-<h1>A New Product Is Added </h1>
+<div class="d-flex flex-column align-items-center justify-content-center">
+    <h1 class="text-center text-success">A New Product Is Added </h1>
 <img src="~/img/Add files-cuate.png" align="middle" width="45%" />
+<br/>
+    <a asp-action="AddProduct" asp-controller="Admin" class="btn btn-primary mx-auto mb-5">Continue</a>
+</div>
 

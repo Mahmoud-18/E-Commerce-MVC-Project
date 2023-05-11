@@ -86,6 +86,7 @@ public class ProductRepository : IProductRepository
         {
             productIndexViewModel.Add(new ProductIndexViewModel
             {
+                Id = item.Id,
                 Name = item.Name,
                 Brand = item.Brand!.Name,
                 Price = (float)item.Price,

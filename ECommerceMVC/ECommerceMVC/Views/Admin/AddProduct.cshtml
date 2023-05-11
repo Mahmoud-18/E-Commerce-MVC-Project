@@ -11,8 +11,13 @@
     SelectList productAttributesList = new SelectList((List<ProductAttribute>)ViewData["ProductAttributes"]!, "Id", "Name");
 
 }
+<!-- Breadcrumb Start -->
+<nav class="breadcrumb bg-light mb-30 p-3">
+    <a class="breadcrumb-item text-dark" style="text-decoration:none !important; color:inherit;" asp-action="Index">Admin</a>
+    <span class="breadcrumb-item active">Products / Add</span>
+</nav>
+<!-- Breadcrumb End -->
 
-<h1>AddProduct</h1>
 <form asp-action="AddProduct" asp-controller="Admin">
     <div class="container-fluid">
         <div asp-validation-summary="ModelOnly" class="text-danger">
@@ -141,6 +146,11 @@
         </div>
     </div>
 </form>
+
+<div>
+    <a class="btn btn-danger" asp-action="ProductsIndex">Back to List</a>
+</div>
+
 
 @section Scripts
     {

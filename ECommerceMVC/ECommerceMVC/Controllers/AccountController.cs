@@ -119,7 +119,7 @@ namespace ECommerceMVC.Controllers
 
         // here httpost wouldnt work bcs you are not writing on the database any thing
         // this method was only made so we can display the data but in a EditProfileViewModel
-        [Authorize]
+        //[Authorize]
         //[HttpPost]
         //public async Task<IActionResult> EditProfile()
         //{

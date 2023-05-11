@@ -1,7 +1,11 @@
-﻿namespace ECommerceMVC.ViewModels
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace ECommerceMVC.ViewModels
 {
+    [Keyless]
     public class ProductIndexViewModel
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Image { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
