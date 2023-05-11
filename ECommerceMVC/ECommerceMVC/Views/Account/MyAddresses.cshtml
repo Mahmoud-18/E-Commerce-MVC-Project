@@ -8,6 +8,8 @@
 @{
     ViewData["Title"] = "MyAddresses";
     SelectList CountriesOptions = new SelectList(ViewBag.Countries, "Id", "Name");
+    List<Country> countries = ViewBag.Countries;
+
 }
 
 @{
@@ -102,34 +104,45 @@
                     <form id="form-@item.Id" asp-action="EditAddress" asp-controller="Account" asp-route-id="@item.Id" disabled>
                         <div class="form-group">
 
-                            <label asp-for="@item.CountryId" class="control-label"></label>
-                            <select class="form-control custom-select" asp-for="@item.CountryId" asp-items="CountriesOptions" disabled >
-                                <!--List<Country>-->
+                            <label asp-for="CountryId" class="control-label"></label>
+                            <select class="form-control custom-select" asp-for="CountryId" asp-items="CountriesOptions" disabled>
+                                 @foreach (Country country in countries)
+                            {
+                                    if (item.CountryId == country.Id)
+                                    {
+                                       <option value="@country.Id" selected>@country.Name</option> 
+                                    }
+                                    else
+                                    {
+                                       <option value="@country.Id">@country.Name</option>
+                                    }                                                     
+                            }
                             </select>
                             <span asp-validation-for="@item.CountryId" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="@item.State" class="control-label"></label>
-                            <input asp-for="@item.State" class="form-control" required disabled />
-                            <span asp-validation-for="@item.State" class="text-danger"></span>
+                            <label value="@item.State" class="control-label"></label>
+                            <input type="text" id="@Model.State" name="@Model.State" value="@item.State" class="form-control" required disabled />
+                            <span asp-validation-for="@Model.State" class="text-danger"></span>
                         </div>
 
                         <div class="form-group">
-                            <label asp-for="@item.City" class="control-label"></label>
-                            <input asp-for="@item.City" class="form-control" required disabled />
-                            <span asp-validation-for="@item.City" class="text-danger"></span>
+                            <label value="@item.City" class="control-label"></label>
+                            <input type="text" id="@Model.City" name="@Model.City" value="@item.City" class="form-control" required disabled />
+                            <span asp-validation-for="@Model.City" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="@item.Address1" class="control-label"></label>
-                            <input asp-for="@item.Address1" class="form-control" placeholder="9-Street block Ab floor no. 5 apartment 56" required disabled />
-                            <span asp-validation-for="@item.Address1" class="text-danger"></span>
+                            <label value="@item.Address1" class="control-label"></label>
+                            <input type="text" id="@Model.Address1" name="@Model.Address1" value="@item.Address1" class="form-control" placeholder="9-Street block Ab floor no. 5 apartment 56" required disabled />
+                            <span asp-validation-for="@Model.Address1" class="text-danger"></span>
                         </div>
                         <button type="button" id="edit-button-@item.Id" onclick="enableForm(@item.Id)" class="btn btn-primary">Edit</button>
                         <button type="button" id="save-button-@item.Id" onclick="saveForm(@item.Id)"  class="btn btn-success d-none">Save</button>
-                        @if (item.Id != item.Customer.ShippingAddressId)
+                    
+                    @if (item.Id != item.Customer.ShippingAddressId)
                         {
-                            <button asp-controller="Account" asp-action="DeleteAddress" asp-route-id="@item.Id" class="btn btn-danger">Delete</button>
-                        }                     
+                            <button id="delete-button-@item.Id" asp-controller="Account" asp-action="DeleteAddress" asp-route-id="@item.Id" class="btn btn-danger">Delete</button>
+                        }
                     </form>
                 </div>                
             </div>
@@ -161,6 +174,7 @@
         const form = document.getElementById(`form-${id}`);
         const editBtn = document.getElementById(`edit-button-${id}`);
         const saveBtn = document.getElementById(`save-button-${id}`);
+        const deleteBtn = document.getElementById(`delete-button-${id}`);
 
         editBtn.classList.remove('d-none');
         saveBtn.classList.add('d-none');
@@ -168,6 +182,8 @@
         Array.from(form.elements).forEach((element) => {
             element.setAttribute('disabled', 'disabled');
         });
+        editBtn.removeAttribute('disabled')
+        deleteBtn.removeAttribute('disabled')
         form.submit();
     }
 

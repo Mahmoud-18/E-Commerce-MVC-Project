@@ -103,9 +103,10 @@ namespace ECommerceMVC.Controllers
 
         [Authorize]
         public async Task<IActionResult> MyAddresses()
-        {                       
-            ViewBag.Countries = country.GetAll();
-            return View();
+        {
+            Address address = new();
+            ViewBag.Countries = country.GetAll().ToList();
+            return View(address);
         }
         [Authorize]
         [HttpPost]
@@ -142,8 +143,9 @@ namespace ECommerceMVC.Controllers
         public IActionResult EditAddress([FromRoute]int id , Address address)
         {
             address.UpdatedOnUtc = DateTime.UtcNow;
-            addressRepo.Update(id, address);
-            return RedirectToAction("MyAddresses");
+            return NoContent();
+            //addressRepo.Update(id, address);
+            //return RedirectToAction("MyAddresses");
         }
         public async Task<IActionResult> DeleteAddress(int id)
         {
