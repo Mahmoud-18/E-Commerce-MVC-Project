@@ -75,7 +75,10 @@ namespace ECommerceMVC.Controllers
 
         public IActionResult Index()
         {
-            return View();           
+           
+            List<ProductIndexViewModel> products = productRepository.GetAllViewModelProduct();
+            
+            return View(products);           
         }
         public IActionResult AddProduct()
         {

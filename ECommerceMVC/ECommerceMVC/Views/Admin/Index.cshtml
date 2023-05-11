@@ -1,8 +1,43 @@
-﻿
+﻿@model List<ProductIndexViewModel>
 @{
     //ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<a href="/admin/addproduct" class="btn btn-primary" style=" width:150px; ">Add Product</a>
+<br />
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th width="400px">Name</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Created Time</th>
+            <th>Image</th>
+          
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Brand</td>
+                <td>@item.Price</td>
+                <td>@item.CreatedAtUtc</td>
+                <td> <img src="~/img/@item.Image" style="width:50px;height:80px;" /></td>
+                <td>
+                    <a href="#" class="btn btn-primary">Edit Product</a>
+                </td>
+                <td>
+                    <a href="#" class="btn btn-danger">Delete Product</a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
 
 
 
