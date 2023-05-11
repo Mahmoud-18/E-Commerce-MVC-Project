@@ -25,7 +25,7 @@ namespace ECommerceMVC.Repository
         }
         public List<ProductCategory> GetByCategoryId(int catid)
         {
-            return context.ProductCategory.Include(i=>i.Product).ThenInclude(i=>i.ProductReviews).Where(i => i.CategoryId == catid).ToList();
+            return context.ProductCategory.Include(i=>i.Product).ThenInclude(i=>i.ProductReviews).Where(i => i.CategoryId == catid && i.Product.IsDeleted == false).ToList();
         }
 
         public ProductCategory GetById(int id)
