@@ -1,6 +1,226 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ECommerceMVC.ViewModels.EditPasswordViewModel
+
 @{
+    ViewData["Title"] = "Change Password";
 }
-444444444444444444444444
+
+@if (ViewBag.ErrorMessage != null)
+{
+        <div class="alert alert-danger" role="alert">
+        @ViewBag.ErrorMessage
+        </div>
+}
+
+ <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="@Url.Action("MyAccount", "Account")">MyAccount</a>
+                    <span class="breadcrumb-item active">Login </span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Data Start --> 
+
+ <style>
+        .small-font {
+  font-size: 18px;
+}
+
+      /* Rounded corners for card */
+      .card {
+        border-radius: 20px;
+      }
+
+      /* Style to center the Multi Shop text */
+      .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+
+
+
+      /* Set background */
+      body {
+        background-image: url('img/e-commerce-bg.jpg');
+        background-size: cover;
+      }
+    </style>
+
+
+  <body>
+    <!-- Customer SignUp Start -->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <div class="card my-6"  style="width: 600px; height: 400px;">
+            <div class="card-body">
+
+
+              <!--Form Start-->
+             <form asp-action="ChangePassword" asp-Controller="ChangePassword">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>  
+            
+
+                             
+                      
+            <div class="form-group">
+                <label asp-for="OldPassword" class="control-label"></label>
+                 <div class="input-group">
+                <input asp-for="OldPassword" type="password" class="form-control" id="Input-OldPassword" 
+                name="OldPassword" placeholder="Enter old password"/>
+
+                 <div class="input-group-append">
+                        <button class="btn btn-outline-secondary OldPassword-toggle-btn"
+                                type="button" onclick="togglePasswordVisibility_OldPassword()">
+                            <i class="fa fa-eye" style= "color: Black;   cursor: pointer;"></i>
+                        </button>
+                 </div>     
+                 </div>
+                <span asp-validation-for="OldPassword" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="NewPassword" class="control-label"></label>
+                 <div class="input-group">
+                <input asp-for="NewPassword" type="password" class="form-control" id="Input-NewPassword" 
+                name="NewPassword" placeholder="Enter new password"/>
+
+                 <div class="input-group-append">
+                        <button class="btn btn-outline-secondary NewPassword-toggle-btn"
+                                type="button" onclick="togglePasswordVisibility_NewPassword()">
+                            <i class="fa fa-eye" style= "color: Black;   cursor: pointer;"></i>
+                        </button>
+                 </div>     
+                 </div>
+                <span asp-validation-for="NewPassword" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="ConfirmNewPassword" class="control-label"></label>
+                 <div class="input-group">
+                <input asp-for="ConfirmNewPassword" type="password" class="form-control" id="Input-ConfirmNewPassword" 
+                name="ConfirmNewPassword" placeholder="Confirm new password"/>
+
+                 <div class="input-group-append">
+                        <button class="btn btn-outline-secondary ConfirmNewPassword-toggle-btn"
+                                type="button" onclick="togglePasswordVisibility_ConfirmNewPassword()">
+                            <i class="fa fa-eye" style= "color: Black;  cursor: pointer;"></i>
+                        </button>
+                 </div>     
+                 </div>
+                <span asp-validation-for="ConfirmNewPassword" class="text-danger"></span>
+            </div>
+
+
+
+            
+            
+           <div class="form-group d-flex justify-content-between">
+                <input type="submit" value="Save Changes" class="btn btn-block btn-primary font-weight-bold py-3" 
+                        style="font-size: 16px; width: 250px;  margin: 0 auto; text-align: center; " />
+                <a asp-action="MyAccount" asp-Controller="Account" 
+                class="btn btn-block btn-primary font-weight-bold py-3"
+                style="font-size: 16px; width: 250px;  margin: 0 auto; text-align: center; background-color: red; ">Back</a>
+            </div>
+        </form>
+        <!--Form End-->
+
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    
+
+
+
+
+  </body>
+
+
+       <!-- Data End --> 
+
+
+
+
+                <a href="#" class="btn btn-primary back-to-top"
+      ><i class="fa fa-angle-double-up"></i
+    ></a>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.js"></script>            
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+
+
+
+<script>
+   
+
+   function togglePasswordVisibility_OldPassword() 
+   {
+    var Input_01 = document.getElementById("Input-OldPassword");
+    var ToggleButton_01 = document.querySelector(".OldPassword-toggle-btn");
+    var FieldType_01 = Input_01.getAttribute("type");
+
+    if (FieldType_01 === "password") {
+        Input_01.setAttribute("type", "text");
+        ToggleButton_01.innerHTML = '<i class="fa fa-eye-slash"></i>';
+    } else {
+        Input_01.setAttribute("type", "password");
+        ToggleButton_01.innerHTML = '<i class="fa fa-eye"></i>';
+    }
+}
+
+
+function togglePasswordVisibility_NewPassword() 
+   {
+    var Input_02 = document.getElementById("Input-NewPassword");
+    var ToggleButton_02 = document.querySelector(".NewPassword-toggle-btn");
+    var FieldType_02 = Input_02.getAttribute("type");
+
+    if (FieldType_02 === "password") {
+        Input_02.setAttribute("type", "text");
+        ToggleButton_02.innerHTML = '<i class="fa fa-eye-slash"></i>';
+    } else {
+        Input_02.setAttribute("type", "password");
+        ToggleButton_02.innerHTML = '<i class="fa fa-eye"></i>';
+    }
+}
+
+function togglePasswordVisibility_ConfirmNewPassword() 
+   {
+    var Input_03 = document.getElementById("Input-ConfirmNewPassword");
+    var ToggleButton_03 = document.querySelector(".ConfirmNewPassword-toggle-btn");
+    var FieldType_03 = Input_03.getAttribute("type");
+
+    if (FieldType_03 === "password") {
+        Input_03.setAttribute("type", "text");
+        ToggleButton_03.innerHTML = '<i class="fa fa-eye-slash"></i>';
+    } else {
+        Input_03.setAttribute("type", "password");
+        ToggleButton_03.innerHTML = '<i class="fa fa-eye"></i>';
+    }
+}
+
+
+</script>

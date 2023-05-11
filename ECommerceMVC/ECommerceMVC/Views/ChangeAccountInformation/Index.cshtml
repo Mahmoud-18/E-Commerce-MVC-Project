@@ -23,11 +23,45 @@
 
     <!-- Data Start --> 
     
+ <style>
+        .small-font {
+  font-size: 18px;
+}
 
-<hr/>
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Update" asp-Controller="ChangeAccountInformation">
+      /* Rounded corners for card */
+      .card {
+        border-radius: 20px;
+      }
+
+      /* Style to center the Multi Shop text */
+      .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+
+
+
+      /* Set background */
+      body {
+        background-image: url('img/e-commerce-bg.jpg');
+        background-size: cover;
+      }
+    </style>
+
+
+  <body>
+    <!-- Customer SignUp Start -->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <div class="card my-6"  style="width: 600px; height: 800px;">
+            <div class="card-body">
+
+
+              <!--Form Start-->
+             <form asp-action="Update" asp-Controller="ChangeAccountInformation">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
             <div class="form-group">
                 <label asp-for="UserName" class="control-label"></label>
@@ -75,13 +109,26 @@
                 <span asp-validation-for="Gender" class="text-danger"></span>
              </div>
            <div class="form-group d-flex justify-content-between">
-                <input type="submit" value="Save Changes" class="btn btn-success btn-primary font-weight-bold py-3" />
-                <a class="btn btn-danger" asp-action="MyAccount" asp-Controller="Account">Back</a>
+                <input type="submit" value="Save Changes" class="btn btn-block btn-primary font-weight-bold py-3" 
+                        style="font-size: 16px; width: 250px;  margin: 0 auto; text-align: center; " />
+                <a asp-action="MyAccount" asp-Controller="Account" 
+                class="btn btn-block btn-primary font-weight-bold py-3"
+                style="font-size: 16px; width: 250px;  margin: 0 auto; text-align: center; background-color: red; ">Back</a>
             </div>
         </form>
-    </div>
-</div>
 
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <!--Form End-->
+
+
+
+
+
+  </body>
 
 
        <!-- Data End --> 
@@ -103,3 +150,10 @@
     }
 }
 
+
+
+
+
+
+
+   

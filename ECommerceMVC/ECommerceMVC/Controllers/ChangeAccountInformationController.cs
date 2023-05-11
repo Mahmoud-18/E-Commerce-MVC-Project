@@ -53,12 +53,7 @@ namespace ECommerceMVC.Controllers
             editUser.CountryId = user.CountryId;
             editUser.Countries = country.GetAll();
             editUser.Email = user.Email;
-            editUser.IsActive = user.IsActive;
-            editUser.IsAdmin = user.IsAdmin;
-            editUser.IsDeleted = user.IsDeleted;
             editUser.DataOfBirth = user.DataOfBirth;
-            editUser.Roles = roleManager.Roles.ToList();
-
             return View(editUser);
         }
 
@@ -74,29 +69,11 @@ namespace ECommerceMVC.Controllers
                 user.FirstName = updateduser.FirstName;
                 user.LastName = updateduser.LastName;
                 user.Gender = updateduser.Gender;
-                user.IsActive = updateduser.IsActive;
-                user.IsAdmin = updateduser.IsAdmin;
                 user.PhoneNumber = updateduser.PhoneNumber;
                 user.Email = updateduser.Email;
                 user.UserName = updateduser.UserName;
 
                 await userManager.UpdateAsync(user);
-
-                if (user.IsAdmin == true)
-                {
-                    if (await userManager.IsInRoleAsync(user, "Admin") == false)
-                    {
-                        await userManager.AddToRoleAsync(user, "Admin");
-                    }
-                }
-                else
-                {
-                    if (await userManager.IsInRoleAsync(user, "Admin"))
-                    {
-                        await userManager.RemoveFromRoleAsync(user, "Admin");
-                    }
-                }
-
 
                 return RedirectToAction("MyAccount", "Account");
             }
@@ -112,14 +89,10 @@ namespace ECommerceMVC.Controllers
                 editUser.CountryId = updateduser.CountryId;
                 editUser.Countries = country.GetAll();
                 editUser.Email = updateduser.Email;
-                editUser.IsActive = updateduser.IsActive;
-                editUser.IsAdmin = updateduser.IsAdmin;
                 editUser.DataOfBirth = updateduser.DataOfBirth;
-                editUser.Roles = roleManager.Roles.ToList();
                 return View(editUser);
             }
         }
-
         
     }
 }
