@@ -82,12 +82,12 @@
         @foreach (var item in addresses)
         {
             <div class="card my-3">
-                <div class="card-header text-center">
+                <div class="card-header ">
                     @{
                         i++;
                         
                          }
-                         @i
+                        @* @i*@
                           @if (item.Id != item.Customer.ShippingAddressId)
                           {
                              <a  class="btn btn-warning float-right" asp-controller="Account" asp-action="SetAsDefault" asp-route-id="@item.Id">Set as Default</a>
