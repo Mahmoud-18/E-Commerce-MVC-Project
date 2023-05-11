@@ -6,6 +6,7 @@ using ECommerceMVC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Claims;
 
 namespace ECommerceMVC.Controllers
@@ -104,7 +105,9 @@ namespace ECommerceMVC.Controllers
         public async Task<IActionResult> MyAddresses()
         {
             Customer customer = await userManager.GetUserAsync(User);
-            return View();
+            List<Address> addresses = addressRepo.GetAllByCustomerId(customer.Id);
+            ViewBag.Countries = country.GetAll();
+            return View(addresses);
         }
 
 

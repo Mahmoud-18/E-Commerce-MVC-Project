@@ -44,17 +44,17 @@ public class ProductRepository : IProductRepository
     public void Delete(int id)
     {
         Product product = GetById(id);
-        context.Product.Remove(product);
+        product.IsDeleted= true;
         context.SaveChanges();
     }
     public List<Product> GetAll()
     {
-        return context.Product.Include(x=>x.ProductReviews).Include("Discount").ToList();
+        return context.Product.Include(x=>x.ProductReviews).Include("Discount").Where(i=>i.IsDeleted == false).ToList();
     }
 
     public List<Product> GetAllInclude()
     {
-        return context.Product.Include("Discount").Include(i=>i.Items).ThenInclude(u=>u.OrderItems).Include("Brand").Include("ProductType").Include("ProductCategories").ToList();
+        return context.Product.Include("Discount").Include(i=>i.Items).ThenInclude(u=>u.OrderItems).Include("Brand").Include("ProductType").Include("ProductCategories").Where(i => i.IsDeleted == false).ToList();
     }
 
     public Product GetById(int id)
@@ -79,7 +79,7 @@ public class ProductRepository : IProductRepository
     }
     public List<ProductIndexViewModel> GetAllViewModelProduct()
     {
-        var all = context.Product.Include(p => p.Brand).Include(p=>p.ProductCategories).ToList();
+        var all = context.Product.Include(p => p.Brand).Include(p=>p.ProductCategories).Where(i => i.IsDeleted == false).ToList();
 
         List<ProductIndexViewModel> productIndexViewModel = new List<ProductIndexViewModel>();
         foreach (var item in all)

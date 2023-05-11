@@ -267,7 +267,7 @@
                                             <img src="/img/@product.Image" alt="" style="width: 50px;">@product.Name
                                         </td>
                                         <td>
-                                            @product.ProductReviews.Average(i=>i.Rate)
+                                            @Math.Round(product.ProductReviews.Average(i=>i.Rate),2)
                                         </td>
                                         <td>
                                             @product.ProductReviews.Count

@@ -106,6 +106,11 @@ namespace ECommerceMVC.Controllers
             List<ProductIndexViewModel> products = productRepository.GetAllViewModelProduct();
             return View(products);
         }
+        public IActionResult DeleteProduct(int id)
+        {
+            productRepository.Delete(id);
+            return RedirectToAction("ProductIndex");
+        }
         public IActionResult AddProduct()
         {
             ViewData["CategoryList"] = categoryRepository.GetAll();

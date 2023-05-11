@@ -15,18 +15,19 @@ namespace ECommerceMVC.Repository
 
         public void Delete(int id)
         {
-            context.Address.Remove(GetById(id));
+            Address address = GetById(id);
+            address.IsDeleted = true;
             context.SaveChanges();
         }
 
         public List<Address> GetAll()
         {
-            return context.Address.ToList();
+            return context.Address.Where(i=>i.IsDeleted == false).ToList();
         }
 
         public List<Address> GetAllByCustomerId(int id)
         {
-            return context.Address.Include(i => i.Country).Where(i => i.CustomerId == id).ToList();
+            return context.Address.Include(i => i.Country).Include(i=>i.Customer).Where(i => i.CustomerId == id && i.IsDeleted == false).ToList();
         }
 
         public Address GetById(int id)

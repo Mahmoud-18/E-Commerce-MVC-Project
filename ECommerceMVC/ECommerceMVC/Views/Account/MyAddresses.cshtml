@@ -1,4 +1,12 @@
-﻿ <!-- Breadcrumb Start -->
+﻿@model IEnumerable<ECommerceMVC.Models.Address>
+
+@{
+    ViewData["Title"] = "MyAddresses";
+    SelectList CountriesOptions = new SelectList(ViewBag.Countries, "Id", "Name");
+}
+
+
+ <!-- Breadcrumb Start -->
     <div class="container-fluid">
         <div class="row px-xl-5">
             <div class="col-12">
@@ -11,4 +19,135 @@
     </div>
     <!-- Breadcrumb End -->
 
+@{
+    Address address = new Address();
+}
 
+
+<div class="d-flex justify-content-center">
+    <div class="w-50">
+
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-success mx-auto my-3" onclick="toggleAddAddress()">Add New Address</a>
+        </div>
+
+        <div id="add-address-form" class="card my-3" style="display:none;">
+            <div class="card-header text-center">
+                New Address
+            </div>
+            <div class="card-body">
+                <form method="post" action="@Url.Action("AddAddress", "Account")">    
+                    
+                    <div class="form-group">
+
+                        <label asp-for="@address.CountryId" class="control-label"></label>
+                        <select class="form-control custom-select" asp-for="@address.CountryId" asp-items="CountriesOptions">
+                            <!--List<Country>-->
+                        </select>
+                        <span asp-validation-for="@address.CountryId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@address.State" class="control-label"></label>
+                        <input asp-for="@address.State" class="form-control" placeholder="Dakahlia" required />
+                        <span asp-validation-for="@address.State" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="@address.City" class="control-label"></label>
+                        <input asp-for="@address.City" class="form-control" placeholder="Mansoura" required />
+                        <span asp-validation-for="@address.City" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@address.Address1" class="control-label"></label>
+                        <input asp-for="@address.Address1" class="form-control" placeholder="9-Street block Ab floor no. 5 apartment 56" required />
+                        <span asp-validation-for="@address.Address1" class="text-danger"></span>
+                    </div>                                        
+                    <button type="submit" class="btn btn-primary mx-auto">Submit</button>
+                </form>
+            </div>
+        </div>
+
+        @{
+            int i = 0;
+        }
+        @foreach (var item in Model)
+        {
+            <div class="card my-3">
+                <div class="card-header text-center">
+                    @{
+                        i++;
+                        
+                         }
+                         @i
+                </div>
+                <div class="card-body">
+                    <form id="form-@item.Id" class="" action="@Url.Action("EditAddress", "Account")" disabled>
+                        <div class="form-group">
+
+                            <label asp-for="@item.CountryId" class="control-label"></label>
+                            <select class="form-control custom-select" asp-for="@item.CountryId" asp-items="CountriesOptions" disabled >
+                                <!--List<Country>-->
+                            </select>
+                            <span asp-validation-for="@item.CountryId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@item.State" class="control-label"></label>
+                            <input asp-for="@item.State" class="form-control" placeholder="Dakahlia" required disabled />
+                            <span asp-validation-for="@item.State" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="@item.City" class="control-label"></label>
+                            <input asp-for="@item.City" class="form-control" placeholder="Mansoura" required disabled />
+                            <span asp-validation-for="@item.City" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@item.Address1" class="control-label"></label>
+                            <input asp-for="@item.Address1" class="form-control" placeholder="9-Street block Ab floor no. 5 apartment 56" required disabled />
+                            <span asp-validation-for="@item.Address1" class="text-danger"></span>
+                        </div>
+                        <button type="button" id="edit-button-@item.Id" onclick="enableForm(@item.Id)" class="btn btn-primary">Edit</button>
+                        <button type="button" id="save-button-@item.Id" onclick="saveForm(@item.Id)"  class="btn btn-success d-none">Save</button>
+                    </form>
+                </div>                
+            </div>
+        }
+
+    </div>
+</div>
+
+<script>
+    function toggleAddAddress() {
+        var form = document.getElementById("add-address-form");
+        form.style.display = (form.style.display == "none") ? "block" : "none";
+    }
+
+    function enableForm(id) {
+        const form = document.getElementById(`form-${id}`);
+        const editBtn = document.getElementById(`edit-button-${id}`);
+        const saveBtn = document.getElementById(`save-button-${id}`);
+
+        editBtn.classList.add('d-none');
+        saveBtn.classList.remove('d-none');
+        form.classList.remove('disabled');
+        Array.from(form.elements).forEach((element) => {
+            element.removeAttribute('disabled');
+        });
+    }
+
+    function saveForm(id) {
+        const form = document.getElementById(`form-${id}`);
+        const editBtn = document.getElementById(`edit-button-${id}`);
+        const saveBtn = document.getElementById(`save-button-${id}`);
+
+        editBtn.classList.remove('d-none');
+        saveBtn.classList.add('d-none');
+        form.classList.add('disabled');
+        Array.from(form.elements).forEach((element) => {
+            element.setAttribute('disabled', 'disabled');
+        });
+        form.submit();
+    }
+
+
+</script>

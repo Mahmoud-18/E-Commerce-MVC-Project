@@ -37,8 +37,9 @@
                 <td>@item.CreatedAtUtc</td>
                 <td> <img src="~/img/@item.Image" style="width:50px;height:80px;" /></td>
                 <td>
-                    <a asp-controller="Admin" asp-action="EditProduct" asp-route-id="@item.Id" class="btn btn-info">Edit</a>
-                    <a asp-controller="Admin" asp-action="DeleteProduct" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                    <a asp-controller="Admin" asp-action="ProductDetails" asp-route-id="@item.Id" class="btn btn-info">Detail</a>
+                    <a asp-controller="Admin" asp-action="EditProduct" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                    <a asp-controller="Admin" asp-action="DeleteProduct" asp-route-id="@item.Id" onclick="return confirm('Are you sure you want to delete this Product? \nNote:This Product will be deleted from the app but it will still be available in the Database for recovery.' )" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
         }
