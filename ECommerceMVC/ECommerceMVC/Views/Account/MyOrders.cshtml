@@ -17,27 +17,18 @@
         </div>
     </div>
     <!-- Breadcrumb End -->
-<style>
-    .card.bg-success {
-        background-color: #28a745;
-    }
-
-        .card.bg-success p, .card.bg-success a, .card.bg-success .card-header {
-            color: white;
-        }
-</style>
 
 @foreach (var item in Model)
 {
-    <div class="card my-3 @((item.OrderStatus.Status == "Completed") ? "bg-success" : "")">
+    <div class="card my-3">
         <div class="card-header">
             Order ID: @item.Id
         </div>
         <div class="card-body">
-            <p class="card-text">Order Date: @item.OrderDate | Total Price: @item.OrderTotalPrice</p>
-            <p class="card-text">Total Price: @item.OrderTotalPrice</p>
+            <p class="card-text">Order Date: @item.OrderDate</p>
+            <p class="card-text">Total Price: @item.OrderTotalPrice EGP</p>
             <p class="card-text">Payment Method: @item.PaymentMethod.Name</p>
-            <p class="card-text">Order Status: @item.OrderStatus.Status</p>
+            <p class="card-text">Order Status: <span class="badge @((item.OrderStatus.Status.ToLower() == "completed") ? "bg-success" : (item.OrderStatus.Status.ToLower() == "shipped") ? "bg-warning" : "bg-danger")">@item.OrderStatus.Status</span></p>
             <div class="btn-group">
                 <a asp-action="OrderDetails" asp-controller="Account" asp-route-id="@item.Id" class="btn btn-info mx-2">Details</a>
                 @if (item.OrderStatus.Status.ToLower() == "pending")

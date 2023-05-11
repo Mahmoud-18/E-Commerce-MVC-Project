@@ -42,6 +42,7 @@ namespace ECommerceMVC.Controllers
         IShoppingBagRepository shopBagRepository;
         ICountryRepository country;
         ICustomerRepository customer;
+        IOrderRepository orderRepository;
 
         public AdminController
             (UserManager<Customer> _userManager, SignInManager<Customer> _signInManager,
@@ -53,7 +54,7 @@ namespace ECommerceMVC.Controllers
             IProductItemRepository _productItemRepository, IProductTypeRepository _productTypeRepository,
             IProductImagesRepository _productImagesRepository, IProductCategoryRepository _productCategoryRepository,
             IProductTypeAttributeRepository _productTypeAttributeRepository, IProductAttributeValuesRepository _productAttributeValuesRepository, 
-            IComplaintRepository _complaintRepository)
+            IComplaintRepository _complaintRepository, IOrderRepository orderRepository)
         {
             userManager = _userManager;
             signInManager = _signInManager;
@@ -75,12 +76,30 @@ namespace ECommerceMVC.Controllers
             productTypeAttributeRepository = _productTypeAttributeRepository;
             productAttributeValuesRepository = _productAttributeValuesRepository;
             complaintRepository = _complaintRepository;
+            this.orderRepository = orderRepository;
         }
 
         public IActionResult Index()
         {
+
+            ViewBag.TotalOrders = orderRepository.GetAll().Count;
+            ViewBag.TotalMoney = orderRepository.GetAll().Sum(i => i.OrderTotalPrice);
+            ViewBag.TotalProducts = productRepository.GetAll().Count;
+            ViewBag.TotalUsers = customer.GetAll().Count;
+
+            ViewBag.UsersWithMostOrders = orderRepository.GetAll().GroupBy(I => I.CustomerId).OrderByDescending(I=>I.Count()).ThenByDescending(i=>i.Sum(o=>o.OrderTotalPrice)).Take(6).ToList();
+            ViewBag.RecentOrders = orderRepository.GetAll().OrderByDescending(o=>o.OrderDate).Take(6).ToList();
+
+            ViewBag.MostSoldProducts = productRepository.GetAllInclude().OrderByDescending(i => i.Items.Sum(o => o.OrderItems.Sum(i => i.Quantity))).Take(6).ToList();
+            ViewBag.MostRecentProducts = productRepository.GetAll().OrderByDescending(i=>i.CreatedAtUtc).Take(6).ToList();
+            List<Product> productswithrating = productRepository.GetAll().Where(i=>i.ProductReviews.Count>0).ToList();
+            ViewBag.HighestRatedProducts =productswithrating.OrderByDescending(i => i.ProductReviews.Average(i => i.Rate)).Take(6).ToList();
+            
             return View();           
+
         }
+
+        #region Product
         public IActionResult AddProduct()
         {
             ViewData["CategoryList"] = categoryRepository.GetAll();
@@ -191,7 +210,7 @@ namespace ECommerceMVC.Controllers
             return View("AddProductSuccess");
         }
 
-
+        #endregion
 
         #region Customer(Users) Controllers
         public IActionResult UsersIndex()
@@ -438,4 +457,3 @@ namespace ECommerceMVC.Controllers
 
     }
 }
-

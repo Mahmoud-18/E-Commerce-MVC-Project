@@ -54,7 +54,7 @@ public class ProductRepository : IProductRepository
 
     public List<Product> GetAllInclude()
     {
-        return context.Product.Include("Discount").Include("Items").Include("Brand").Include("ProductType").Include("ProductCategories").ToList();
+        return context.Product.Include("Discount").Include(i=>i.Items).ThenInclude(u=>u.OrderItems).Include("Brand").Include("ProductType").Include("ProductCategories").ToList();
     }
 
     public Product GetById(int id)
@@ -76,5 +76,23 @@ public class ProductRepository : IProductRepository
     {
         context.Update(product);
         context.SaveChanges();
+    }
+    public List<ProductIndexViewModel> GetAllViewModelProduct()
+    {
+        var all = context.Product.Include(p => p.Brand).Include(p=>p.ProductCategories).ToList();
+
+        List<ProductIndexViewModel> productIndexViewModel = new List<ProductIndexViewModel>();
+        foreach (var item in all)
+        {
+            productIndexViewModel.Add(new ProductIndexViewModel
+            {
+                Name = item.Name,
+                Brand = item.Brand!.Name,
+                Price = (float)item.Price,
+                CreatedAtUtc = item.CreatedAtUtc,
+                Image = item.Image,
+            });
+        }
+        return productIndexViewModel;
     }
 }

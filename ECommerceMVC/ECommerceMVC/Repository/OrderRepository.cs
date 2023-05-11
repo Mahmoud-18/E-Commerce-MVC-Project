@@ -23,7 +23,7 @@ namespace ECommerceMVC.Repository
 
         public List<OrderDetails> GetAll()
         {
-            return context.OrderDetails.Where(o=>o.IsDeleted==false).ToList();
+            return context.OrderDetails.Include(o=>o.Customer).Where(o=>o.IsDeleted==false).ToList();
         }
         public List<OrderDetails> GetAllInclude()
         {
