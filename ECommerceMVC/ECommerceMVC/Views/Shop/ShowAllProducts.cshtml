@@ -71,8 +71,17 @@
                                 </div>
                             </div>
                             <div class="text-center py-4">
-
+                            @if (product.Name.Split(' ').Length <= 4)
+                            {
                                 <a asp-action="ProductDetails" asp-controller="Product" asp-route-id="@product.Id" class="h6 text-decoration-none text-truncate">@product.Name</a>
+                            }
+                            else
+                            {
+                                var words = product.Name.Split(' ');
+                                var newName = string.Join(" ", words.Take(4));
+                                <a asp-action="ProductDetails" asp-controller="Product" asp-route-id="@product.Id" class="h6 text-decoration-none text-truncate">@newName</a>
+                            }
+                            @*<a asp-action="ProductDetails" asp-controller="Product" asp-route-id="@product.Id" class="h6 text-decoration-none text-truncate">@product.Name</a>*@
                                 <div class="d-flex align-items-center justify-content-center mt-2">
                                     @{
                                         if (product.PriceAfterDisc == 0)

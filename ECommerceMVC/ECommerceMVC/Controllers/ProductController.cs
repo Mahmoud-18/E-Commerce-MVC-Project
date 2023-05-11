@@ -306,8 +306,6 @@ public class ProductController : Controller
 
         }
     }
-}
-
     public IActionResult Review(ReviewViewModel reviewViewModel)
     {
         ProductReview productReview = new ProductReview();
@@ -320,5 +318,7 @@ public class ProductController : Controller
         return Redirect("/Product/ProductDetails/" + reviewViewModel.ProductId);
 
     }
+}
+
 
 
