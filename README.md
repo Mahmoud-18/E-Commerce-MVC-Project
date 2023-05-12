@@ -15,3 +15,4 @@ This project is a full stack web application that serves as an e-commerce websit
 * Add to cart functionality.
 * Check Out and place order: currently support cash on delevery option.
 * Auto product update.
+* Dashboard for admin side.
